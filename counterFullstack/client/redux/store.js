@@ -1,8 +1,12 @@
 
 
-export function createStore(reducer, middlewares = []){
+export function createStore(reducer, middlewares = [], preloadState){
 
-    let state = reducer(undefined, {type: '@@INIT'})
+    let state = 
+        preloadState !== undefined
+            ? preloadState
+            : reducer(undefined, {type: '@@INIT'})
+            
     let subscribers = [];
 
 

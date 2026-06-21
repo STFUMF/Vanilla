@@ -1,18 +1,54 @@
+import { loadState } from "./redux/loadState.js";
 import { loggerMiddleware } from "./redux/middleware/loggerMiddleware.js";
+import { persistAuthMiddleware } from "./redux/middleware/persistAuthMiddleware.js";
 import { thunkMiddleware } from "./redux/middleware/thunkMiddleware.js";
 import { rootReducer } from "./redux/rootReducer.js";
 import { countAction } from "./redux/slice/countSlice.js";
 import { createStore } from "./redux/store.js";
 import { login, register } from "./redux/thunk/authenticationThunk.js";
 
-const store = createStore(rootReducer, [thunkMiddleware,loggerMiddleware]);
+const store = createStore(
+    rootReducer, 
+    [thunkMiddleware, persistAuthMiddleware,loggerMiddleware],
+    loadState()
+);
+
+const homePage = document.getElementById('homePage')
 
 const registerationForm = document.getElementById('registerationForm');
 const loginForm = document.getElementById('loginForm');
 
 
-store.dispatch(countAction.increment())
-store.dispatch(countAction.increment())
+
+
+const incrementBtn = document.querySelector('.incrementBtn')
+const decrementBtn = document.querySelector('.decrementBtn')
+
+
+function render(){
+    counter.textContent = store.getState().count || 0
+}
+
+
+
+if(homePage){
+    const counter = document.getElementById('counter');
+    function render(){
+        counter.textContent = store.getState().count || 0
+    }
+
+        incrementBtn.addEventListener('click', () => {
+        store.dispatch(countAction.increment())
+    })
+
+    decrementBtn.addEventListener('click', () => {
+        store.dispatch(countAction.decrement());
+    })
+
+    store.subscribe(render); 
+
+}
+
 
 if(registerationForm){
 registerationForm.addEventListener('submit', (e) => {
@@ -33,18 +69,13 @@ registerationForm.addEventListener('submit', (e) => {
 }
 
 if(loginForm){
-loginForm.addEventListener('submit', (e) => {
-    e.preventDefault();
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
 
-    const loginEmail = document.getElementById('loginEmail').value.trim();
-    const loginPassword = document.getElementById('loginPassword').value;
+        const loginEmail = document.getElementById('loginEmail').value.trim();
+        const loginPassword = document.getElementById('loginPassword').value;
 
-    store.dispatch(login(loginEmail, loginPassword));
-})
+        store.dispatch(login(loginEmail, loginPassword));
+    })
 }
 
-store.dispatch((dispatch, getState) => {
-    setTimeout(() => {
-        dispatch({ type: 'DECREMENT' });
-    }, 1000);
-});
