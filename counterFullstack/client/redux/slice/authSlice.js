@@ -62,6 +62,22 @@ export function authSlice(state = authInitialState, action) {
                 registerError: null
             }
 
+        case AUTH_ACTIONS.REGISTER_SUCCESS:
+            return {
+                ...state,
+                registerLoading: false,
+                user: action.payload.user,
+                token: action.payload.token,
+                isAuthenticated: true
+            }
+        
+        case AUTH_ACTIONS.REGISTER_FAILURE:
+            return {
+                ...state,
+                loginLoading: false,
+                error: action.payload,
+                isAuthenticated: false
+        };
 
         case AUTH_ACTIONS.LOGOUT:
             return {

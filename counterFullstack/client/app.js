@@ -4,34 +4,58 @@ import { persistAuthMiddleware } from "./redux/middleware/persistAuthMiddleware.
 import { thunkMiddleware } from "./redux/middleware/thunkMiddleware.js";
 import { rootReducer } from "./redux/rootReducer.js";
 import { countAction } from "./redux/slice/countSlice.js";
+import { themeAction } from "./redux/slice/themeSlice.js";
 import { createStore } from "./redux/store.js";
 import { login, register } from "./redux/thunk/authenticationThunk.js";
 
+const preLoadState = loadState();
+
 const store = createStore(
     rootReducer, 
-    [thunkMiddleware, persistAuthMiddleware,loggerMiddleware],
-    loadState()
+    [thunkMiddleware,loggerMiddleware, persistAuthMiddleware],
+    preLoadState
 );
 
 const homePage = document.getElementById('homePage')
 
-const registerationForm = document.getElementById('registerationForm');
+const registrationForm = document.getElementById('registrationForm');
 const loginForm = document.getElementById('loginForm');
-
-
 
 
 const incrementBtn = document.querySelector('.incrementBtn')
 const decrementBtn = document.querySelector('.decrementBtn')
 
+const themeToggle = document.querySelector('.themeToggle')
 
-function render(){
-    counter.textContent = store.getState().count || 0
+themeToggle.addEventListener('click', () => {
+
+    store.dispatch(themeAction.toggleTheme());
+    document.querySelector('body').className = store.getState().theme
+    console.log(store.getState().theme)
+})
+
+
+
+function redirectIfAuthenticated(){
+    const tokens = store.getState().auth?.token
+
+    const isAuthPage = loginForm || registrationForm;
+
+    if (tokens && isAuthPage){
+        window.location.replace("../../index.html")
+    }
 }
 
+function requireAuth(){
+    const token = store.getState().auth?.token;
 
+    if (!token){
+        window.location.replace("./pages/authentication/login.html")
+    }
+}
 
 if(homePage){
+    requireAuth();
     const counter = document.getElementById('counter');
     function render(){
         counter.textContent = store.getState().count || 0
@@ -45,13 +69,14 @@ if(homePage){
         store.dispatch(countAction.decrement());
     })
 
+    render();
     store.subscribe(render); 
 
 }
 
 
-if(registerationForm){
-registerationForm.addEventListener('submit', (e) => {
+if(registrationForm){
+registrationForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
     const fname = document.getElementById('name').value.trim();
@@ -60,7 +85,7 @@ registerationForm.addEventListener('submit', (e) => {
     const fconfirmPassword = document.getElementById('confirmPassword').value;
 
     if (fpassword !== fconfirmPassword) {
-        alert('Passwords do not much');
+        alert('Passwords do not match');
         return;
     }
 
@@ -76,6 +101,15 @@ if(loginForm){
         const loginPassword = document.getElementById('loginPassword').value;
 
         store.dispatch(login(loginEmail, loginPassword));
+
+        console.log(store.getState());
     })
 }
 
+
+if (loginForm || registrationForm){
+    store.subscribe(redirectIfAuthenticated);
+    redirectIfAuthenticated();
+}
+
+console.log(store.getState());

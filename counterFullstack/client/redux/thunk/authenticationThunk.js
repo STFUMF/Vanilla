@@ -14,7 +14,14 @@ export function login(email, password) {
 
             const data = await response.json();
 
-            dispatch(authActions.loginSuccess(data.user, data.token));
+            console.log(data)
+            if(response.ok){
+                dispatch(authActions.loginSuccess(data.user, data.token));
+                console.log(data.token)
+                localStorage.setItem("auth", JSON.stringify(data))
+                window.location.href = "../../index.html"
+            }
+            
             console.log(data);
         } catch (err) {
             dispatch(authActions.loginFailure(err.message))
@@ -48,6 +55,7 @@ export function register(name, email, password) {
             if(!response.ok) {
                 throw new Error(data.message);
             }
+            console.log(data)
             dispatch(authActions.registerSuccess(data))
         }  catch (error){
             dispatch(authActions.registerFailure(error))

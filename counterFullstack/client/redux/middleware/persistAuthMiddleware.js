@@ -8,13 +8,13 @@ export const persistAuthMiddleware =
 
                 const state = store.getState();
 
-
+                console.log(action.type)
                 if(
-                    action.type === 'LOGIN_SUCCESS' || 
-                    action.type === 'REGISTER_SUCCESS' ||
-                    action.type === 'LOGOUT'
+                    action.type === 'auth/loginSuccess' || 
+                    action.type === 'auth/registerSuccess' ||
+                    action.type === 'auth/logout'
                 ) {
-
+                    
                     localStorage.setItem("auth", JSON.stringify(state.auth));
                 }
                 return result;

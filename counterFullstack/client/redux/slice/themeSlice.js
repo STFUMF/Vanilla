@@ -14,6 +14,8 @@ export function themeSlice(state = initialState, action){
 export const themeAction = {
 
     toggleTheme(){
-        type: "TOGGLE_THEME"
+        return {
+            type: "TOGGLE_THEME"
+        }
     }
 }
