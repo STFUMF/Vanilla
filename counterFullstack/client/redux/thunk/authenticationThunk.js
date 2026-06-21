@@ -19,7 +19,7 @@ export function login(email, password) {
                 dispatch(authActions.loginSuccess(data.user, data.token));
                 console.log(data.token)
                 localStorage.setItem("auth", JSON.stringify(data))
-                window.location.href = "../../index.html"
+                window.location.href = "../pages/index.html"
             }
             
             console.log(data);
