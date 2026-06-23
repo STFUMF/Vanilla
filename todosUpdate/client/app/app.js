@@ -1,10 +1,10 @@
 import { loadState } from "./redux/loadState.js";
-import { applyMiddleware } from "./redux/middlewares/applyMiddleware.js";
-import { persistMiddleware } from "./redux/middlewares/persist.js";
+import { applyMiddleware } from "./middleware/applyMiddleware.js";
+import { persistMiddleware } from "./middleware/persist.js";
 import { rootReducer } from "./redux/rootReducer.js";
-import { createSelector } from "./redux/selectors/selector.js";
+import { createSelector } from "../selector.js";
 import { todosActions } from "./redux/slices/todoSlice.js";
-import { createStore } from "./redux/store.js";
+import { createStore } from "../store.js";
 
 const store = createStore(
     rootReducer,
@@ -26,7 +26,7 @@ const todoList =
 const completedCount = document.getElementById('completedCount')
 
     const selectTodos = state => state.todos
-
+    
     const selectCompletedTods = createSelector(
         selectTodos, todos =>{
             console.log('Recomputing')
@@ -69,7 +69,7 @@ addBtn.addEventListener('click', () => {
 
     if (!value) return;
 
-    store.dispatch(todosActions.addTodo('hello'))
+    store.dispatch(todosActions.addTodo(value))
 
     console.log(store.getState());
     todoInput.value = '';
@@ -77,3 +77,9 @@ addBtn.addEventListener('click', () => {
 
 store.subscribe(render);
 render();
+
+const counterBtn = document.getElementById('counterBtn');
+
+counterBtn.addEventListener('click', () => {
+    store.dispatch({type: "increment"})
+})
