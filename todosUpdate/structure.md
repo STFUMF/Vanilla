@@ -33,7 +33,7 @@ Example:
 
 todo-microfrontend/
 |
-├── apps/
+├── apps/  i bnnnnnnnnnnnnvb   k g n   v      
 │   ├── shell/
 │   ├── mfe-todos/
 │   ├── mfe-user/
