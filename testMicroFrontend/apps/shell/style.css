@@ -1,0 +1,55 @@
+.route-view {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 200ms ease;
+}
+
+.route-view.exit {
+    opacity: 0;
+    transform: translateY(10px);
+}
+
+.route-view.enter {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.route-view.enter-active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.skeleton {
+    background: #e2e2e2;
+    border-radius: 6px;
+    animation: pulse 1.2s infinite ease-in-out;
+}
+
+.skeleton.title {
+    height: 24px;
+    width: 40%;
+    margin-bottom: 12px;
+}
+
+.skeleton.item {
+    height: 16px;
+    margin-bottom: 8px;
+    width: 80%;
+}
+.sk-box {
+    background: linear-gradient(90deg, #e2e2e2 25%, #f5f5f5 50%, #e2e2e2 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.2s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+

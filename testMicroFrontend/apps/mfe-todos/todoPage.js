@@ -4,7 +4,7 @@ import {addTodo} from "./todoActions.js";
 
 import { renderTodoList} from "./todoView.js";
 
-export function mountTodoPage(root) {
+export function render(root) {
 
   root.innerHTML = `
     <h1>Todo App</h1>
@@ -19,11 +19,11 @@ export function mountTodoPage(root) {
 
   const input = root.querySelector("#todoInput");
 
-  const button =root.querySelector("#addBtn");
+  const button = root.querySelector("#addBtn");
 
-  const list =root.querySelector("#todoList");
+  const list = root.querySelector("#todoList");
 
-  function render() {
+  function update() {
     renderTodoList(list);
   }
 
@@ -34,7 +34,7 @@ export function mountTodoPage(root) {
     input.value = "";
   });
 
-  store.subscribe(render);
+  store.subscribe(update);
 
-  render();
+  update();
 }

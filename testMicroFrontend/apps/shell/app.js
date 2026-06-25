@@ -1,10 +1,7 @@
-/* import { mountTodoPage } from "../mfe-todos/todoPage.js";
 
-const root =  document.getElementById("app");
-
-mountTodoPage(root); */
 
 import { registerRoute, startRouter } from "./router.js";
+import { Skeleton, TodosSkeleton, UserSkeleton } from "./skeleton.js";
 
 
 const app = document.getElementById('app');
@@ -14,16 +11,17 @@ registerRoute("/", async () => ({
     container.innerHTML = `
       <h1>Shell Home</h1>
 
-      <ul>
-        <li><a href="#/todos">Todos</a></li>
-        <li><a href="#/user">User</a></li>
-        <li><a href="#/notifcations">Notifications</a></li>
-      </ul>
+
     `
   }
 }));
 
-registerRoute("/todos", () => import("../mfe-todos/todoPage.js"));
-registerRoute("/user", () => import("../mfe-user/userPage.js"));
+registerRoute("/todos", () => import("../mfe-todos/todoPage.js"), {
+  skeleton: TodosSkeleton
+});
 
-startRouter();
+registerRoute("/user", () => import("../mfe-user/userPage.js"), {
+  skeleton: UserSkeleton
+});
+
+startRouter(app);
