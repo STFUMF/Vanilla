@@ -1,11 +1,10 @@
 import { store } from "../shell/store.js";
-import { addTodo, removeTodo, toggleTodo } from "./todoActions.js";
+import { addTodo, removeTodo, toggleTodo, updateTodo } from "./todoActions.js";
 import {renderTodoView } from "./todoView.js";
 
-export let editingId = null;
 
 export function renderTodo(root){
-
+    console.log(store.getState());
     root.innerHTML = `
         <h1>Todo App</h1>
 
@@ -34,7 +33,7 @@ export function renderTodo(root){
         }))
 
         input.value = "";
-        console.log(store.getState());
+        
     })
 
     lists.addEventListener('click', (e) => {
@@ -43,8 +42,8 @@ export function renderTodo(root){
        // console.log(id)
 
        if(e.target.closest('.updateBtn')){
-             editingId = id;
-            console.log('test');
+             store.dispatch({type: "EDITID", payload: id})
+             console.log(store.getState().editId.editingId)
         }
 
         if(e.target.closest('.todo')){
@@ -57,7 +56,20 @@ export function renderTodo(root){
         console.log(store.getState())
         }
 
-    
+        if(e.target.closest('.saveBtn')){
+            const row = e.target.closest('li'); 
+            const editInput = row.querySelector('.editInput');
+            store.dispatch(
+                updateTodo(id, editInput.value)
+            )
+            store.dispatch(
+                {type: 'EDITID', payload: null}
+            )
+        }
+        if(e.target.closest('.cancelBtn')){
+            store.getState().editId
+            console.log(store.getState())
+        }
         
     })
     store.subscribe(update);
