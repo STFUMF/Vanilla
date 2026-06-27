@@ -1,7 +1,8 @@
 import { store } from "../shell/store.js";
 import { addTodo, removeTodo, toggleTodo } from "./todoActions.js";
-import { renderTodoView } from "./todoView.js";
+import {renderTodoView } from "./todoView.js";
 
+export let editingId = null;
 
 export function renderTodo(root){
 
@@ -37,9 +38,14 @@ export function renderTodo(root){
     })
 
     lists.addEventListener('click', (e) => {
-        const list = e.target.closest('[data-id]');
-        const id = list.dataset.id
+        let list = e.target.closest('[data-id]');
+        let id = list.dataset.id
        // console.log(id)
+
+       if(e.target.closest('.updateBtn')){
+             editingId = id;
+            console.log('test');
+        }
 
         if(e.target.closest('.todo')){
             
@@ -50,6 +56,8 @@ export function renderTodo(root){
          store.dispatch(removeTodo(id));
         console.log(store.getState())
         }
+
+    
         
     })
     store.subscribe(update);

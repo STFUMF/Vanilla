@@ -20,3 +20,14 @@ import { todoEvents } from "./todoEvents.js"
             payload: {id}
         }
     }
+
+
+    export function updateTodo(id, title){
+        return {
+            type: todoEvents.UPDATED,
+            payload: {
+                id,
+                title,
+            },
+        };
+    }

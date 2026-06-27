@@ -20,9 +20,17 @@ export function todoReducer(state = initialState, action){
                     todo.id === action.payload.id
                         ? {...todo, completed: !todo.completed }
                         : todo
-                )
+                );
             
-        
+        case todoEvents.UPDATED: 
+                return state.map(todo =>
+                    todo.id === action.payload.id
+                        ? {
+                            ...todo,
+                            title: action.payload.title,
+                        }
+                        : todo
+                );
 
         default:
             return state
