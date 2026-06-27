@@ -1,5 +1,5 @@
 import { store } from "../shell/store.js";
-import { addTodo } from "./todoActions.js";
+import { addTodo, removeTodo, toggleTodo } from "./todoActions.js";
 import { renderTodoView } from "./todoView.js";
 
 
@@ -13,26 +13,45 @@ export function renderTodo(root){
 
         <ul id="todoList"><ul>
     `;
-    console.log(store.getState());
     const input = root.querySelector("#todoInput");
 
     const button = root.querySelector("#addBtn");
 
-    const list = root.querySelector("#todoList");
+    const lists = root.querySelector("#todoList");
+
+    const todo = root.querySelector(".todo")
 
     function update(){
-        renderTodoView(list);
+        renderTodoView(lists);
     }
 
     button.addEventListener('click', () => {
         store.dispatch(addTodo({
+            id: crypto.randomUUID(),
             title: input.value.trim(),
+            completed: false,
         }))
 
         input.value = "";
         console.log(store.getState());
     })
 
+    lists.addEventListener('click', (e) => {
+        const list = e.target.closest('[data-id]');
+        const id = list.dataset.id
+       // console.log(id)
+
+        if(e.target.closest('.todo')){
+            
+         store.dispatch(toggleTodo(id))
+        }
+
+        if(e.target.closest('.deleteBtn')) {
+         store.dispatch(removeTodo(id));
+        console.log(store.getState())
+        }
+        
+    })
     store.subscribe(update);
 
     update();

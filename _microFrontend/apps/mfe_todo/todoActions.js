@@ -17,6 +17,6 @@ import { todoEvents } from "./todoEvents.js"
     export function toggleTodo(id){
         return {
             type: todoEvents.TOGGLED,
-            payload: id
+            payload: {id}
         }
     }

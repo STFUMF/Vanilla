@@ -1,26 +1,23 @@
-import { toggleTodo } from "./todoActions.js";
+import { removeTodo, toggleTodo } from "./todoActions.js";
 import { store } from "../shell/store.js";
 
 export function renderTodoView(container){
-
-    const state = store.getState();
-
     container.innerHTML = "";
-
+    const todos = store.getState().todos;
     
-    state.todos.items.forEach(todo => {
+    console.log(todos);
+    todos.forEach(todo => {
         const li  = document.createElement('li');
-
-        li.textContent = todo.title;
+        li.dataset.id = todo.id;
+        li.className = 'todo'
+        li.innerHTML = `
+            ${todo.title}
+            <button class="deleteBtn">Delete</button>
+        `
 
         if (todo.completed){
             li.style.textDecoration = "line-through";
         }
-
-        li.addEventListener('click', () => {
-            store.dispatch(toggleTodo(todo.id)
-            )
-        })
 
         container.appendChild(li);
     })
