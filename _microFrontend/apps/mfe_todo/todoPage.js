@@ -11,11 +11,15 @@ export function renderTodo(root){
         <input type="text" id="todoInput" />
         <button id="addBtn">Add</button>
 
+        <p id="todoError" class="error"></p>
+
         <ul id="todoList"><ul>
     `;
     const input = root.querySelector("#todoInput");
 
     const button = root.querySelector("#addBtn");
+    
+    const error = root.querySelector("#todoError");
 
     const lists = root.querySelector("#todoList");
 
@@ -25,12 +29,36 @@ export function renderTodo(root){
         renderTodoView(lists);
     }
 
+    // helper
+    function validateTodo(title){
+        const todos = store.getState().todos;
+
+        if (!title){
+            return "Todo title cannot be empty";
+        }
+
+        const exists = todos.some(todo =>
+            todo.title.toLowerCase() === title.toLowerCase()
+        );
+
+        if (exists){
+            return "That todo already exists.";
+        }
+
+        return;
+    }
+
     function handleAddTodo(){
         const title = input.value.trim();
 
-        if (!title){
+        const validationError = validateTodo(title);
+
+        if (validationError){
+            error.textContent = validationError
             return;
         }
+
+        error.textContent = "";
 
         store.dispatch(addTodo({
             id: crypto.randomUUID(),
@@ -48,6 +76,12 @@ export function renderTodo(root){
             handleAddTodo();
         }
     });
+
+    
+    input.addEventListener('input', () => {
+        error.textContent = "";
+    });
+
 
     lists.addEventListener('click', (e) => {
         let list = e.target.closest('[data-id]');
