@@ -1,10 +1,11 @@
+import { loadState } from "../shell/middleware/loadstate.js";
 import { store } from "../shell/store.js";
 import { addTodo, removeTodo, toggleTodo, updateTodo } from "./todoActions.js";
 import {renderTodoView } from "./todoView.js";
 
 
 export function renderTodo(root){
-    console.log(store.getState());
+ 
     root.innerHTML = `
         <h1>Todo App</h1>
 

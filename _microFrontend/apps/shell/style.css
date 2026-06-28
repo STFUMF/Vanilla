@@ -61,3 +61,9 @@ body {
     display: block;
     margin-top: .5rem;
 }
+
+.error {
+    color: crimson;
+    margin: .5rem 0;
+    min-height: 1.2rem;
+}

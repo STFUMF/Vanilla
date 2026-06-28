@@ -6,10 +6,9 @@ import { store } from "../shell/store.js";
 export function renderTodoView(container){
     
     container.innerHTML = "";
-    const todos = store.getState().todos;
+    const todos = store.getState().todos || [];
     const editId = store.getState().editId
-    
-    console.log(todos.length);
+
     if (todos.length === 0) {
         container.innerHTML = `
             <li class="empty-state">

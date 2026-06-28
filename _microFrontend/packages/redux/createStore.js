@@ -1,24 +1,32 @@
 
 
-export function createStore(reducer){
+export function createStore(rootReducer, enhancer, preloadedState){
 
-    let state;
+    if (enhancer){
+        return enhancer(createStore)(
+            rootReducer,
+            preloadedState
+        )
+    }
+
+    let state = preloadedState
+
     let listeners = [];
 
     function getState(){
-        return state;
+        return state
     }
 
-    function subscribe(listener){
-        listeners.push(listener);
+    function subscribe(fn){
+        listeners.push(fn);
 
-        return function(){
-            listeners = listeners.filter(li => li !== listener);
+        return () => {
+            listeners = listeners.filter(listener => listener !== fn)
         }
     }
 
-    function dispatch(action){
-        state = reducer(state, action);
+    function dispatch(action) {
+        state = rootReducer(state, action);
 
         listeners.forEach(listener => listener());
     }
@@ -27,7 +35,7 @@ export function createStore(reducer){
 
     return {
         getState,
-        dispatch,
-        subscribe
+        subscribe,
+        dispatch
     }
 }
