@@ -1,57 +1,182 @@
-import { removeTodo, toggleTodo } from "./todoActions.js";
 import { store } from "../shell/store.js";
+import { removeTodo } from "./todoActions.js";
 import { selectVisibleTodos } from "./todoSelectors.js";
+import { createButton } from "../shell/shared/Buttons.js";
 
 
+export function renderTodoView(container) {
 
-export function renderTodoView(container){
-    
+
     container.innerHTML = "";
-    const todos = selectVisibleTodos(store.getState());
-    const editId = store.getState().editId
+
+
+    const state = store.getState();
+
+    const todos = selectVisibleTodos(state);
+
+    const editId = state.editId.editingId;
+
+
 
     if (todos.length === 0) {
-        container.innerHTML = `
-            <li class="empty-state">
-                No Todos yet.<br>
-                <small>Add one above to get started!</small>
-            </li>
-        `
+
+        const empty = document.createElement("li");
+
+        empty.className = "empty-state";
+
+        empty.textContent = "No Todos yet.";
+
+        container.append(empty);
+
         return;
     }
 
+
+
     todos.forEach(todo => {
-        const li  = document.createElement('li');
+
+
+        const li = document.createElement("li");
+
         li.dataset.id = todo.id;
-        li.className = 'todo'
 
-        if (editId.editingId === todo.id) {
+        li.className = "todo";
 
-            li.innerHTML = `
-                <input type="text" value="${todo.title}" class='editInput'/>
-                <button class="saveBtn">Save</button>
-                <button class="cancelBtn">Cancel</button>
-            `
-            container.appendChild(li);
 
-            const editInput = document.querySelector('.editInput');
-            editInput.focus();
-            editInput.setSelectionRange(editInput.value.length, editInput.value.length);
 
-            
+        if (editId === todo.id) {
+
+
+            const input = document.createElement("input");
+
+            input.className = "editInput";
+
+            input.value = todo.title;
+
+
+
+            const saveBtn = createButton({
+
+                text: "Save",
+
+                className: "saveBtn",
+
+                onClick: () => {}
+
+            });
+
+
+
+            const cancelBtn = createButton({
+
+                text: "Cancel",
+
+                className: "cancelBtn",
+
+                onClick: () => {}
+
+            });
+
+
+
+            li.append(
+                input,
+                saveBtn,
+                cancelBtn
+            );
+
+
+            setTimeout(() => {
+
+                input.focus();
+
+                input.setSelectionRange(
+                    input.value.length,
+                    input.value.length
+                );
+
+            });
+
+
+            container.append(li);
+
             return;
-        }
-        li.innerHTML = `
-            ${todo.title}
-            <button class="updateBtn">Update</button>
-            <button class="deleteBtn">Delete</button>
-        `
 
-        if (todo.completed){
+        }
+
+
+
+        const wrapper = document.createElement("div");
+
+
+        const title = document.createElement("span");
+
+        title.textContent = todo.title;
+
+
+
+        const updateBtn = createButton({
+
+            text: "Update",
+
+            className: "updateBtn",
+
+            onClick: () => {
+
+                store.dispatch({
+
+                    type: "EDITID",
+
+                    payload: todo.id
+
+                });
+
+            }
+
+        });
+
+
+
+        const deleteBtn = createButton({
+
+            text: "Delete",
+
+            className: "deleteBtn",
+
+            onClick: () => {
+
+                store.dispatch(
+                    removeTodo(todo.id)
+                );
+
+            }
+
+        });
+
+
+
+        wrapper.append(
+            title,
+            updateBtn,
+            deleteBtn
+        );
+
+
+
+        li.append(wrapper);
+
+
+
+        if (todo.completed) {
+
             li.style.textDecoration = "line-through";
+
         }
 
-        container.appendChild(li);
-    })
+
+
+        container.append(li);
+
+    });
 
 }

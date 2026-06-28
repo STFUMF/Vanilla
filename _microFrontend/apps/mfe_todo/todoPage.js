@@ -1,11 +1,10 @@
-import { loadState } from "../shell/middleware/loadstate.js";
 import { store } from "../shell/store.js";
 import { addTodo, removeTodo, toggleTodo, updateTodo } from "./todoActions.js";
-import {renderTodoView } from "./todoView.js";
+import { renderTodoView } from "./todoView.js";
 
 
-export function renderTodo(root){
- 
+export function renderTodo(root) {
+
     root.innerHTML = `
         <h1>Todo App</h1>
 
@@ -14,27 +13,20 @@ export function renderTodo(root){
 
         <p id="todoError" class="error"></p>
 
-        <ul id="todoList"><ul>
+        <ul id="todoList"></ul>
     `;
+
+
     const input = root.querySelector("#todoInput");
-
     const button = root.querySelector("#addBtn");
-    
     const error = root.querySelector("#todoError");
+    const list = root.querySelector("#todoList");
 
-    const lists = root.querySelector("#todoList");
 
-    const todo = root.querySelector(".todo")
-
-    function update(){
-        renderTodoView(lists);
-    }
-
-    // helper
-    function validateTodo(title){
+    function validateTodo(title) {
         const todos = store.getState().todos;
 
-        if (!title){
+        if (!title) {
             return "Todo title cannot be empty";
         }
 
@@ -42,85 +34,127 @@ export function renderTodo(root){
             todo.title.toLowerCase() === title.toLowerCase()
         );
 
-        if (exists){
+        if (exists) {
             return "That todo already exists.";
         }
 
-        return;
+        return null;
     }
 
-    function handleAddTodo(){
+
+    function handleAddTodo() {
+
         const title = input.value.trim();
 
         const validationError = validateTodo(title);
 
-        if (validationError){
-            error.textContent = validationError
+
+        if (validationError) {
+            error.textContent = validationError;
             return;
         }
 
-        error.textContent = "";
 
-        store.dispatch(addTodo({
-            id: crypto.randomUUID(),
-            title,
-            completed: false,
-        }))
+        store.dispatch(
+            addTodo({
+                id: crypto.randomUUID(),
+                title,
+                completed: false
+            })
+        );
+
 
         input.value = "";
-       // input.focus();
+        input.focus();
     }
 
-    button.addEventListener('click', handleAddTodo)
-    input.addEventListener('keydown', (e) => {
-        if (e.key === "Enter"){
+
+
+    button.addEventListener("click", handleAddTodo);
+
+
+    input.addEventListener("keydown", e => {
+
+        if (e.key === "Enter") {
             handleAddTodo();
         }
+
     });
 
-    
-    input.addEventListener('input', () => {
+
+    input.addEventListener("input", () => {
         error.textContent = "";
     });
 
 
-    lists.addEventListener('click', (e) => {
-        let list = e.target.closest('[data-id]');
-        let id = list.dataset.id
-       // console.log(id)
 
-       if(e.target.closest('.updateBtn')){
-             store.dispatch({type: "EDITID", payload: id})
-             console.log(store.getState().editId.editingId)
+    list.addEventListener("click", e => {
+
+        const item = e.target.closest("[data-id]");
+
+        if (!item) return;
+
+
+        const id = item.dataset.id;
+
+
+
+        if (e.target.closest(".todo")) {
+
+            store.dispatch(
+                toggleTodo(id)
+            );
+
         }
 
-        if(e.target.closest('.todo')){
-            
-         store.dispatch(toggleTodo(id))
+
+        if (e.target.closest(".deleteBtn")) {
+
+            store.dispatch(
+                removeTodo(id)
+            );
+
         }
 
-        if(e.target.closest('.deleteBtn')) {
-         store.dispatch(removeTodo(id));
-        console.log(store.getState())
-        }
 
-        if(e.target.closest('.saveBtn')){
-            const row = e.target.closest('li'); 
-            const editInput = row.querySelector('.editInput');
+
+        if (e.target.closest(".saveBtn")) {
+
+            const editInput = item.querySelector(".editInput");
+
             store.dispatch(
                 updateTodo(id, editInput.value)
-            )
-            store.dispatch(
-                {type: 'EDITID', payload: null}
-            )
-        }
-        if(e.target.closest('.cancelBtn')){
-            store.getState().editId
-            console.log(store.getState())
-        }
-        
-    })
-    store.subscribe(update);
+            );
 
-    update();
+
+            store.dispatch({
+                type: "EDITID",
+                payload: null
+            });
+
+        }
+
+
+
+        if (e.target.closest(".cancelBtn")) {
+
+            store.dispatch({
+                type: "EDITID",
+                payload: null
+            });
+
+        }
+
+    });
+
+
+
+    store.subscribe(() => {
+        renderTodoView(list);
+    });
+
+
+
+    renderTodoView(list);
+
 }

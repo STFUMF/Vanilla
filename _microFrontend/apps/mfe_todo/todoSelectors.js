@@ -30,7 +30,7 @@ export function selectCompletionRate(state) {
     );
 }
 
-export function selectVisibleTodos(state) {
+export function selectSearchedTodos(state) {
 
     const filter = selectFilter(state);
     const query = selectSearchQuery(state).toLowerCase();
@@ -39,14 +39,13 @@ export function selectVisibleTodos(state) {
 
     switch (filter){
         case FILTERS.ACTIVE:
-            return todos.filter(todo => !todo.completed);
+            todos =  todos.filter(todo => !todo.completed);
+            break;
             
         case FILTERS.COMPLETED:
-            return todos.filter(todo => todo.completed);
-        
-        case FILTERS.ALL:
-        default:
+            todos =  todos.filter(todo => todo.completed);
             break;
+
     }
 
     if (query) {
@@ -58,4 +57,8 @@ export function selectVisibleTodos(state) {
     }
 
     return todos;
+}
+
+export function selectVisibleTodos(state){
+    return selectSearchedTodos(state);
 }

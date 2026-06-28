@@ -6,7 +6,7 @@ export function mountMicrofrontendChanged(root, renderView, selector = state => 
     let previous = selector(store.getState());
 
     function update() {
-        const current = selector(store.getState());
+        const current = selector(store.gttState());
         
         if (current !== previous) {
             previous = current;
