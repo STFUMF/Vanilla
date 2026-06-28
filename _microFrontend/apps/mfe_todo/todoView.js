@@ -1,12 +1,13 @@
 import { removeTodo, toggleTodo } from "./todoActions.js";
 import { store } from "../shell/store.js";
+import { selectVisibleTodos } from "./todoSelectors.js";
 
 
 
 export function renderTodoView(container){
     
     container.innerHTML = "";
-    const todos = store.getState().todos || [];
+    const todos = selectVisibleTodos(store.getState());
     const editId = store.getState().editId
 
     if (todos.length === 0) {

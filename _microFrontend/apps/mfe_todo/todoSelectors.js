@@ -1,3 +1,5 @@
+import { FILTERS } from "../mfe_filter/filterActions.js";
+import { selectFilter } from "../mfe_filter/filterSelectors.js";
 
 export function selectTodos(state){
     return state.todos;
@@ -25,4 +27,24 @@ export function selectCompletionRate(state) {
     return Math.round(
         (selectCompletedTodos(state) / total) * 100
     );
+}
+
+export function selectVisibleTodos(state) {
+
+    console.log("current filter:", state.filter);
+    const filter = selectFilter(state);
+
+    const todos = selectTodos(state);
+
+    switch (filter){
+        case FILTERS.ACTIVE:
+            return todos.filter(todo => !todo.completed);
+            
+        case FILTERS.COMPLETED:
+            return todos.filter(todo => todo.completed);
+        
+        case FILTERS.ALL:
+        default:
+            return todos;
+    }
 }

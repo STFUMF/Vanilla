@@ -5,11 +5,13 @@ import { todoReducer } from "../mfe_todo/todoReducer.js";
 import { persistMiddleware } from "./middleware/persistMiddleware.js";
 import { applyMiddleware } from "../shell/middleware/applyMiddleware.js"
 import { loadState } from "./middleware/loadstate.js";
+import { filterReducer } from "../mfe_filter/filterReducer.js";
 
 
 export const rootReducer = combineReducers({
     todos: todoReducer,
     editId: editReducer,
+    filter: filterReducer
 })
 
 export const store = createStore(

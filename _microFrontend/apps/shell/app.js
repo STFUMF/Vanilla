@@ -1,3 +1,4 @@
+import { renderFilter } from "../mfe_filter/filterPage.js";
 import { renderStats } from "../mfe_stats/statsPage.js";
 import { renderTodo } from "../mfe_todo/todoPage.js";
 import { renderFooter } from "./layout/footer.js";
@@ -9,10 +10,12 @@ const footer = document.getElementById('footer');
 
 const todoRoot = document.getElementById('todo-root');
 const statsRoot = document.getElementById('stats-root');
+const filterRoot = document.getElementById("filter-root")
 
 renderNavbar(navbar)
 
 renderStats(statsRoot);
+renderFilter(filterRoot)
 
 renderTodo(app);
 
