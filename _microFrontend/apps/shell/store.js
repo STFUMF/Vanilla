@@ -6,12 +6,14 @@ import { persistMiddleware } from "./middleware/persistMiddleware.js";
 import { applyMiddleware } from "../shell/middleware/applyMiddleware.js"
 import { loadState } from "./middleware/loadstate.js";
 import { filterReducer } from "../mfe_filter/filterReducer.js";
+import { searchReducer } from "../mfe_search/searchReducer.js";
 
 
 export const rootReducer = combineReducers({
     todos: todoReducer,
     editId: editReducer,
-    filter: filterReducer
+    filter: filterReducer,
+    search: searchReducer
 })
 
 export const store = createStore(

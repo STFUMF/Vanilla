@@ -1,5 +1,6 @@
 import { FILTERS } from "../mfe_filter/filterActions.js";
 import { selectFilter } from "../mfe_filter/filterSelectors.js";
+import { selectSearchQuery } from "../mfe_search/searchSelectors.js";
 
 export function selectTodos(state){
     return state.todos;
@@ -31,10 +32,10 @@ export function selectCompletionRate(state) {
 
 export function selectVisibleTodos(state) {
 
-    console.log("current filter:", state.filter);
     const filter = selectFilter(state);
+    const query = selectSearchQuery(state).toLowerCase();
+    let todos = selectTodos(state);
 
-    const todos = selectTodos(state);
 
     switch (filter){
         case FILTERS.ACTIVE:
@@ -45,6 +46,16 @@ export function selectVisibleTodos(state) {
         
         case FILTERS.ALL:
         default:
-            return todos;
+            break;
     }
+
+    if (query) {
+        todos = todos.filter(todo =>
+            todo.title
+                .toLowerCase()
+                .includes(query)
+        )
+    }
+
+    return todos;
 }

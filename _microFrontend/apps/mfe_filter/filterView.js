@@ -38,7 +38,7 @@ export function renderFilterView(root) {
         setFilter(buttons.dataset.filter)
     );
 
-
+            console.log(buttons.dataset.filter)
             });
 
         });

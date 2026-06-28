@@ -1,15 +1,8 @@
 import { renderStatsView } from "./statsView.js";
 import {store} from "../shell/store.js"
+import { mountMicrofrontend } from "../shell/mountMicrofrontend.js";
 
 export function renderStats(root){
 
-    function update(){
-        renderStatsView(root);
-    }
-
-    const unsubscribe = store.subscribe(update);
-
-    update();
-
-    return unsubscribe;
+    return mountMicrofrontend(root, renderStatsView)
 }
