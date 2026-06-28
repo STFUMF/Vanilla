@@ -25,16 +25,29 @@ export function renderTodo(root){
         renderTodoView(lists);
     }
 
-    button.addEventListener('click', () => {
+    function handleAddTodo(){
+        const title = input.value.trim();
+
+        if (!title){
+            return;
+        }
+
         store.dispatch(addTodo({
             id: crypto.randomUUID(),
-            title: input.value.trim(),
+            title,
             completed: false,
         }))
 
         input.value = "";
-        
-    })
+       // input.focus();
+    }
+
+    button.addEventListener('click', handleAddTodo)
+    input.addEventListener('keydown', (e) => {
+        if (e.key === "Enter"){
+            handleAddTodo();
+        }
+    });
 
     lists.addEventListener('click', (e) => {
         let list = e.target.closest('[data-id]');

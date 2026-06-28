@@ -9,6 +9,17 @@ export function renderTodoView(container){
     const todos = store.getState().todos;
     const editId = store.getState().editId
     
+    console.log(todos.length);
+    if (todos.length === 0) {
+        container.innerHTML = `
+            <li class="empty-state">
+                No Todos yet.<br>
+                <small>Add one above to get started!</small>
+            </li>
+        `
+        return;
+    }
+
     todos.forEach(todo => {
         const li  = document.createElement('li');
         li.dataset.id = todo.id;
