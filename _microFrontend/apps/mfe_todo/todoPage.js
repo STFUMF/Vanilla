@@ -1,3 +1,5 @@
+import { publish } from "../shell/platform/eventBus.js";
+import { EVENTS } from "../shell/platform/events.js";
 import { store } from "../shell/store.js";
 import { addTodo, removeTodo, toggleTodo, updateTodo } from "./todoActions.js";
 import { renderTodoView } from "./todoView.js";
@@ -63,6 +65,7 @@ export function renderTodo(root) {
             })
         );
 
+        publish(EVENTS.TODO_ADDED, {title});
 
         input.value = "";
         input.focus();
@@ -113,7 +116,7 @@ export function renderTodo(root) {
             store.dispatch(
                 removeTodo(id)
             );
-
+            publish(EVENTS.TODO_REMOVED, id);
         }
 
 
@@ -122,8 +125,9 @@ export function renderTodo(root) {
 
             const editInput = item.querySelector(".editInput");
 
+            const title = editInput.value;
             store.dispatch(
-                updateTodo(id, editInput.value)
+                updateTodo(id, title)
             );
 
 
@@ -132,6 +136,7 @@ export function renderTodo(root) {
                 payload: null
             });
 
+            publish(EVENTS.TODO_UPDATED, { title })
         }
 
 

@@ -331,3 +331,17 @@ Local storage persistence
 Shared packages
 Todo CRUD functionality
 Modular, scalable folder structure suitable for enterprise applications.
+
+
+
+              Shell
+                 │
+      ┌──────────┴──────────┐
+      │                     │
+ Shared Store          Event Bus
+      │                     │
+      ▼                     ▼
+ Todo MFE              Notification MFE
+ Search MFE            Analytics MFE
+ Filter MFE            Logger MFE
+ Stats MFE

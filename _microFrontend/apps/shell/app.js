@@ -1,4 +1,5 @@
 import { renderFilter } from "../mfe_filter/filterPage.js";
+import { renderNotifications } from "../mfe_notification/notificationPage.js";
 import { renderSearch } from "../mfe_search/searchPage.js";
 import { renderStats } from "../mfe_stats/statsPage.js";
 import { renderTodo } from "../mfe_todo/todoPage.js";
@@ -14,8 +15,13 @@ const statsRoot = document.getElementById('stats-root');
 const filterRoot = document.getElementById("filter-root")
 
 const searchRoot = document.getElementById('search-root');
+const notificationRoot = document.getElementById('notification-root')
+
+
 
 renderNavbar(navbar)
+
+renderNotifications(notificationRoot);
 
 renderSearch(searchRoot)
 renderStats(statsRoot);
