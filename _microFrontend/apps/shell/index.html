@@ -3,26 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo</title>
+    <title>Todo App</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="wrapper">
-        <header id="navbar"></header>
-        <div id="notification-root"></div>
-        <div id="search-root"></div>
-        <div>
-            <div id="todo-root"></div>
-            <hr>
-            <div id="stats-root"></div>
-        </div>
 
-        <div id="filter-root"></div>
+    <div class="app-container">
 
-        <div id="app"></div>
+        <header class="app-header" id="navbar"></header>
 
-        <footer id="footer"></footer>
+        <main class="dashboard">
+
+            <section class="top-bar">
+                <div id="theme-root" class="card"></div>
+                <div id="notification-root" class="card"></div>
+            </section>
+
+            <section class="stats-section card">
+                <h2>Overview</h2>
+                <div id="stats-root"></div>
+            </section>
+
+            <section class="toolbar card">
+                <div id="search-root"></div>
+                <div id="filter-root"></div>
+            </section>
+
+            <section class="todo-section card">
+                <div class="section-header">
+                    <h2>My Tasks</h2>
+                </div>
+
+                <div id="todo-root"></div>
+            </section>
+
+        </main>
+
+        <footer class="app-footer" id="footer"></footer>
+
     </div>
+
     <script type="module" src="app.js"></script>
+
 </body>
 </html>

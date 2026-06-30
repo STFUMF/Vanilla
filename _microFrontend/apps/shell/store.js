@@ -7,13 +7,15 @@ import { applyMiddleware } from "../shell/middleware/applyMiddleware.js"
 import { loadState } from "./middleware/loadstate.js";
 import { filterReducer } from "../mfe_filter/filterReducer.js";
 import { searchReducer } from "../mfe_search/searchReducer.js";
+import { themeReducer } from "../mfe_theme/themeReducer.js";
 
 
 export const rootReducer = combineReducers({
     todos: todoReducer,
     editId: editReducer,
     filter: filterReducer,
-    search: searchReducer
+    search: searchReducer,
+    theme: themeReducer,
 })
 
 export const store = createStore(
