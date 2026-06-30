@@ -110,7 +110,7 @@ export function renderTodoView(container) {
 
 
         const title = document.createElement("span");
-
+        title.className = 'todoTitle';
         title.textContent = todo.title;
 
 

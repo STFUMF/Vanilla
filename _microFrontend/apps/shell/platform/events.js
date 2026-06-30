@@ -6,5 +6,6 @@ export const EVENTS = {
 
     FILTER_CHANGED: "filter:changed",
     SEARCH_CHANGED: "search:changed",
-    THEME_CHANGED: "theme:changed"
+    THEME_CHANGED: "theme:changed",
+    TOAST: "toast",
 };

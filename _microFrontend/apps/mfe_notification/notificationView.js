@@ -1,17 +1,25 @@
+import { createToast } from "../shell/shared/Toast.js";
+
 let timeoutId = null;
 
-export function renderToast(root, message) {
+export function renderNotificationView(root, notifications, dismissNotification){
+    root.innerHTML = "";
 
-    root.innerHTML = `
-        <div class="toast">
-            ${message}
-        </div>
-    `;
+    const container = document.createElement("div");
+    container.className = "toast-stack";
 
-    clearTimeout(timeoutId);
+    notifications.forEach((notification) => {
+        const toast = createToast({
+            message: notification.message,
+            type: notification.type,
+        });
 
-    timeoutId = setTimeout(() => {
-        root.innerHTML = "";
-    }, 3000);
+        toast.querySelector(".toast__close").addEventListener("click", () => {
+            dismissNotification(notification.id);
+        });
 
+        container.appendChild(toast);
+    });
+
+    root.appendChild(container);
 }

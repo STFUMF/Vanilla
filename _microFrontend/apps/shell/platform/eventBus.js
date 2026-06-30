@@ -12,7 +12,8 @@ export function subscribe(event, listener) {
     return () => {
 
         const events = listeners.get(event);
-
+        if (!events) return;
+        
         const index = events.indexOf(listener);
 
         if (index >= 0) {

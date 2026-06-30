@@ -112,11 +112,12 @@ export function renderTodo(root) {
 
 
         if (e.target.closest(".deleteBtn")) {
-
+            const titleText = item.querySelector('.todoTitle').textContent
             store.dispatch(
                 removeTodo(id)
             );
-            publish(EVENTS.TODO_REMOVED, id);
+            publish(EVENTS.TODO_REMOVED, { title: titleText});
+            console.log(titleText);
         }
 
 
