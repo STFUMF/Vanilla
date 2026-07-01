@@ -1,6 +1,7 @@
 import { subscribe } from "../shell/platform/eventBus.js";
+import { getSlot } from "../shell/platform/layoutManager.js";
 import { PLUGIN_DESTROYED, PLUGIN_INITIALIZED, PLUGIN_MOUNTED, PLUGIN_REGISTERED, PLUGIN_UNMOUNTED } from "../shell/platform/pluginEvents.js";
-import { getPluginStates } from "../shell/platform/pluginManager.js";
+import { getPlugin, getPluginStates, mountPlugin, unmountPlugin } from "../shell/platform/pluginManager.js";
 import { renderPluginDashboardView } from "./pluginDashboardView.js";
 
 
@@ -8,6 +9,40 @@ export function renderPluginDashboard(root) {
 
     function update() {
         renderPluginDashboardView(root, getPluginStates());
+        attachEvents();
+    }
+
+    function attachEvents() {
+
+        root
+            .querySelectorAll("button[data-plugin]")
+            .forEach(button => {
+
+                button.onclick = () => {
+
+                    const id =
+                        button.dataset.plugin;
+
+                    const record =
+                        getPlugin(id);
+
+                    if (record.mounted) {
+
+                        unmountPlugin(id);
+
+                    } else {
+
+                        mountPlugin(
+                            id,
+                            getSlot(record.plugin.slot)
+                        );
+
+                    }
+
+                };
+
+            });
+
     }
 
     const unsubscribers = [
@@ -26,7 +61,7 @@ export function renderPluginDashboard(root) {
 
     return () => {
         unsubscribers.forEach(unsubscribe => unsubscribe());
-        
+
         root.innerHTML = "";
     }
 }

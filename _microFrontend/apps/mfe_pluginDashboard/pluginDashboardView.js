@@ -12,6 +12,7 @@ export function renderPluginDashboardView(root, plugins){
                     <th>Version</th>
                     <th>Slot</th>
                     <th>Status</th>
+                    <th>Action</th>
                 </tr>
             </thead>
 
@@ -28,6 +29,22 @@ export function renderPluginDashboardView(root, plugins){
                                 plugin.mounted 
                                     ? "🟢 Mounted"
                                     : "🔴 Unmounted"
+                            }
+                        </td>
+
+                        <td>
+                            
+                            ${
+                                plugin.id === "plugin-dashboard"
+                                ? "-"
+                                : `
+                                    <button data-plugin="${plugin.id}">
+                                    ${ plugin.mounted
+                                            ? "Unmount"
+                                            : "Mount"
+                                    }
+                                    </button>
+                                `
                             }
                         </td>
                     </tr>

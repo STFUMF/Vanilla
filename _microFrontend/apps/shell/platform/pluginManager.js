@@ -131,3 +131,13 @@ export function getPluginStates() {
         mounted: record.mounted
     }));
 }
+
+export function isPluginMounted(id) {
+    const record = plugins.get(id);
+
+    if (!record) {
+        return false;
+    }
+
+    return record.mounted;
+}
