@@ -61,6 +61,23 @@ export function unmountPlugin(id) {
     record.mounted = false;
 }
 
+export function destroyPlugin(id) {
+
+    const record = plugins.get(id);
+
+    if (!record) {
+        return;
+    }
+
+    if (record.mounted) {
+        record.plugin.unmount?.();
+    }
+
+    record.plugin.destroy?.();
+
+    plugins.delete(id);
+}
+
 export function getPlugins() {
     return [...plugins.values()];
 }

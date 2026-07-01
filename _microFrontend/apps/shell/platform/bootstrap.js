@@ -1,9 +1,8 @@
 import { getSlot, initializedLayout } from "./layoutManager.js";
-import { getPlugins } from "./pluginResgistery.js";
 
 import manifest from "../plugins/manifest.js";
 import { loadPlugin } from "./pluginLoader.js";
-import { initializePlugin, mountPlugin, registerPlugin } from "./pluginManager.js";
+import { getPlugin, initializePlugin, mountPlugin, registerPlugin, unmountPlugin } from "./pluginManager.js";
 
 export async function bootstrap(){
 
@@ -29,3 +28,18 @@ export async function bootstrap(){
         mountPlugin(plugin.id, root);
     }
 }
+
+setTimeout(() => {
+    
+    console.log("Unmounting Stats...")
+
+    unmountPlugin("stats");
+}, 3000)
+
+setTimeout(() => {
+    console.log("Mounting Stats...")
+
+    const stats = getPlugin("stats");
+
+    mountPlugin("stats", getSlot(stats.plugin.slot))
+}, 6000)

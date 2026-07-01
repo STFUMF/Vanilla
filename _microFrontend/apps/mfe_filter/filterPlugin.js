@@ -14,4 +14,5 @@ export default {
         cleanup?.();
         cleanup = null;
     },
+    destory(){},
 }
