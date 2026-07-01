@@ -1,3 +1,11 @@
+import { publish } from "./eventBus.js";
+import {
+    PLUGIN_REGISTERED,
+    PLUGIN_INITIALIZED,
+    PLUGIN_MOUNTED,
+    PLUGIN_UNMOUNTED,
+    PLUGIN_DESTROYED
+} from "./pluginEvents.js"
 
 const plugins = new Map();
 
@@ -17,6 +25,10 @@ export function registerPlugin(plugin) {
         mounted: false,
         root: null,
     });
+    
+    publish(PLUGIN_REGISTERED, {
+        id: plugin.id,
+    })
 }
 
 
@@ -30,7 +42,12 @@ export function initializePlugin(id) {
     if (!record.initialized) {
         record.plugin.initialize?.();
         record.initialized = true;
+
+        publish(PLUGIN_INITIALIZED, {
+            id: id,
+        });
     }
+    
 }
 
 export function mountPlugin(id, root) {
@@ -45,6 +62,10 @@ export function mountPlugin(id, root) {
 
         record.root = root;
         record.mounted = true;
+
+        publish(PLUGIN_MOUNTED, {
+            id: id,
+        });
     }
 }
 
@@ -59,6 +80,10 @@ export function unmountPlugin(id) {
 
     record.root = null;
     record.mounted = false;
+
+    publish(PLUGIN_UNMOUNTED, {
+        id: id,
+    })
 }
 
 export function destroyPlugin(id) {
@@ -76,6 +101,10 @@ export function destroyPlugin(id) {
     record.plugin.destroy?.();
 
     plugins.delete(id);
+
+    publish(PLUGIN_DESTROYED, {
+        id: id,
+    })
 }
 
 export function getPlugins() {

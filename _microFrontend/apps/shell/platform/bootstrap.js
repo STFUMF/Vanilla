@@ -31,16 +31,16 @@ export async function bootstrap(){
 }
 
 setTimeout(() => {
-    
-    console.log("Unmounting Stats...")
-
+    console.log('unmount stats')
     unmountPlugin("stats");
-}, 3000)
+
+}, 3000);
 
 setTimeout(() => {
-    console.log("Mounting Stats...")
 
-    const stats = getPlugin("stats");
-
-    mountPlugin("stats", getSlot(stats.plugin.slot))
-}, 6000)
+    mountPlugin(
+        "stats",
+        getSlot("stats")
+    );
+    console.log('mounted again')
+}, 6000);
