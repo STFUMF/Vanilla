@@ -1,10 +1,18 @@
 
 import { renderStats } from "./statsPage.js"
 
+let cleanup;
+
 export default {
-    id: "search",
-    root: "#stats-root",
-    route: "/filter",
-    mount: renderStats,
-    unmount() {},
+    id: "stats",
+    version: "1.0.0.",
+    slot: "stats",
+    initialize(){},
+    mount(root) {
+        cleanup = renderStats(root);
+    },
+    unmount() {
+        cleanup?.();
+        cleanup = null;
+    },
 }

@@ -1,9 +1,17 @@
 import { renderTodo } from "./todoPage.js"
 
+let cleanup;
 export default {
-    id: "notifications",
-    root: "#todo-root",
-    route: "/",
-    mount: renderTodo,
-    unmount() {},
+    id: "todo",
+    version: "1.0.0",
+    slot: "todo",
+    initialize() {},
+    mount(root){
+        cleanup = renderTodo(root);
+    },
+    unmount() {
+        cleanup?.();
+        cleanup = null;
+    },
 }
+

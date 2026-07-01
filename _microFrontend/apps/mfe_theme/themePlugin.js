@@ -1,11 +1,18 @@
 import { renderTheme } from "./themePage.js";
 
 
+let cleanup;
 
 export default {
     id: "theme",
-    root: "#theme-root",
-    route: "/",
-    mount: renderTheme,
-    unmount() {},
+    version: "1.0.0.",
+    slot: "theme",
+    initialize(){},
+    mount(root) {
+        cleanup = renderTheme(root);
+    },
+    unmount() {
+        cleanup?.();
+        cleanup = null;
+    },
 }
