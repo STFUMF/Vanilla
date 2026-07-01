@@ -12,7 +12,8 @@ export async function bootstrap(){
         search: "#search-root",
         notifications: "#notification-root",
         stats: "#stats-root",
-        theme: "#theme-root"
+        theme: "#theme-root",
+        dashboard: "#pluginDashboard"
     });
 
     for (const entry of manifest) {

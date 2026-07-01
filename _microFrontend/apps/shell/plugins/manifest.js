@@ -24,4 +24,9 @@ export default [
         id: "theme",
         loader: () => import("../../mfe_theme/themePlugin.js"),
     },
+    
+    {
+        id: "plugin-dashboard",
+        loader: () => import("../../mfe_pluginDashboard/plugin.js")
+    }
 ]

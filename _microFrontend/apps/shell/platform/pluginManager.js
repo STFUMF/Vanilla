@@ -86,3 +86,19 @@ export function getPlugins() {
 export function getPlugin(id) {
     return plugins.get(id);
 }
+
+export function getPluginStates() {
+
+    return getPlugins().map(record => ({
+
+        id: record.plugin.id,
+
+        version: record.plugin.version,
+
+        slot: record.plugin.slot,
+
+        initialized: record.initialized,
+
+        mounted: record.mounted
+    }));
+}
