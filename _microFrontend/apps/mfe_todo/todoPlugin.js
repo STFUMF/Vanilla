@@ -5,6 +5,11 @@ export default {
     id: "todo",
     version: "1.0.0",
     slot: "todo",
+    menu: {
+        label: "Todos",
+        icon: "📝",
+        order: 1
+    },
     routes: [
         {
             path: "/",
@@ -15,6 +20,7 @@ export default {
             title: "Todo"
         }
     ],
+    type: "page",
     initialize() {},
     mount(root){
         cleanup = renderTodo(root);

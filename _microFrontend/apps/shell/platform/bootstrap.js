@@ -15,7 +15,8 @@ export async function bootstrap(){
         notifications: "#notification-root",
         stats: "#stats-root",
         theme: "#theme-root",
-        dashboard: "#pluginDashboard"
+        dashboard: "#pluginDashboard",
+        navigation: "#navigation"
     });
 
     for (const entry of manifest) {
@@ -27,6 +28,10 @@ export async function bootstrap(){
         initializePlugin(plugin.id);
 
         const root = getSlot(plugin.slot);
+
+        if(plugin.type === "global"){
+            mountPlugin(plugin.id, root);
+        }
 
         mountPlugin(plugin.id, root);
 

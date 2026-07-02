@@ -7,12 +7,18 @@ export default {
     id: "stats",
     version: "1.0.0.",
     slot: "stats",
+    menu: {
+        label: "Statistics",
+        icon: "📊",
+        order: 2,
+    },
     routes: [
         {
             path: "/stats",
             title: "Statistics"
         }
     ],
+    type: "page",
     initialize(){},
     mount(root) {
         cleanup = renderStats(root);

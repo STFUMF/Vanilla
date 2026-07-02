@@ -9,6 +9,8 @@ export default {
     version: "1.0.0",
 
     slot: "dashboard",
+    menu: null,
+    type: "page",
 
     initialize() {},
 

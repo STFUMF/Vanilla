@@ -9,6 +9,7 @@ registerSlot("notifications", document.querySelector('#notification-root'))
 registerSlot("stats", document.querySelector('#stats-root'))
 registerSlot("theme", document.querySelector('#theme-root'))
 registerSlot("dashboard", document.querySelector("#pluginDashboard"))
+registerSlot("navigation", document.querySelector("#navigation"))
 
 
 

@@ -7,12 +7,18 @@ export default {
     id: "theme",
     version: "1.0.0.",
     slot: "theme",
+    menu: {
+        label: "Settings",
+        icon: "⚙️",
+        order: 3
+    },
     routes:[
         {
             path: "/settings",
             title: "Theme"
         }
     ],
+    type: "page",
     initialize(){},
     mount(root) {
         cleanup = renderTheme(root);

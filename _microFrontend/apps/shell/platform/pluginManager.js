@@ -141,3 +141,17 @@ export function isPluginMounted(id) {
 
     return record.mounted;
 }
+
+export function getNavigationItems() {
+
+    return getPlugins()
+        .map(record => record.plugin)
+        .filter(plugin => plugin.menu && plugin.routes?.length)
+        .sort((a, b) => a.menu.order - b.menu.order)
+        .map(plugin => ({
+            id: plugin.id,
+            label: plugin.menu.label,
+            icon: plugin.menu.icon,
+            path: plugin.routes[0].path
+        }))
+}

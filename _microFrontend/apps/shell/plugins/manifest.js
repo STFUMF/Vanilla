@@ -28,5 +28,10 @@ export default [
     {
         id: "plugin-dashboard",
         loader: () => import("../../mfe_pluginDashboard/plugin.js")
+    },
+
+    {
+        id: "navigation",
+        loader: () => import("../../mfe_navigation/navigationPlugin.js")
     }
 ]
