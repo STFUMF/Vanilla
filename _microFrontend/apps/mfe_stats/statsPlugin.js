@@ -7,6 +7,12 @@ export default {
     id: "stats",
     version: "1.0.0.",
     slot: "stats",
+    routes: [
+        {
+            path: "/stats",
+            title: "Statistics"
+        }
+    ],
     initialize(){},
     mount(root) {
         cleanup = renderStats(root);

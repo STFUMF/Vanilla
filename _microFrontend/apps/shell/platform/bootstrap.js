@@ -2,7 +2,9 @@ import { getSlot, initializedLayout } from "./layoutManager.js";
 
 import manifest from "../plugins/manifest.js";
 import { loadPlugin } from "./pluginLoader.js";
-import { getPlugin, initializePlugin, mountPlugin, registerPlugin, unmountPlugin } from "./pluginManager.js";
+import { getPlugin, getPlugins, initializePlugin, mountPlugin, registerPlugin, unmountPlugin } from "./pluginManager.js";
+import { getRoutes, navigate, registerRoute, startRouter } from "./router/router.js";
+import { startRouteController } from "./router/routeController.js";
 
 export async function bootstrap(){
 
@@ -27,20 +29,17 @@ export async function bootstrap(){
         const root = getSlot(plugin.slot);
 
         mountPlugin(plugin.id, root);
+
+        for (const route of plugin.routes ?? []) {
+
+            registerRoute(route, plugin.id)
+            console.log(route.path)
+        }
     }
+
+
+startRouter();
+startRouteController();
+console.log(getRoutes())
 }
 
-setTimeout(() => {
-    console.log('unmount stats')
-    unmountPlugin("stats");
-
-}, 3000);
-
-setTimeout(() => {
-
-    mountPlugin(
-        "stats",
-        getSlot("stats")
-    );
-    console.log('mounted again')
-}, 6000);
