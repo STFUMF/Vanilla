@@ -10,7 +10,7 @@ export default {
     version: "1.0.0",
 
     type: "global",
-    slot: "navigation",
+    slot: "sidebar",
     menu: null,
     routes: [],
 

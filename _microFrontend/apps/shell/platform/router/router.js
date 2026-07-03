@@ -13,7 +13,7 @@ export function registerRoute(route, pluginId) {
     }
 
     routes.set(route.path, {
-        ...routes, pluginId,
+        ...route, pluginId,
 
         segments: route.path
             .split("/")
@@ -30,18 +30,6 @@ export function getRoutes() {
 }
 
 export function navigate(path) {
-
-    if (!routes.has(path)) {
-
-        publish(ROUTE_NOT_FOUND, {
-            path
-        });
-        return;
-    }
-
-    currentRoute = path;
-
-   history.pushState({}, "", path);
 
    const result = matchRoute(path);
 
@@ -73,20 +61,21 @@ export function startRouter(){
     window.addEventListener("popstate", () => {
 
         const path = window.location.pathname;
+        const result = matchRoute(path);
 
-        currentRoute = path;
-
-        if (!routes.has(path)) {
-
-            publish(ROUTE_NOT_FOUND, {
-                path,
-            });
-
+        if(!result) {
+            publish(ROUTE_NOT_FOUND, {path});
             return;
         }
 
+        currentRoute = path;
+
+
         publish(ROUTE_CHANGED, {
-            path, pluginId: routes.get(path),
+            path, 
+            pluginId: result.route.pluginId,
+            route: result.route,
+            params: result.params
         });
     });
 }
@@ -113,7 +102,7 @@ function matchRoute(path) {
 
             if (expected.startsWith(":")) {
 
-                params[expected.substring(i)] = actual;
+                params[expected.substring(1)] = actual;
                 continue;
             }
 
@@ -133,14 +122,4 @@ function matchRoute(path) {
     return null;
 }
 
-setTimeout(() => {
 
-    navigate("/stats");
-
-}, 3000);
-
-setTimeout(() => {
-
-    navigate("/todos");
-
-}, 6000);

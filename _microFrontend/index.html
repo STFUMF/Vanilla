@@ -3,45 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Todo App</title>
+    <title>Microfrontend Todo Platform</title>
+
     <link rel="stylesheet" href="apps/shell/style.css">
 </head>
+
 <body>
 
-    <div class="app-container">
+    <div class="app-shell">
 
-        <div id="navigation"></div>
-        <main class="dashboard">
-                <div id="pluginDashboard"></div>
-                <div id="notification-root" ></div>
-                <div id="theme-root" class="card"></div>
+        <header id="header-root"></header>
 
-            <section class="stats-section card">
-                <h2>Overview</h2>
-                <div id="stats-root"></div>
-            </section>
+        <div class="layout">
 
-            <section class="toolbar card">
-                <div id="search-root"></div>
-                <div id="filter-root"></div>
-            </section>
+            <aside id="sidebar-root"></aside>
 
-            <section class="todo-section card">
-                <div class="section-header">
-                    <h2>My Tasks</h2>
-                </div>
+            <main id="main-root"></main>
 
-                <div id="todo-root"></div>
-            </section>
+            <aside id="inspector-root"></aside>
 
-        </main>
+        </div>
 
-        <footer class="app-footer" id="footer"></footer>
+        <footer id="footer-root"></footer>
 
     </div>
 
-    <script type="module" src="apps/shell//app.js"></script>
+    <!-- Overlay -->
+    <div id="notification-root"></div>
+
+    <script
+        type="module"
+        src="apps/shell/app.js">
+    </script>
 
 </body>
 </html>
-

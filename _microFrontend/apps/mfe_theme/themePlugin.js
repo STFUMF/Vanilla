@@ -6,7 +6,7 @@ let cleanup;
 export default {
     id: "theme",
     version: "1.0.0.",
-    slot: "theme",
+    slot: "header",
     menu: {
         label: "Settings",
         icon: "⚙️",

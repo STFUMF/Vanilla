@@ -1,7 +1,7 @@
 import { subscribe } from "../eventBus.js";
 import { getSlot } from "../layoutManager.js";
 import { getPlugin, mountPlugin, unmountPlugin } from "../pluginManager.js";
-import { ROUTE_CHANGED } from "./routeEvents.js";
+import { ROUTE_CHANGED, ROUTE_NOT_FOUND } from "./routeEvents.js";
 
 
 let activePluginId = null;
@@ -33,10 +33,31 @@ function handleRouteChange({ pluginId }) {
     activePluginId = pluginId;
 }
 
+function handleRouteNotFound() {
+
+    if (activePluginId) {
+        unmountPlugin(activePluginId);
+    }
+
+    const record = getPlugin("not-found");
+
+    mountPlugin(
+        "not-found",
+        getSlot(record.plugin.slot)
+    );
+
+    activePluginId = "not-found";
+}
+
 export function startRouteController() {
 
     subscribe(
         ROUTE_CHANGED,
-        handleRouteChange
+        handleRouteChange,
+    )
+
+    subscribe(
+        ROUTE_NOT_FOUND,
+        handleRouteNotFound
     )
 }

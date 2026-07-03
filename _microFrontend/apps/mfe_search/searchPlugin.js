@@ -5,7 +5,7 @@ let cleanup;
 export default {
     id: "search",
     version: "1.0.0",
-    slot: "search",
+    slot: "header",
     routes: [],
     type: "global",
     initialize() {},

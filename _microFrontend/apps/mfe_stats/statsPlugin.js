@@ -7,7 +7,7 @@ export default {
     id: "stats",
     version: "1.0.0.",
     
-    slot: "stats",
+    slot: "main",
     menu: {
         label: "Statistics",
         icon: "📊",

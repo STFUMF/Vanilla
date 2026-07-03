@@ -7,7 +7,7 @@ export default {
     version: "1.0.0.",
     
     type: "global",
-    slot: "filter",
+    slot: "inspector",
     menu: null,
     routes: [],
 

@@ -4,7 +4,7 @@ let cleanup;
 export default {
     id: "todo",
     version: "1.0.0",
-    slot: "todo",
+    slot: "main",
     menu: {
         label: "Todos",
         icon: "📝",

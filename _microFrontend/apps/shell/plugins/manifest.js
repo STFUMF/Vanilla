@@ -33,5 +33,10 @@ export default [
     {
         id: "navigation",
         loader: () => import("../../mfe_navigation/navigationPlugin.js")
+    },
+
+    {
+        id: "not-found",
+        loader: () => import("../../mfe_notFound/plugin.js")
     }
 ]

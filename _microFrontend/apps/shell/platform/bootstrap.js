@@ -9,14 +9,17 @@ import { startRouteController } from "./router/routeController.js";
 export async function bootstrap(){
 
     initializedLayout({
-        todo: "#todo-root",
-        filter: "#filter-root",
-        search: "#search-root",
-        notifications: "#notification-root",
-        stats: "#stats-root",
-        theme: "#theme-root",
-        dashboard: "#pluginDashboard",
-        navigation: "#navigation"
+         header: "#header-root",
+
+    sidebar: "#sidebar-root",
+
+    main: "#main-root",
+
+    inspector: "#inspector-root",
+
+    notifications: "#notification-root",
+
+    footer: "#footer-root"
     });
 
     for (const entry of manifest) {
@@ -27,25 +30,33 @@ export async function bootstrap(){
 
         initializePlugin(plugin.id);
 
-        const root = getSlot(plugin.slot);
-
-        if(plugin.type === "global"){
-            mountPlugin(plugin.id, root);
-        }
-
-        mountPlugin(plugin.id, root);
-
         for (const route of plugin.routes ?? []) {
 
-            registerRoute(route, plugin.id)
-            console.log(route.path)
+            registerRoute(route, plugin.id);
+
         }
-        console.log(plugin)
+
+    }
+
+    for (const record of getPlugins()) {
+
+        const plugin = record.plugin;
+
+        if (plugin.type !== "global") {
+            continue;
+        }
+
+        mountPlugin(
+            plugin.id,
+            getSlot(plugin.slot)
+        );
+
     }
 
 
 startRouter();
 startRouteController();
+navigate(window.location.pathname);
 console.log(getRoutes())
 }
 

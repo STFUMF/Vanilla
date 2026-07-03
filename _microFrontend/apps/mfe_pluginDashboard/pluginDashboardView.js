@@ -22,7 +22,7 @@ export function renderPluginDashboardView(root, plugins){
                     <tr>
                         <td>${plugin.id}</td>
                         <td>${plugin.version}</td>
-                        </td>${plugin.slot}</td>
+                        <td>${plugin.slot}</td>
                         
                         <td>
                             ${

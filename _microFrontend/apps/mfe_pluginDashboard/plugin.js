@@ -8,7 +8,7 @@ export default {
 
     version: "1.0.0",
 
-    slot: "dashboard",
+    slot: "inspector",
     menu: null,
     type: "page",
 
