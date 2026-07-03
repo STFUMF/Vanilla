@@ -33,6 +33,7 @@ export default [
     },
     {
         id: "search",
+        eager: false,
         loader: () => import("../../mfe_search/searchPlugin.js"),
     },
     {

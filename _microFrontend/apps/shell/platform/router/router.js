@@ -1,4 +1,5 @@
 import { publish } from "../eventBus.js";
+import { canNavigate } from "./guardManager.js";
 import { ROUTE_CHANGED, ROUTE_NOT_FOUND } from "./routeEvents.js";
 
 
@@ -29,7 +30,13 @@ export function getRoutes() {
     return [...routes.entries()];
 }
 
-export function navigate(path) {
+export async function navigate(path) {
+
+    const allowed = await canNavigate(path, currentRoute);
+
+    if (!allowed){
+        return;
+    }
 
    const result = matchRoute(path);
 

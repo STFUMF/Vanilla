@@ -2,15 +2,22 @@
 export async function loadPlugin(manifest) {
 
     console.log("Loading plugin:", manifest.id)
-    if (!manifest.loader) {
-        throw new Error(`Plugin "${manifest.id}" does not define a loader`)
-    }
 
     const module = await manifest.loader();
 
-    if (!module.default) {
-        throw new Error(`Plugin "${manifest.id}" must export a default plugin object.`)
+    const plugin = module.default;
+
+    if (!plugin.id) {
+        throw new Error("Plugin is missing an id.");
     }
 
-    return module.default;
+    if (typeof plugin.mount !== "function") {
+        throw new Error(`${plugin.id}: mount() is required`);
+    }
+    
+    if (typeof plugin.unmount !== "function") {
+        throw new Error(`${plugin.id}: unmount() is required.`)
+    }
+
+    return plugin;
 }

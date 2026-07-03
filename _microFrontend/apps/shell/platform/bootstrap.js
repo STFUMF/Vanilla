@@ -6,6 +6,7 @@ import { getPlugin, getPlugins, initializePlugin, mountPlugin, registerPlugin, u
 import { getRoutes, navigate, registerRoute, startRouter } from "./router/router.js";
 import { startRouteController } from "./router/routeController.js";
 import { getPluginEntries } from "./pluginRegistery.js";
+import { registerGuard } from "./router/guardManager.js";
 
 export async function bootstrap(){
 
@@ -54,6 +55,16 @@ export async function bootstrap(){
         );
 
     }
+
+    registerGuard(async (to, from) => {
+        console.log("Guard");
+
+        console.log("From:", from);
+
+        console.log("To:", to)
+
+        return true;
+    })
 
 
 startRouter();
