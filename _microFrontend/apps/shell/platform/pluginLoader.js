@@ -1,6 +1,7 @@
 
 export async function loadPlugin(manifest) {
 
+    console.log("Loading plugin:", manifest.id)
     if (!manifest.loader) {
         throw new Error(`Plugin "${manifest.id}" does not define a loader`)
     }

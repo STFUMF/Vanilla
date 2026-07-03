@@ -1,12 +1,12 @@
 import { subscribe } from "../eventBus.js";
 import { getSlot } from "../layoutManager.js";
-import { getPlugin, mountPlugin, unmountPlugin } from "../pluginManager.js";
+import { ensurePluginLoaded, getPlugin, mountPlugin, unmountPlugin } from "../pluginManager.js";
 import { ROUTE_CHANGED, ROUTE_NOT_FOUND } from "./routeEvents.js";
 
 
 let activePluginId = null;
 
-function handleRouteChange({ pluginId }) {
+async function handleRouteChange({ pluginId }) {
 
     // Don't remound the same plugin
     if (activePluginId === pluginId) {
@@ -17,6 +17,8 @@ function handleRouteChange({ pluginId }) {
     if (activePluginId) {
         unmountPlugin(activePluginId)
     }
+
+    await ensurePluginLoaded(pluginId);
 
     // Mount next page
     const record = getPlugin(pluginId);
@@ -33,12 +35,13 @@ function handleRouteChange({ pluginId }) {
     activePluginId = pluginId;
 }
 
-function handleRouteNotFound() {
+async function handleRouteNotFound() {
 
     if (activePluginId) {
         unmountPlugin(activePluginId);
     }
 
+    await ensurePluginLoaded("not-found")
     const record = getPlugin("not-found");
 
     mountPlugin(

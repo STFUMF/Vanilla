@@ -6,6 +6,8 @@ import {
     PLUGIN_UNMOUNTED,
     PLUGIN_DESTROYED
 } from "./pluginEvents.js"
+import { loadPlugin } from "./pluginLoader.js";
+import { getPluginEntry } from "./pluginRegistery.js";
 
 const plugins = new Map();
 
@@ -154,4 +156,25 @@ export function getNavigationItems() {
             icon: plugin.menu.icon,
             path: plugin.routes[0].path
         }))
+}
+
+export async function ensurePluginLoaded(pluginId) {
+
+    if (getPlugin(pluginId)) {
+        return getPlugin(pluginId);
+    }
+
+    const entry = getPluginEntry(pluginId);
+
+    if (!entry) {
+        throw new Error(`Plugin "${pluginId}" not found in manifest.`);
+    }
+
+    const plugin = await loadPlugin(entry);
+
+    registerPlugin(plugin);
+
+    initializePlugin(plugin.id);
+
+    return getPlugin(plugin.id);
 }

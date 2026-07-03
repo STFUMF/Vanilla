@@ -5,6 +5,7 @@ import { loadPlugin } from "./pluginLoader.js";
 import { getPlugin, getPlugins, initializePlugin, mountPlugin, registerPlugin, unmountPlugin } from "./pluginManager.js";
 import { getRoutes, navigate, registerRoute, startRouter } from "./router/router.js";
 import { startRouteController } from "./router/routeController.js";
+import { getPluginEntries } from "./pluginRegistery.js";
 
 export async function bootstrap(){
 
@@ -22,19 +23,20 @@ export async function bootstrap(){
     footer: "#footer-root"
     });
 
-    for (const entry of manifest) {
+    for (const entry of getPluginEntries()) {
+
+        for (const route of entry.routes ?? []) {
+            registerRoute(route, entry.id);
+        }
+        if (!entry.eager) {
+            continue;
+        }
 
         const plugin = await loadPlugin(entry);
 
         registerPlugin(plugin);
 
         initializePlugin(plugin.id);
-
-        for (const route of plugin.routes ?? []) {
-
-            registerRoute(route, plugin.id);
-
-        }
 
     }
 
@@ -56,7 +58,10 @@ export async function bootstrap(){
 
 startRouter();
 startRouteController();
+
+console.log("Current URL:", window.location.pathname);
+console.log("Registered routes:", getRoutes());
 navigate(window.location.pathname);
-console.log(getRoutes())
+
 }
 
