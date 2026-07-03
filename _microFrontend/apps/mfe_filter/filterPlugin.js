@@ -5,10 +5,12 @@ let cleanup;
 export default {
     id: "filter",
     version: "1.0.0.",
+    
+    type: "global",
     slot: "filter",
     menu: null,
-    routes:[],
-    type: "global",
+    routes: [],
+
     initialize(){},
     mount(root) {
         cleanup = renderFilter(root);

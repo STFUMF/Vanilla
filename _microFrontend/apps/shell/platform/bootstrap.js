@@ -40,6 +40,7 @@ export async function bootstrap(){
             registerRoute(route, plugin.id)
             console.log(route.path)
         }
+        console.log(plugin)
     }
 
 

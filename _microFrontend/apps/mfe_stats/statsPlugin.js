@@ -6,6 +6,7 @@ let cleanup;
 export default {
     id: "stats",
     version: "1.0.0.",
+    
     slot: "stats",
     menu: {
         label: "Statistics",

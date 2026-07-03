@@ -14,6 +14,10 @@ export function registerRoute(route, pluginId) {
 
     routes.set(route.path, {
         ...routes, pluginId,
+
+        segments: route.path
+            .split("/")
+            .filter(Boolean)
     });
 }
 
@@ -39,12 +43,29 @@ export function navigate(path) {
 
    history.pushState({}, "", path);
 
-   const route = routes.get(path);
-    publish(ROUTE_CHANGED, {
+   const result = matchRoute(path);
+
+   if (!result) {
+
+        publish(ROUTE_NOT_FOUND, {path});
+
+        return;
+   }
+
+   currentRoute = path;
+
+   history.pushState({}, "", path);
+
+   publish(ROUTE_CHANGED, {
+        
         path,
-        pluginId: route.pluginId,
-        route
-    });
+
+        pluginId: result.route.pluginId,
+
+        route: result.route,
+
+        params: result.params
+   });
 }
 
 export function startRouter(){
@@ -70,6 +91,47 @@ export function startRouter(){
     });
 }
 
+function matchRoute(path) {
+    const pathSegments = path
+                            .split("/")
+                            .filter(Boolean);
+
+    for (const route of routes.values()) {
+
+        if (route.segments.length !== pathSegments.length) {
+            continue;
+        }
+
+        const params = {};
+
+        let matched = true;
+
+        for (let i = 0; i < route.segments.length; i++) {
+
+            const expected = route.segments[i];
+            const actual = pathSegments[i];
+
+            if (expected.startsWith(":")) {
+
+                params[expected.substring(i)] = actual;
+                continue;
+            }
+
+            if (expected !== actual) {
+
+                matched = false;
+
+                break;
+            }
+        }
+
+        if (matched) {
+            return { route, params };
+        }
+    }
+
+    return null;
+}
 
 setTimeout(() => {
 

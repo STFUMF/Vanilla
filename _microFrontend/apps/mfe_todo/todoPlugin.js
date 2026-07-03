@@ -18,6 +18,10 @@ export default {
         {
             path: "/todos",
             title: "Todo"
+        },
+        {
+            path: "/todos/:id",
+            title: "Todo Details"
         }
     ],
     type: "page",

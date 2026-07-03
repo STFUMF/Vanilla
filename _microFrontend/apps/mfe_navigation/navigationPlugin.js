@@ -9,9 +9,10 @@ export default {
 
     version: "1.0.0",
 
-    slot: "navigation",
-
     type: "global",
+    slot: "navigation",
+    menu: null,
+    routes: [],
 
     initialize(){},
 

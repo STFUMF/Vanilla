@@ -5,10 +5,11 @@ let cleanup;
 export default {
     id: "notifications",
     version: "1.0.0.",
+    type: "global",
     slot: "notifications",
     menu: null,
-    type: "global",
-    routes:[],
+    routes: [],
+
     initialize(){},
     mount(root) {
         cleanup = renderNotifications(root);

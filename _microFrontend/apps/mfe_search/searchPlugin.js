@@ -6,7 +6,8 @@ export default {
     id: "search",
     version: "1.0.0",
     slot: "search",
-    routes:[],
+    routes: [],
+    type: "global",
     initialize() {},
     mount(root){
         cleanup = renderSearch(root);
