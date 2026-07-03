@@ -8,11 +8,20 @@ import { unmount } from "./unmount.js";
  * @param { string} selector
  */
 
-export function render(node, selector) {
-    const container = document.querySelector(selector);
+export function render(component, container) {
 
-    if (!container) {
-        throw new Error(`Container "${selector}" was not found.`);
+    if (typeof component !== "function") {
+        throw new Error("Component must be a function.");
+    }
+
+    if (!(container instanceof HTMLElement)) {
+        throw new Error(`Invalid render container`);
+    }
+
+    const node = component();
+
+    if (!(node instanceof Node)) {
+        throw new Error("Component must return a DOM node.");
     }
 
     unmount(container);
