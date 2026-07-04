@@ -1,4 +1,4 @@
-import { OPERATIONS } from "./operations.js";
+import { OPERATION_TYPES } from "./operations";
 import { compareProps } from "./compareProps.js";
 import { compareChildren } from "./compareChildren.js";
 

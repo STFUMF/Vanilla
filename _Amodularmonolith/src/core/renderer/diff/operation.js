@@ -1,6 +1,6 @@
 
 
-export const OPERATIONS = Object.freeze({
+export const OPERATIONS_TYPES = Object.freeze({
     CREATE: "CREATE",
     REMOVE: "REMOVE",
     REPLACE: "REPLACE",

@@ -1,6 +1,7 @@
 // this will contain the application startup logic
 
-import { createDom, createRenderer, element } from "../core/renderer";
+import { createRenderContext, createRenderer, element } from "../core/renderer";
+
 
 /**
  * Creates the application
@@ -33,5 +34,30 @@ export function createApp() {
 
     const tree = App();
 
-    renderer.render(tree);
+    renderer.render(
+        createRenderContext(tree)
+    );
+
+    setTimeout(() => {
+        renderer.render(
+            createRenderContext(
+                element(
+                    "main",
+                    {},
+
+                    element(
+                        "h1",
+                        {},
+                        "Vanilla todo updated"
+                    ),
+
+                    element(
+                        "p",
+                        {},
+                        "Renderer is working!"
+                    )
+                )
+            )
+        )
+    }, 2000)
 }

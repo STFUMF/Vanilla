@@ -1,8 +1,10 @@
 import { NODE_TYPES } from  "../tree";
-import { OPERATIONS } from "./operations.js";
+import { OPERATION_TYPES } from "./operations";
 import { compareProps } from "./compareProps.js";
 import { compareChildren } from "./compareChildren.js";
 import { createNode, removeNode, replaceNode } from "./operations/createOperations.js";
+import { compareElement } from "./compareElement.js";
+import { compareText } from "./compareText.js";
 
 /**
  * Compares two UI tree nodes.
@@ -46,7 +48,7 @@ export function compareNode(previousNode, nextNode, path, operations) {
             compareText(previousNode, nextNode, path, operations);
             return;
         
-        case NOTE_TYPES.ELEMENT:
+        case NODE_TYPES.ELEMENT:
             compareElement(previousNode, nextNode, path, operations);
             return;
 

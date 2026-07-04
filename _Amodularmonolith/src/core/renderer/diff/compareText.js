@@ -1,4 +1,4 @@
-import { OPERATIONS } from "./operations.js";
+import { OPERATION_TYPES } from "./operations";
 
 /**
  * Compares two next nodes.
@@ -7,7 +7,7 @@ import { OPERATIONS } from "./operations.js";
 export function compareText(previousNode, nextNode, path, operations) {
     if (previousNode.value !== nextNode.value) {
         operations.push({
-            type: OPERATIONS.TEXT_UPDATE,
+            type: OPERATION_TYPES.TEXT_UPDATE,
             path,
             value: nextNode.value
         });

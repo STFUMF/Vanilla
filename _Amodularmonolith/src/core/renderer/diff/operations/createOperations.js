@@ -27,9 +27,10 @@ export function updateText(path, value) {
     });
 }
 
-export function updateProps(path, props) {
+export function updateProps(path, props, removed = []) {
     return createOperation(OPERATION_TYPES.PROPS_UPDATE, {
         path,
-        props
-    })
+        props,
+        removed
+    });
 }
