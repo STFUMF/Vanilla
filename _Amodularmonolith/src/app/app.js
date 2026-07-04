@@ -1,17 +1,27 @@
 // this will contain the application startup logic
 
-import { render } from "../core/renderer";
+import { createDom, createRenderer, element } from "../core/renderer";
 
 /**
  * Creates the application
  */
 
-function App(){
-    const heading = document.createElement('h1');
-    heading.textContent = "Vanilla Todo";
 
-    return heading;
+function App(){
+    return element(
+        "main",
+        {},
+        
+        element(
+            "h1",
+            {},
+            "Vanilla Todo",
+        ),
+        element("p", {}, "Hello Framework")
+    )
 }
+
+
 export function createApp() {
     const root = document.querySelector("#app");
 
@@ -19,9 +29,7 @@ export function createApp() {
         throw new Error('Root element "#app" was not found.');
     }
 
-    const heading = document.createElement("h1");
-    heading.textContent = "Vanilla Todo";
+    const renderer = createRenderer(root);
 
-    render(App, root);
+    renderer.render(App);
 }
-
