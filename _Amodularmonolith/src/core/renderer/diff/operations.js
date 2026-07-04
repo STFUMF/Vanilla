@@ -1,0 +1,9 @@
+
+
+export const OPERATIONS = Object.freeze({
+    CREATE: "CREATE",
+    REMOVE: "REMOVE",
+    REPLACE: "REPLACE",
+    TEXT_UPDATE: "TEXT_UPDATE",
+    PROPS_UPDATE: "PROPS_UPDATE",
+});

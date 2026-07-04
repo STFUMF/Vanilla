@@ -14,14 +14,19 @@ export function createRenderer(container) {
     let currentTree = null;
     let currentDom = null;
 
-    function render(component) {
-        const nextTree = component();
-        const nextDom = createDom(nextTree);
+    /**
+     * Renders a UI tree.
+     * 
+     * @param {object} tree 
+     */
 
-        container.replaceChildren(nextDom);
+    function render(tree) {
+        const dom = createDom(tree);
 
-        currentTree = nextTree;
-        currentDom = nextDom;
+        container.replaceChildren(dom);
+
+        currentTree = tree;
+        currentDom = dom;
     }
 
     return {

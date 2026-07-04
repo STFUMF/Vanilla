@@ -31,5 +31,7 @@ export function createApp() {
 
     const renderer = createRenderer(root);
 
-    renderer.render(App);
+    const tree = App();
+
+    renderer.render(tree);
 }
