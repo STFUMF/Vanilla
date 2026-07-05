@@ -122,3 +122,12 @@ matchRoute()
 ↓
 
 notify App
+
+
+
+// Each middleware decides whether to:
+-continue the pipeline,
+-inspect the action,
+-transform the action,
+-perform side effects,
+-or stop the pipline

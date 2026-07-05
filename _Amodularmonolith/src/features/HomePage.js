@@ -1,5 +1,6 @@
 import { element } from "../core/renderer";
-import { createStore } from "../core/store/createStore";
+import { combineReducers } from "../core/store/combineReducers.js";
+import { createStore } from "../core/store/createStore.js";
 
 export function HomePage() {
     return element(
@@ -24,36 +25,30 @@ export function HomePage() {
     )
 }
 
-function counterReducer(state = 0, action) {
-    switch (action.type) {
-        case "increment":
-            return state + 1;
-
-        case "decrement":
-            return state - 1;
-
-        default:
-            return state;
-    }
+function todoReducer(
+    state = [],
+    action
+) {
+    return state;
 }
 
-const store = createStore(
-    counterReducer,
-    0
-);
+function settingsReducer(
+    state = {
+        theme: "light",
+    },
+    action
+) {
+    return state;
+}
 
-store.subscribe(state => {
-    console.log(state);
+const rootReducer = combineReducers({
+    todo: todoReducer,
+    settings: settingsReducer,
 });
 
-store.dispatch({
-    type: "increment"
-});
 
-store.dispatch({
-    type: "increment"
-});
+const store = createStore(rootReducer,);
 
-store.dispatch({
-    type: "decrement"
-});
+
+
+console.log(store.getState());

@@ -1,3 +1,4 @@
+import { initializeState } from "./initializeState.js";
 /**
  * Creates the runtime state fora store.
  * 
@@ -6,10 +7,12 @@
  * @returns {object}
  */
 
-export function createStoreState(reducer, initialState) {
+
+
+export function createStoreState(reducer) {
     return {
         reducer,
-        state: initialState,
+        state: initializeState(reducer),
         subscribers: [],
     };
 }

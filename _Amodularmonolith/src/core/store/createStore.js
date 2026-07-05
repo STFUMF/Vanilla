@@ -3,6 +3,8 @@ import { dispatch } from "./dispatch.js";
 import { getState } from "./getState.js";
 import { subscribe } from "./subscribe.js";
 
+import { applyMiddleware } from "./middleware/applyMiddleware.js"
+
 /**
  * Creats a store.
  * 
@@ -10,10 +12,11 @@ import { subscribe } from "./subscribe.js";
  * @param {*} initialState
  * @returns {object}
  */
-export function createStore(reducer, initialState) {
-    const state = createStoreState(reducer, initialState);
+export function createStore(reducer, middlewares = []) {
+    
+    const state = createStoreState(reducer);
 
-    return {
+    const store = {
         dispatch(action){
             dispatch(state, action);
         },
@@ -26,4 +29,8 @@ export function createStore(reducer, initialState) {
             return subscribe(state, listener);
         },
     };
+
+    applyMiddleware(store, middlewares);
+
+    return store;
 }
