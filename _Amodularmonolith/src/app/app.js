@@ -2,6 +2,9 @@
 
 import { createRenderContext, createRenderer, element } from "../core/renderer";
 import { component } from "../core/components/component.js";
+import { registerRoutes } from "./registerRoutes.js";
+import { createRouter } from "../core/router";
+
 
 /**
  * Creates the application
@@ -51,30 +54,21 @@ export function createApp() {
 
     const tree = App();
 
-    renderer.render(
-        createRenderContext(tree)
-    );
-    
-    /* etTimeout(() => {
-        renderer.render(
-            createRenderContext(
-                element(
-                    "main",
-                    {},
+    const { routes, notFound, } = registerRoutes();
 
-                    element(
-                        "h1",
-                        {},
-                        "Vanilla todo updated"
-                    ),
+    const router = createRouter(
+        routes,
 
-                    element(
-                        "p",
-                        {},
-                        "Renderer is working!"
-                    )
-                )
+        (route) => {
+            const page = route?.component ?? notFound;
+
+            renderer.render(
+                createRenderContext(component(page))
             )
-        )
-    }, 2000) */
+        }
+    )
+
+    
+    
+    router.start();
 }
