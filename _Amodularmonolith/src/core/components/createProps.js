@@ -6,7 +6,13 @@
  * @returns {object}
  */
 export function createProps(props = {}) {
+    const {
+        children = [],
+        ...rest
+    } = props;
+
     return Object.freeze({
-        ...props,
-    })
+        ...rest,
+        children: Object.freeze([...children]),
+    });
 }

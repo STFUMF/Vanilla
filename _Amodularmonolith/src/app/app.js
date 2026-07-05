@@ -29,6 +29,17 @@ function App() {
     );
 }
 
+function Card(props) {
+    return element(
+        "div",
+        {
+            class: "card"
+        },
+
+        ...props.children
+    );
+}
+
 export function createApp() {
     const root = document.querySelector("#app");
 
@@ -43,8 +54,8 @@ export function createApp() {
     renderer.render(
         createRenderContext(tree)
     );
-
-    setTimeout(() => {
+    
+    /* etTimeout(() => {
         renderer.render(
             createRenderContext(
                 element(
@@ -65,5 +76,5 @@ export function createApp() {
                 )
             )
         )
-    }, 2000)
+    }, 2000) */
 }

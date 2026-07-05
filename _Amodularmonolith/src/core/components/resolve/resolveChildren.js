@@ -1,4 +1,5 @@
 
+import { FRAGMENT_TYPE } from "../constants.js";
 import { resolveNode } from "./resolveNode.js";
 
 /**
@@ -8,5 +9,17 @@ import { resolveNode } from "./resolveNode.js";
  * @returns {Array}
  */
 export function resolveChildren(children) {
-    return children.map(resolveNode);
+    const resolved = [];
+
+    for (const child of children) {
+        const node = resolveNode(child);
+
+        if (node && node.nodeType === FRAGMENT_TYPE) {
+            resolved.push(...node.children);
+        } else {
+            resolved.push(node);
+        }
+    }
+
+    return Object.freeze(resolved);
 }

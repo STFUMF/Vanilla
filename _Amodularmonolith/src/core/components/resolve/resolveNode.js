@@ -1,4 +1,4 @@
-import { COMPONENT_TYPE } from "../constants.js";
+import { COMPONENT_TYPE, FRAGMENT_TYPE } from "../constants.js";
 import { NODE_TYPES } from "../../renderer/tree";
 
 import { resolveElement } from "./resolveElement.js";
@@ -18,6 +18,10 @@ export function resolveNode(node) {
         return resolveNode(
             node.component(node.props)
         );
+    }
+
+    if (node.nodeType === FRAGMENT_TYPE) {
+        return node;
     }
 
     switch (node.nodeType) {

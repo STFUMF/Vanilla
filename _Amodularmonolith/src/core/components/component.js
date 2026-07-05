@@ -6,11 +6,15 @@ import { createProps } from "./createProps.js";
  * 
  * @param {Function} component
  * @param {object} props
+ * @param {...any} children
  * @returns {object}
  */
-export function component(component, props = {}) {
+export function component(component, props = {}, ...children) {
     return createComponent(
         component,
-        createProps(props)
+        createProps({
+            ...props,
+            children,
+        })
     );
 }
