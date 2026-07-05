@@ -93,3 +93,32 @@ Done
 
 /// The UI Tree is immutabable
 - Once created, a node should never be modified. Every update creates a new tree. Thats exactly what makes compare-and-patch predictable.
+
+
+---- ROUTER ----
+
+createRouter()
+
+↓
+
+Router State
+
+↓
+
+start()
+
+↓
+
+listen hashchange
+
+↓
+
+resolve()
+
+↓
+
+matchRoute()
+
+↓
+
+notify App
