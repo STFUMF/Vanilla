@@ -1,5 +1,4 @@
 import { NODE_TYPES } from  "../tree";
-import { OPERATION_TYPES } from "./operations";
 import { compareProps } from "./compareProps.js";
 import { compareChildren } from "./compareChildren.js";
 import { createNode, removeNode, replaceNode } from "./operations/createOperations.js";

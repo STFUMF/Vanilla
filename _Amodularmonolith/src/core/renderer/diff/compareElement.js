@@ -9,7 +9,7 @@ import { compareChildren } from "./compareChildren.js";
 export function compareElement(previousNode, nextNode, path, operations){
     if (previousNode.tag !== nextNode.tag) {
         operations.push({
-            type: OPERATIONS.REPLACE,
+            type: OPERATION_TYPES.REPLACE,
             path,
             node: nextNode,
         });

@@ -1,27 +1,33 @@
 // this will contain the application startup logic
 
 import { createRenderContext, createRenderer, element } from "../core/renderer";
-
+import { component } from "../core/components/component.js";
 
 /**
  * Creates the application
  */
 
+function Button({ label }) {
+    return element("button", {}, label);
+}
 
-function App(){
+function Header() {
+    return element(
+        "header",
+        {},
+        component(Button, {
+            label: "Add Todo"
+        })
+    );
+}
+
+function App() {
     return element(
         "main",
         {},
-        
-        element(
-            "h1",
-            {},
-            "Vanilla Todo",
-        ),
-        element("p", {}, "Hello Framework")
-    )
+        component(Header)
+    );
 }
-
 
 export function createApp() {
     const root = document.querySelector("#app");

@@ -1,7 +1,8 @@
 import { createDom } from "../dom";
 import { createRendererState } from "./createRendererState.js";
 import { mount } from "./mount.js";
-import { update } from "./update.js";
+import { resolveComponent } from "../../components/resolve/resolveComponent.js";
+import { update } from "./update.js"
 
 /**
  * Creates a renderer bound to a root container.
@@ -24,7 +25,7 @@ export function createRenderer(container) {
      */
 
     function render(context) {
-        const { tree } = context;
+        const tree = resolveComponent(context.tree);
 
         // Initial render
         if(state.currentTree === null) {
