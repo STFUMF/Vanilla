@@ -4,7 +4,7 @@ import {
     TODO_DELETE,
     TODO_TOGGLE,
     TODO_SET
-} from "./todoActionTypes.js";
+} from "./todoActions.js";
 
 const initialState = {
     items: [],

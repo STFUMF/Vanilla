@@ -2,7 +2,7 @@
 
 // Selectors prevent pages and components from knowing that state's internal structure.
 
-export const todoSelctors = {
+export const todoSelectors = {
     items(state) {
         return state.todo.items;
     },
