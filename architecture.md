@@ -131,3 +131,27 @@ notify App
 -transform the action,
 -perform side effects,
 -or stop the pipline
+
+---
+
+thunk
+
+dispatch(fn)
+      │
+      ▼
+Thunk Middleware
+      │
+      ▼
+Execute Function
+      │
+      ▼
+dispatch(action)
+      │
+      ▼
+Logger
+      │
+      ▼
+Reducer
+      │
+      ▼
+Subscribers
