@@ -21,6 +21,6 @@ export function createStoreService(adapter) {
 
         clear() {
             adapter.clear();
-        }
-    }
+        },
+    };
 }
