@@ -1,3 +1,4 @@
+import { createEventBus } from "../core/events/createEventBus.js";
 import { element } from "../core/renderer";
 import { combineReducers } from "../core/store/combineReducers.js";
 import { createStore } from "../core/store/createStore.js";
@@ -17,9 +18,7 @@ export function HomePage() {
         element(
             "button",
             {
-                onClick: () => {
-                    console.log("Button Clicked!")
-                }
+                
             },
             "Click me"
         )
@@ -96,3 +95,5 @@ export function loadTodos() {
         dispatch({type: "todo/loaded", })
     }
 }
+
+
