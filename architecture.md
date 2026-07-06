@@ -6,10 +6,10 @@ Foundation
 │
 Core Infrastructure
 │
-├── Phase 4 Router
-├── Phase 5 Global Store
-├── Phase 6 Middleware
-├── Phase 7 Event Bus
+├── Phase 4 Router (component routes)
+├── Phase 5 Global Store (global state)
+├── Phase 6 Middleware (async and thunks state)
+├── Phase 7 Event Bus (publish/subscribe system for transient events) (actions: open modal, close modal, show toast, notifiation....)
 ├── Phase 8 Storage Layer
 │
 Application Layer
@@ -154,4 +154,32 @@ Logger
 Reducer
       │
       ▼
+Subscribers
+
+
+---
+
+Store Architecture
+
+dispatch(action)
+        │
+        ▼
+Middleware Pipeline
+        │
+        ├── thunk
+        ├── logger
+        ├── persistence (future)
+        ├── analytics (future)
+        └── devtools (future)
+        │
+        ▼
+combineReducers()
+        │
+        ▼
+Feature Reducers
+        │
+        ▼
+New State
+        │
+        ▼
 Subscribers
