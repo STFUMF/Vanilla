@@ -1,5 +1,7 @@
 import { createEventBus } from "../core/events/createEventBus.js";
 import { element } from "../core/renderer";
+import { createStoreService } from "../core/storage/createStorageService.js";
+import { LocalStorageAdapter} from "../core/storage/adapters/LocalStorageAdapter.js"
 import { combineReducers } from "../core/store/combineReducers.js";
 import { createStore } from "../core/store/createStore.js";
 import { thunk } from "../core/store/middleware/thunk.js";
@@ -97,3 +99,15 @@ export function loadTodos() {
 }
 
 
+
+
+const storage =
+    createStoreService(
+        LocalStorageAdapter
+    );
+
+storage.set("theme", "dark");
+
+console.log(
+    storage.get("theme")
+);
