@@ -114,7 +114,7 @@ export class TodoController {
      */
     toggleTodoc(id) {
         toggleTodo(this.store, id);
-        console.log(this.store.getState())
+        console.log('toggled')
     }
 
     startEditing(todo) {

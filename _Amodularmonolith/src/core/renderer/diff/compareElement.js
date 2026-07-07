@@ -7,7 +7,8 @@ import { compareChildren } from "./compareChildren.js";
  */
 
 export function compareElement(previousNode, nextNode, path, operations){
-    if (previousNode.tag !== nextNode.tag) {
+   
+    if (!isSameElement(previousNode, nextNode)) {
         operations.push({
             type: OPERATION_TYPES.REPLACE,
             path,
@@ -19,4 +20,19 @@ export function compareElement(previousNode, nextNode, path, operations){
 
     compareProps(previousNode, nextNode, path, operations);
     compareChildren(previousNode, nextNode, path, operations);
+}
+
+function isSameElement(previousNode, nextNode) {
+    if (previousNode.tag !== nextNode.tag) {
+        return false;
+    }
+
+    // Different input types must be replaced.
+    if (
+        previousNode.tag === "input" &&
+        previousNode.props.type !== nextNode.props.type
+    ) {
+        return false
+    }
+    return true;
 }

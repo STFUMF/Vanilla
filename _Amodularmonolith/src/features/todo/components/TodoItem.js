@@ -29,8 +29,10 @@ export function TodoItem({todo, controller}) {
 
                         children: ["Save"],
 
-                        onClick: () =>
-                            controller.saveEdit(todo),
+                        onClick: (e) => {
+                            e.stopPropagation();
+                            controller.saveEdit(todo);
+                        },
                     }),
 
                     component(Button, {
