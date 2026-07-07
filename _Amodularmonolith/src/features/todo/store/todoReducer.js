@@ -55,7 +55,7 @@ export function todoReducer(state = initialState, action) {
                             ...todo,
                             completed: !todo.completed,
                             updatedAt: Date.now(),
-                            }
+                        }
                         : todo
                 )
             };

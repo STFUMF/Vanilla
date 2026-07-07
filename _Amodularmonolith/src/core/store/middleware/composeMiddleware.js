@@ -5,5 +5,9 @@
  * @returns {Function}
  */
 export function composeMiddleware(chain) {
-    return chain.reduceRight((next, middleware) => middleware(next));
+    return dispatch => 
+        chain.reduceRight(
+            (next, middleware) => middleware(next),
+            dispatch
+        );
 }

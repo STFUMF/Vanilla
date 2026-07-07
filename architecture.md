@@ -183,3 +183,7 @@ New State
         │
         ▼
 Subscribers
+
+
+// Framework - A question when creating things that has a bug
+- is this a bug in the Core, or is the feature trying to do something it shouldn't?

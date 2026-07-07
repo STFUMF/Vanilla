@@ -1,13 +1,10 @@
 export function createTodoPersistenceMiddleware(todoService) {
-    return ({ getState }) =>
-            next =>
-                action => {
+    return store => next => action => {
 
-                    const result = next(action);
+                    next(action);
 
-                    if (action.type.startsWith("todo/")){
-                        todoService.saveTodos(getState().todo.items);
-                    }
-                    return result;
+                    const todos = store.getState().todo.items;
+
+                    todoService.persistTodos(todos);
                 };
 }

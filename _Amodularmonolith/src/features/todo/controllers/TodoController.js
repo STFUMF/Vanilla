@@ -22,6 +22,10 @@ export class TodoController {
         this.editingTodoId = null;
         this.editTitle = "";
 
+        this.search = "";
+
+        this.filter = "all";
+
         // View update callback
         this.onViewChanged = () => {};
     }
@@ -163,5 +167,26 @@ export class TodoController {
 
     notifyViewChanged() {
         this.onViewChanged();
+    }
+
+    setSearch(search){
+        this.search = search;
+        this.notifyViewChanged();
+    }
+
+    getVisibleTodos(){
+        return todoSelectors.visible(
+            this.store.getState(),
+            this.search
+        );
+    }
+
+    setFilter(filter) {
+        this.filter = filter;
+        this.notifyViewChanged();
+    }
+
+    getFilter() {
+        return this.filter;
     }
 }

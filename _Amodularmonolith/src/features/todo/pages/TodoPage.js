@@ -4,10 +4,11 @@ import { component } from "@core/components";
 import { TodoStats } from "../components/TodoStats.js";
 import { TodoForm } from "../components/TodoForm.js";
 import { TodoList } from "../components/TodoList.js"
+import { Input } from "../../../shared/components/index.js";
 
 export function TodoPage({controller,}){
 
-    const todos = controller.getTodos();
+    const todos = controller.getVisibleTodos();
 
     const stats = controller.getStats();
 
@@ -21,6 +22,13 @@ export function TodoPage({controller,}){
 
         component(TodoForm, {
             controller,
+        }),
+
+        component(Input, {
+            value: controller.search,
+            placeholder: "Search todos...",
+            onInput: e =>
+                controller.setSearch(e.target.value)
         }),
 
         component(TodoList, {

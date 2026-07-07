@@ -1,6 +1,8 @@
 import { createApp } from "./app";
 
 import { createStore } from "../core/store"
+import { thunk } from "../core/store/middleware/thunk.js"
+
 
 import { createStoreService as StorageService } from "../core/storage";
 import { LocalStorageAdapter } from "../core/storage";
@@ -9,6 +11,7 @@ import { TodoRepository } from "../features/todo/repository/TodoRepository.js";
 import { TodoController } from "../features/todo/controllers/TodoController.js";
 import { TodoService } from "../features/todo/services/TodoService.js";
 import { todoActions } from "../features/todo/store/todoActionTypes.js";
+import { createTodoPersistenceMiddleware as persistTodos} from "../features/todo/store/todoPersistenceMiddleware.js";
 
 import { rootReducer } from "./registerStore.js";
 
@@ -22,9 +25,6 @@ import { rootReducer } from "./registerStore.js";
 
 
 export function bootstrap() {
-    // Store
-
-    const store = createStore(rootReducer);
 
     // Storage
 
@@ -39,7 +39,10 @@ export function bootstrap() {
     // Service
 
     const todoService = new TodoService(todoRepository);
+    const persistTodosMiddleware = persistTodos(todoService);
+    // Store
 
+    const store = createStore(rootReducer, [thunk, persistTodos(todoService) ]);
     // Controller
 
     const todoController = new TodoController(store);
@@ -50,7 +53,6 @@ export function bootstrap() {
     );
 
     // Start UI
-
     createApp({
         root: document.querySelector("#app"),
         store,
