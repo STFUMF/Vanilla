@@ -1,18 +1,29 @@
 import { component } from "@core/components";
+import { element } from "@core/renderer";
 
 import { TodoItem } from "./TodoItem.js";
 
-export function TodoList({todos, onToggle, onDelete}) {
+export function TodoList({todos, controller}) {
 
-    return todos.map(todo => 
-        component(
-            TodoItem,
+    if (todos.length === 0) {
 
+        return element(
+            "p",
+            {},
+            "No todos yet."
+        );
+    }
+
+    return element( 
+        
+            "div",
             {
-                todo,
-                onToggle,
-                onDelete,
-            }
+                class: "todo-list",
+            },
+        ...todos.map(todo => 
+            component(
+                TodoItem,{todo,controller,}
+            )
         )
     );
 }

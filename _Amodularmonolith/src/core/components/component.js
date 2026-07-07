@@ -14,7 +14,7 @@ export function component(component, props = {}, ...children) {
         component,
         createProps({
             ...props,
-            children,
+            children: children.length ? children : (props.children ?? []),
         })
     );
 }

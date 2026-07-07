@@ -3,7 +3,7 @@ import { component } from "@core/components";
 
 import { Button, Card } from "../../../shared/components";
 
-export function TodoItem({todo, onToggle, onDelete}) {
+export function TodoItem({todo, controller}) {
     return component(Card, {
 
         children: [
@@ -19,7 +19,7 @@ export function TodoItem({todo, onToggle, onDelete}) {
                     {
                         type: "checkbox",
                         checked: todo.completed,
-                        onChange: () => onToggle(todo.id),
+                        onChange: () => controller.toggleTodo(todo.id),
                     }
                 ),
 
@@ -31,7 +31,7 @@ export function TodoItem({todo, onToggle, onDelete}) {
 
                 component(Button, {
                     
-                    onClick: () => onDelete(todo.id),
+                    onClick: () => controller.deleteTodo(todo.id),
                     children: ["Delete"],
                 })
             )

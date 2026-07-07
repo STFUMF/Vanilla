@@ -17,16 +17,17 @@ export function TodoPage({controller,}){
             class: "todo-page",
         },
 
-        component(TodoStats, stats),
+        element("h1", {}, "Todo App"),
 
         component(TodoForm, {
-            onSubmit: controller.addTodo.bind(controller),
+            controller,
         }),
 
         component(TodoList, {
             todos,
-            onToggle: controller.toggleTodo.bind(controller),
-            onDelete: controller.deleteTodo.bind(controller),
-        })
-    )
+            controller,
+        }),
+
+        component(TodoStats, stats)
+    );
 }

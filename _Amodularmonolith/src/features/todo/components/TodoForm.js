@@ -1,19 +1,28 @@
 import { component } from "@core/components";
+import { element } from "@core/renderer";
 
 import { Button, Input } from "../../../shared/components";
 
-export function TodoForm({title, onInput, onSubmit,}) {
+export function TodoForm({controller}) {
 
-    return [
+    return element(
+        "div",
+        {
+            class: "todo-form",
+        },
+
         component(Input, {
-            value: title,
+            value: controller.title,
             className: 'todoInput',
-            onInput,
+            placeholder: "Add a todo...",
+            onInput: e => controller.setTitle(e.target.value)
         }),
 
-        component(Button, {
-            onClick: onSubmit,
-            children: ["Add"],
-        }),
-    ];
+        component(Button, 
+            {
+            onClick: () => controller.addTodo(),
+            },
+            "Add"
+        ),
+    )
 }
