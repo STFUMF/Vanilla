@@ -11,7 +11,7 @@ export function applyProp(element, key, value) {
     // Event handlers: onClick -> click
     if (key.startsWith("on") && typeof value === "function") {
         const event = key.slice(2).toLowerCase();
-        element.addEventListener(event, value);
+        element[`on${event}`] = value;
         return;
     }
     

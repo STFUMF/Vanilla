@@ -31,12 +31,15 @@ export function createApp({root, store, todoController}) {
         )
     }
 
+    todoController.setViewChangedListener(render);
+
     const router = createRouter(
         routes,
 
         (route) => {
             currentRoute = route;
             render();
+
         }
     )
     

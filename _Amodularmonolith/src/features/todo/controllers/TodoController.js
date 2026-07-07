@@ -3,6 +3,7 @@
 import { addTodo } from "../commands/addTodo.js";
 import { deleteTodo } from "../commands/deleteTodo.js";
 import { toggleTodo } from "../commands/toggleTodo.js";
+import { updateTodo } from "../commands/updateTodo.js";
 
 import { todoActions } from "../store/todoActionTypes.js";
 import { todoSelectors } from "../store/todoSelectors.js";
@@ -16,6 +17,13 @@ export class TodoController {
 
         // View state
         this.title = "";
+
+        // Edit UI state
+        this.editingTodoId = null;
+        this.editTitle = "";
+
+        // View update callback
+        this.onViewChanged = () => {};
     }
 
     /**
@@ -36,6 +44,7 @@ export class TodoController {
      */
     setTitle(title) {
         this.title = title;
+        this.notifyViewChanged();
     }
 
     /**
@@ -67,7 +76,7 @@ export class TodoController {
     /**
      * Adds a new todo.
      */
-    addTodo() {
+    addTodoc() {
         const title = this.title.trim();
         if (!title) {
             return;
@@ -94,7 +103,7 @@ export class TodoController {
      *
      * @param {string} id
      */
-    deleteTodo(id) {
+    deleteTodoc(id) {
         deleteTodo(this.store, id);
     }
 
@@ -103,9 +112,56 @@ export class TodoController {
      *
      * @param {string} id
      */
-    toggleTodo(id) {
+    toggleTodoc(id) {
         toggleTodo(this.store, id);
-        console.log('test')
         console.log(this.store.getState())
+    }
+
+    startEditing(todo) {
+        console.log('test')
+        this.editingTodoId = todo.id;
+        this.editTitle = todo.title;
+
+        this.notifyViewChanged();
+    }
+
+    setEditTitle(title) {
+        this.editTitle = title;
+
+        this.notifyViewChanged();
+    }
+
+    cancelEditing() {
+        this.editingTodoId = null;
+        this.editTitle = "";
+
+        this.notifyViewChanged();
+    }
+
+    isEditing(id) {
+        return this.editingTodoId === id;
+    }
+
+    saveEdit(todo) {
+        const title = this.editTitle.trim();
+
+        if (!title){
+            return;
+        }
+        updateTodo(this.store, {
+            ...todo,
+            title,
+            updatedAt: Date.now(),
+        });
+
+        this.cancelEditing();
+    }
+
+    setViewChangedListener(listener) {
+        this.onViewChanged = listener;
+    }
+
+    notifyViewChanged() {
+        this.onViewChanged();
     }
 }

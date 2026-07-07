@@ -13,7 +13,7 @@ export function Button({
     disabled = false,
     onClick,
 }) {
-    console.log(`${children}, ${type}, ${className}, ${disabled}, ${onClick}`)
+    //console.log(`${children}, ${type}, ${className}, ${disabled}, ${onClick}`)
     return element(
         "button",
         {

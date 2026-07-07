@@ -20,7 +20,7 @@ export function TodoForm({controller}) {
 
         component(Button, 
             {
-            onClick: () => controller.addTodo(),
+            onClick: () => controller.addTodoc(),
             },
             "Add"
         ),
