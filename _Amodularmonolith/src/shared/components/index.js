@@ -5,3 +5,4 @@ export { Dialog } from "./Dialog/Dialog.js";
 export { Modal } from "./Modal/Modal.js";
 export { Navbar } from "./Navbar/Navbar.js";
 export { Spinner } from "./Spinner/Spinner.js"
+export { Select } from "./Select.js";

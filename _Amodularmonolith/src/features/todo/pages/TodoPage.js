@@ -6,6 +6,7 @@ import { TodoForm } from "../components/TodoForm.js";
 import { TodoList } from "../components/TodoList.js"
 import { Input } from "../../../shared/components/index.js";
 import { TodoFilter } from "../components/TodoFilter.js";
+import { TodoSort } from "../components/TodoSort.js";
 
 export function TodoPage({controller,}){
 
@@ -32,12 +33,14 @@ export function TodoPage({controller,}){
                 controller.setSearch(e.target.value)
         }),
         component(TodoFilter, {controller}),
-
+        component(TodoSort, {controller}),
+        
         component(TodoList, {
             todos,
             controller,
         }),
 
-        component(TodoStats, stats)
+        component(TodoStats, stats),
+        
     );
 }

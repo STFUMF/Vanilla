@@ -23,7 +23,7 @@ export const todoSelectors = {
         return state.todo.items.length;
     },
 
-    visible(state, search, filter) {
+    visible(state, search, filter, sort) {
         let items = this.items(state);
 
         // search
@@ -40,15 +40,35 @@ export const todoSelectors = {
         // Filter
         switch (filter) {
             case "active":
-                return items = items.filter(todo => !todo.completed);
+                items = items.filter(todo => !todo.completed);
+                break;
             
             case "completed":
-                return items = items.filter(todo => todo.completed);
+                items = items.filter(todo => todo.completed);
+                break
 
             default:
-                return items
+               break;
         }
 
+
+        switch(sort) {
+            case "created-asc":
+                items.sort((a,b) => a.createdAt - b.createdAt);
+                break;
+            
+            case 'created-desc':
+                items.sort((a,b) => b.createdAt - a.createdAt);
+                break;
+
+            case "title":
+                items.sort((a,b) => a.title.localeCompare(b.title));
+                break;
+            
+            default:
+                break;
+        }
+        
         return items;
     },
 };

@@ -26,6 +26,12 @@ export class TodoController {
 
         this.filter = "all";
 
+        this.sort = "created-desc";
+
+        this.priority = "medium";
+
+        this.dueDate = "";
+
         // View update callback
         this.onViewChanged = () => {};
     }
@@ -90,8 +96,8 @@ export class TodoController {
             id: crypto.randomUUID(),
             title,
             completed: false,
-            dueDate: null,
-            priority: "medium",
+            dueDate: this.dueDate || null,
+            priority: this.priority,
             category: null,
             tags: [],
             createdAt: Date.now(),
@@ -100,6 +106,8 @@ export class TodoController {
 
         console.log(this.store.getState())
         this.title = "";
+        this.priority = "medium";
+        this.dueDate = "";
     }
 
     /**
@@ -178,7 +186,8 @@ export class TodoController {
         return todoSelectors.visible(
             this.store.getState(),
             this.search,
-            this.filter
+            this.filter,
+            this.sort
         );
     }
 
@@ -189,5 +198,32 @@ export class TodoController {
 
     getFilter() {
         return this.filter;
+    }
+
+    setSort(sort) {
+        this.sort = sort;
+        this.notifyViewChanged();
+    }
+
+    getSort() {
+        return this.sort;
+    }
+
+    setPriority(priority){
+        this.priority = priority;
+        this.notifyViewChanged();
+    }
+
+    getPriority(){
+        return this.priority;
+    }
+
+    setDueDate(date) {
+        this.dueDate = date;
+        this.notifyViewChanged();
+    }
+
+    getDueDate(){
+        return this.dueDate;
     }
 }

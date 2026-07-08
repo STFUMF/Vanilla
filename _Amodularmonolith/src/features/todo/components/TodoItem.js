@@ -71,6 +71,24 @@ export function TodoItem({todo, controller}) {
                     todo.title
                 ),
 
+                element(
+                    "small",
+                    {
+                        class: "todo-priority",
+                    },
+                    todo.priority
+                ),
+
+                todo.dueDate
+                    ? element(
+                        "small",
+                        {
+                            class: "todo-due-date",
+                        },
+                        `Due: ${todo.dueDate}`
+                    )
+                    : null,
+
                 component(Button, {
                     children: ["Delete"],
                     onClick: () => controller.deleteTodoc(todo.id),
