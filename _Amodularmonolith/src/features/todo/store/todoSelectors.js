@@ -23,7 +23,7 @@ export const todoSelectors = {
         return state.todo.items.length;
     },
 
-    visible(state, search, filter, sort) {
+    visible(state, search, filters, sort) {
         let items = this.items(state);
 
         // search
@@ -38,7 +38,7 @@ export const todoSelectors = {
         }
 
         // Filter
-        switch (filter) {
+        switch (filters.status) {
             case "active":
                 items = items.filter(todo => !todo.completed);
                 break;
@@ -49,6 +49,20 @@ export const todoSelectors = {
 
             default:
                break;
+        }
+
+        switch (filters.priority){
+            case "low":
+            case "medium":
+            case "high":
+
+                items = items.filter(todo =>
+                    todo.priority === filters.priority
+                );
+                break;
+
+            default:
+                break;
         }
 
 

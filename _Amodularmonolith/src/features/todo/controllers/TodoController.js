@@ -24,7 +24,11 @@ export class TodoController {
 
         this.search = "";
 
-        this.filter = "all";
+        this.filters = {
+            status: "all",
+            priority: "all",
+            dueDate: "all",
+        };
 
         this.sort = "created-desc";
 
@@ -186,18 +190,24 @@ export class TodoController {
         return todoSelectors.visible(
             this.store.getState(),
             this.search,
-            this.filter,
+            this.filters,
             this.sort
         );
     }
 
-    setFilter(filter) {
-        this.filter = filter;
+
+    setStatusFilter(status) {
+        this.filters.status = status;
         this.notifyViewChanged();
     }
 
-    getFilter() {
-        return this.filter;
+    setPriorityFilter(priority){
+        this.filters.priority = priority;
+        this.notifyViewChanged();
+    }
+
+    getFilters() {
+        return this.filters;
     }
 
     setSort(sort) {

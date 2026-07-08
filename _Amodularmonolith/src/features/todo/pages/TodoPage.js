@@ -7,6 +7,7 @@ import { TodoList } from "../components/TodoList.js"
 import { Input } from "../../../shared/components/index.js";
 import { TodoFilter } from "../components/TodoFilter.js";
 import { TodoSort } from "../components/TodoSort.js";
+import { TodoPriorityFilter } from "../components/TodoPriorityFilter.js";
 
 export function TodoPage({controller,}){
 
@@ -32,9 +33,9 @@ export function TodoPage({controller,}){
             onInput: e =>
                 controller.setSearch(e.target.value)
         }),
-        component(TodoFilter, {controller}),
+        component(TodoPriorityFilter, {controller}),
         component(TodoSort, {controller}),
-        
+
         component(TodoList, {
             todos,
             controller,
