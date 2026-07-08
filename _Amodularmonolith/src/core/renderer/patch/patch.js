@@ -10,6 +10,7 @@ import { applyOperation } from "./applyOperation.js";
 export function patch(context) {
     const { root, operations } = context;
     
+
     for (const operation of operations) {
         applyOperation(root, operation);
     }

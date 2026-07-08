@@ -1,5 +1,6 @@
 
 
+import { FRAGMENT_TYPE } from "../../components/constants.js";
 import { NODE_TYPES } from "../tree";
 import { createElement } from "./createElement.js";
 import { createText } from "./createText.js";
@@ -19,7 +20,15 @@ export function createDom(node) {
         case NODE_TYPES.TEXT:
             return createText(node);
 
+        case FRAGMENT_TYPE:{
+            const fragment = document.createDocumentFragment();
+            
+            for (const child of node.children){
+                fragment.appendChild(createDom(child));
+            }
+            return fragment;
+        }
         default:
-            throw new Error(`Unsupported node type: ${node.nodeType}`);
+            throw new Error(`Unsupported node type: ${String(node.nodeType)}`);
     }
 }

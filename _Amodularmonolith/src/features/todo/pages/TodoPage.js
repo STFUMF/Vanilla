@@ -5,6 +5,7 @@ import { TodoStats } from "../components/TodoStats.js";
 import { TodoForm } from "../components/TodoForm.js";
 import { TodoList } from "../components/TodoList.js"
 import { Input } from "../../../shared/components/index.js";
+import { TodoFilter } from "../components/TodoFilter.js";
 
 export function TodoPage({controller,}){
 
@@ -30,6 +31,7 @@ export function TodoPage({controller,}){
             onInput: e =>
                 controller.setSearch(e.target.value)
         }),
+        component(TodoFilter, {controller}),
 
         component(TodoList, {
             todos,

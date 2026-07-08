@@ -24,13 +24,13 @@ export const todoSelectors = {
     },
 
     visible(state, search, filter) {
-        const items = this.items(state);
+        let items = this.items(state);
 
         // search
         if (search.trim()) {
             const query = search.toLowerCase();
 
-            items.filter(todo =>
+            items = items.filter(todo =>
                 todo.title
                     .toLowerCase()
                     .includes(query)
@@ -39,18 +39,14 @@ export const todoSelectors = {
 
         // Filter
         switch (filter) {
-
             case "active":
-                items = items.filter(todo => !todo.completed);
-                break;
+                return items = items.filter(todo => !todo.completed);
             
             case "completed":
-                items = items.filter(todo => todo.completed);
-                break;
+                return items = items.filter(todo => todo.completed);
 
-            case "all":
             default:
-                break;
+                return items
         }
 
         return items;

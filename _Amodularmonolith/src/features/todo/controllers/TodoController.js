@@ -177,7 +177,8 @@ export class TodoController {
     getVisibleTodos(){
         return todoSelectors.visible(
             this.store.getState(),
-            this.search
+            this.search,
+            this.filter
         );
     }
 

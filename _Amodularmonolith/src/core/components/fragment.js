@@ -1,4 +1,4 @@
-import { createFragment } from "./createFragment";
+import { createFragment } from "./createFragment.js";
 
 /**
  * Creates a fragment.
