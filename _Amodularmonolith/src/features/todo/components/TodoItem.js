@@ -2,9 +2,10 @@ import { element } from "@core/renderer";
 import { component } from "@core/components";
 
 import { Button, Card, Input } from "../../../shared/components";
+import { getDueDateStatus } from "../../../shared/utils/date/dateStatus.js";
 
 export function TodoItem({todo, controller}) {
-
+const status = getDueDateStatus(todo.dueDate);
     if (controller.isEditing(todo.id)){
         
         return component(Card, {
@@ -80,14 +81,14 @@ export function TodoItem({todo, controller}) {
                 ),
 
                 todo.dueDate
-                    ? element(
+                    ? status && element(
                         "small",
                         {
-                            class: "todo-due-date",
+                            class: `todo-status ${status}`,
                         },
-                        `Due: ${todo.dueDate}`
+                        status.toUpperCase()
                     )
-                    : null,
+                    : "null",
 
                 component(Button, {
                     children: ["Delete"],
