@@ -1,63 +1,55 @@
 import { component } from "@core/components";
 import { element } from "@core/renderer";
 
-import { Button, Input, Select } from "../../../shared/components";
+import { Button, Input, Row, Select } from "../../../shared/components";
 
 export function TodoForm({controller}) {
 
-    return element(
-        "div",
-        {
-            class: "todo-form",
-        },
+    return component(Row, {
+        children: [
+                    component(Input, {
+                        value: controller.title,
+                        className: 'todoInput',
+                        placeholder: "Add a todo...",
+                        onInput: e => controller.setTitle(e.target.value)
+                    }),
 
-        component(Input, {
-            value: controller.title,
-            className: 'todoInput',
-            placeholder: "Add a todo...",
-            onInput: e => controller.setTitle(e.target.value)
-        }),
+                    component(Select, {
 
-        component(Select, {
+                        value: controller.getPriority(),
 
-            value: controller.getPriority(),
+                        options: [
+                            {
+                                value: "low",
+                                label: "Low"
+                            },
+                            {
+                                value: "medium",
+                                label: "Medium",
+                            },
+                            {
+                                value: "high",
+                                label: "High",
+                            },
+                        ],
 
-            options: [
-                {
-                    value: "low",
-                    label: "Low"
-                },
-                {
-                    value: "medium",
-                    label: "Medium",
-                },
-                {
-                    value: "high",
-                    label: "High",
-                },
-            ],
+                        onChange: e =>
+                            controller.setPriority(e.target.value)
+                    }),
 
-            onChange: e =>
-                controller.setPriority(e.target.value)
-        }),
-
-        element(
-            "input",
-            {
-                type: "date",
-                value: controller.getDueDate(),
-
-                onInput: e =>
-                        controller.setDueDate(e.target.value)
-            }
-        ),
-
-        component(Button, 
-            {
-            variant: "primary",
-            onClick: () => controller.addTodoc(),
-            children: ["Add"]
-            },
-        ),
+                    component(Input, {
+                        type: "date",
+                        value: controller.getDueDate(),
+                        onInput: e => controller.setDueDate(e.target.value)
+                    }),
+                    component(Button, 
+                        {
+                        variant: "primary",
+                        onClick: () => controller.addTodoc(),
+                        children: ["Add"]
+                        },
+                    ),
+                ]
+        }
     )
 }
