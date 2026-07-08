@@ -5,6 +5,13 @@ import { Button, Card, Input } from "../../../shared/components";
 import { getDueDateStatus } from "../../../shared/utils/date/dateStatus.js";
 
 export function TodoItem({todo, controller}) {
+    const labels = {
+        overdue: "OverDue",
+        today: "Due Today",
+        tomorrow: "Due Tomorrow",
+        week: "Due this Week",
+        future: "",
+    }
 const status = getDueDateStatus(todo.dueDate);
     if (controller.isEditing(todo.id)){
         
@@ -86,7 +93,7 @@ const status = getDueDateStatus(todo.dueDate);
                         {
                             class: `todo-status ${status}`,
                         },
-                        status.toUpperCase()
+                        labels[status]
                     )
                     : "null",
 

@@ -1,5 +1,4 @@
 export function getDueDateStatus(dueDate){
-
     if(!dueDate){
         return null;
     }
