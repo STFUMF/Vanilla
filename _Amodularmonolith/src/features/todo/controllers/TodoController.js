@@ -205,7 +205,12 @@ export class TodoController {
         this.filters.priority = priority;
         this.notifyViewChanged();
     }
-
+    
+    setDueDateFilter(filter){
+        this.filters.dueDate = filter;
+        this.notifyViewChanged();
+    }
+    
     getFilters() {
         return this.filters;
     }

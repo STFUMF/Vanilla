@@ -1,4 +1,4 @@
-
+import { getDueDateStatus } from "../../../shared/utils/date/dateStatus.js";
 
 // Selectors prevent pages and components from knowing that state's internal structure.
 
@@ -61,6 +61,40 @@ export const todoSelectors = {
                 );
                 break;
 
+            default:
+                break;
+        }
+
+        switch(filters.dueDate) {
+            
+            case "overdue":
+                items = items.filter(todo =>
+                    getDueDateStatus(todo.dueDate) === "overdue"
+                );
+                break;
+            
+            case "today":
+                items = items.filter(todo =>
+                    getDueDateStatus(todo.dueDate) === "today"
+                );
+                break;
+
+            case "tomorrow":
+                items = items.filter(todo =>
+                    getDueDateStatus(todo.dueDate) === "tomorrow"
+                );
+                break;
+
+            case "week":
+                items = items.filter(todo =>
+                    getDueDateStatus(todo.dueDate) === "week"
+                );
+                break;
+
+            case "none":
+                items = items.filter(todo => !todo.dueDate);
+                break;
+            
             default:
                 break;
         }

@@ -8,6 +8,7 @@ import { Input } from "../../../shared/components/index.js";
 import { TodoFilter } from "../components/TodoFilter.js";
 import { TodoSort } from "../components/TodoSort.js";
 import { TodoPriorityFilter } from "../components/TodoPriorityFilter.js";
+import { TodoDueDateFilter } from "../components/TodoDueDateFilter.js";
 
 export function TodoPage({controller,}){
 
@@ -34,6 +35,7 @@ export function TodoPage({controller,}){
                 controller.setSearch(e.target.value)
         }),
         component(TodoPriorityFilter, {controller}),
+        component(TodoDueDateFilter, {controller}),
         component(TodoSort, {controller}),
 
         component(TodoList, {

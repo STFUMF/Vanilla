@@ -1,11 +1,11 @@
 import { element } from "@core/renderer";
 
-export function Badge({children = [], className = "",}) {
+export function Badge({text, variant = "default",}) {
     return element(
         "span",
         {
-            class: `badge ${className}`.trim(),
+            class: `badge badge-${variant}`
         },
-        ...children
+        text
     );
 }
