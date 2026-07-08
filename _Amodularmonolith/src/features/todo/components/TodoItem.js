@@ -3,6 +3,10 @@ import { component } from "@core/components";
 
 import { Button, Card, Input } from "../../../shared/components";
 import { getDueDateStatus } from "../../../shared/utils/date/dateStatus.js";
+import { Badge } from "../../../shared/components/Badge/Badge.js";
+import { Checkbox } from "../../../shared/components";
+import { PriorityBdage } from "./PriorityBdage.js";
+import { DueDateBadge } from "./DueDateBadge.js";
 
 export function TodoItem({todo, controller}) {
     const labels = {
@@ -12,7 +16,9 @@ export function TodoItem({todo, controller}) {
         week: "Due this Week",
         future: "",
     }
-const status = getDueDateStatus(todo.dueDate);
+    const status = getDueDateStatus(todo.dueDate);
+
+    // Editing
     if (controller.isEditing(todo.id)){
         
         return component(Card, {
@@ -36,7 +42,7 @@ const status = getDueDateStatus(todo.dueDate);
                     component(Button, {
 
                         children: ["Save"],
-
+                        variant: "success",
                         onClick: (e) => {
                             e.stopPropagation();
                             controller.saveEdit(todo);
@@ -46,7 +52,7 @@ const status = getDueDateStatus(todo.dueDate);
                     component(Button, {
 
                         children: ["Cancel"],
-
+                        variant: "outline",
                         onClick: () =>
                             controller.cancelEditing(),
                     }),
@@ -54,6 +60,7 @@ const status = getDueDateStatus(todo.dueDate);
             ]
         });
     }
+
     return component(Card, {
 
         children: [
@@ -64,14 +71,19 @@ const status = getDueDateStatus(todo.dueDate);
                     class: "todo-item",
                 },
 
-                element(
+                component(Checkbox, {
+                    type: "checkbox",
+                    checked: todo.completed,
+                    onChange: () => controller.toggleTodoc(todo.id),
+                }),
+                /* element(
                     "input",
                     {
                         type: "checkbox",
                         checked: todo.completed,
                         onChange: () => controller.toggleTodoc(todo.id),
                     }
-                ),
+                ), */
 
                 element(
                     "span",
@@ -79,31 +91,25 @@ const status = getDueDateStatus(todo.dueDate);
                     todo.title
                 ),
 
-                element(
-                    "small",
-                    {
-                        class: "todo-priority",
-                    },
-                    todo.priority
-                ),
+                component(PriorityBdage, {
+                    priority: todo.priority,
+                }),
 
                 todo.dueDate
-                    ? status && element(
-                        "small",
-                        {
-                            class: `todo-status ${status}`,
-                        },
-                        labels[status]
-                    )
-                    : "null",
+                    ? component(DueDateBadge, {
+                        dueDate: todo.dueDate
+                    })
+                    : "",
 
                 component(Button, {
                     children: ["Delete"],
+                    variant: "danger",
                     onClick: () => controller.deleteTodoc(todo.id),
                 }),
 
                 component(Button, {
                     children: ["Edit"],
+                    variant: "secondary",
                     onClick: () => controller.startEditing(todo),
                 }),
 

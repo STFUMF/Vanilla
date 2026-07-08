@@ -54,9 +54,10 @@ export function TodoForm({controller}) {
 
         component(Button, 
             {
+            variant: "primary",
             onClick: () => controller.addTodoc(),
+            children: ["Add"]
             },
-            "Add"
         ),
     )
 }

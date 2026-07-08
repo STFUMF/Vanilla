@@ -10,6 +10,7 @@ export function Button({
     children,
     type = "button",
     className = "",
+    variant = "primary",
     disabled = false,
     onClick,
 }) {
@@ -18,7 +19,7 @@ export function Button({
         "button",
         {
             type,
-            class: `btn ${className}`.trim(),
+            class: `btn btn-${variant}`,
             disabled,
             onClick
         },
