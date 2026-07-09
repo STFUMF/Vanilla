@@ -1,0 +1,12 @@
+/*  Static page
+
+    Renderer
+
+    Store
+
+    Router
+
+    Middleware
+
+    Persistence
+*/
