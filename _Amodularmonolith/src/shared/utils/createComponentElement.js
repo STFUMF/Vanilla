@@ -1,5 +1,6 @@
 import { element } from "@core/renderer";
 import { classNames } from "./components/classNames.js";
+import { createVariants } from "./components/variants.js";
 
 export function createComponentElement({
     tag,
@@ -15,12 +16,12 @@ export function createComponentElement({
         tag,
         {
             class: classNames(
-                baseClass,
 
-                variant && `${baseClass}-${variant}`,
 
-                size && `${baseClass}-${size}`,
-
+                ...createVariants(baseClass, {
+                    variant,
+                    size,
+                }),
                 className,
             ),
             ...props,

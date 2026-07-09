@@ -1,4 +1,4 @@
-import "../../styles/components/input.css"
+import "../../styles/components/input.css";
 
 import { createComponentElement } from "../../utils/createComponentElement.js";
 
@@ -9,29 +9,29 @@ import { createComponentElement } from "../../utils/createComponentElement.js";
  * @returns {object}
  */
 export function Input({
-    type = "text",
-    value = "",
-    size,
-    variant,
-    placeholder = "",
-    className,
-    onInput,
-    ...props
+  type = "text",
+  value = "",
+  size,
+  variant,
+  placeholder = "",
+  className,
+  onInput,
+  ...props
 }) {
-    return createComponentElement({
-        tag: "input",
+  return createComponentElement({
+    tag: "input",
 
-        baseClass: "input",
-        variant,
-        size,
-        className,
+    baseClass: "input",
+    variant,
+    size,
+    className,
 
-        props: {
-            type,
-            value,
-            placeholder,
-            onInput,
-            ...props,
-        },
-    });
+    props: {
+      type,
+      value,
+      placeholder,
+      onInput,
+      ...props,
+    },
+  });
 }
