@@ -1,0 +1,16 @@
+.stack {
+    display: flex;
+    flex-direction: column;
+}
+
+.stack-gap-none { gap: 0; }
+
+.stack-gap-xs {  gap:var(--space-xs); }
+
+.stack-gap-sm {  gap:var(--space-sm); }
+
+.stack-gap-md { gap:var(--space-md); }
+
+.stack-gap-lg {  gap:var(--space-lg); }
+
+.stack-gap-xl {  gap:var(--space-xl); }

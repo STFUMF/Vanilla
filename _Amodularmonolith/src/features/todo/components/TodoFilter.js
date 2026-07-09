@@ -13,18 +13,24 @@ export function TodoFilter({ controller }) {
 
 
         component(Button, {
+            variant: "primary",
+            size: "md",
             children: ["All"],
-            onClick: () => controller.setFilter("all"),
+            onClick: () => controller.setStatusFilter("all"),
         }),
 
         component(Button, {
+            variant: "primary",
+            size: "md",
             children: ["Active"],
-            onClick: () => controller.setFilter("active"),
+            onClick: () => controller.setStatusFilter("active"),
         }),
 
         component(Button, {
+            variant: "primary",
+            size: "md",
             children: ["Completed"],
-            onClick: () => controller.setFilter("completed"),
+            onClick: () => controller.setStatusFilter("completed"),
         })
     );
 }

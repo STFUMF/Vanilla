@@ -1,7 +1,7 @@
 import { element } from "@core/renderer";
 import { component } from "@core/components";
 
-import { Button, Card, Input } from "../../../shared/components";
+import { Button, Card, Input, Stack, Row } from "../../../shared/components";
 import { getDueDateStatus } from "../../../shared/utils/date/dateStatus.js";
 import { Badge } from "../../../shared/components/Badge/Badge.js";
 import { Checkbox } from "../../../shared/components";
@@ -21,18 +21,14 @@ export function TodoItem({todo, controller}) {
     // Editing
     if (controller.isEditing(todo.id)){
         
-        return component(Card, {
+        return component(Row, {
 
-    children: [
-                element(
-                    "div",
-                    {
-                        class: "todo-item",
-                    },
+                    gap: "sm",
 
+                    children: [
                     component(Input, {
                         value: controller.editTitle,
-
+                        size: "sm",
                         onInput: e =>
                             controller.setEditTitle(
                                 e.target.value
@@ -43,6 +39,7 @@ export function TodoItem({todo, controller}) {
 
                         children: ["Save"],
                         variant: "success",
+                        size: "md",
                         onClick: (e) => {
                             e.stopPropagation();
                             controller.saveEdit(todo);
@@ -53,67 +50,88 @@ export function TodoItem({todo, controller}) {
 
                         children: ["Cancel"],
                         variant: "outline",
+                        size: "md",
                         onClick: () =>
                             controller.cancelEditing(),
                     }),
-                )
             ]
         });
     }
 
     return component(Card, {
 
-        children: [
+    children: [
 
-            element(
-                "div",
-                {
-                    class: "todo-item",
-                },
+        component(Stack, {
 
-                component(Checkbox, {
-                    type: "checkbox",
-                    checked: todo.completed,
-                    onChange: () => controller.toggleTodoc(todo.id),
-                }),
-                /* element(
-                    "input",
-                    {
-                        type: "checkbox",
-                        checked: todo.completed,
-                        onChange: () => controller.toggleTodoc(todo.id),
-                    }
-                ), */
+            gap: "sm",
 
-                element(
-                    "span",
-                    {},
-                    todo.title
-                ),
+            children: [
 
-                component(PriorityBdage, {
-                    priority: todo.priority,
-                }),
+                component(Row, {
 
-                todo.dueDate
-                    ? component(DueDateBadge, {
-                        dueDate: todo.dueDate
-                    })
-                    : "",
+                    align: "center",
 
-                component(Button, {
-                    children: ["Delete"],
-                    variant: "danger",
-                    onClick: () => controller.deleteTodoc(todo.id),
+                    gap: "sm",
+
+                    children: [
+
+                        component(Checkbox, {
+                            checked: todo.completed,
+                            onChange: () =>
+                                controller.toggleTodoc(todo.id),
+                        }),
+
+                        element(
+                            "span",
+                            {},
+                            todo.title
+                        ),
+
+                        component(PriorityBdage, {
+                            priority: todo.priority,
+                        }),
+
+                        todo.dueDate &&
+                            component(DueDateBadge, {
+                                dueDate: todo.dueDate,
+                            }),
+
+                    ],
+
                 }),
 
-                component(Button, {
-                    children: ["Edit"],
-                    variant: "secondary",
-                    onClick: () => controller.startEditing(todo),
+                component(Row, {
+
+                    justify: "end",
+
+                    gap: "sm",
+
+                    children: [
+
+                        component(Button, {
+                            variant: "secondary",
+                            children: ["Edit"],
+                            onClick: () =>
+                                controller.startEditing(todo),
+                        }),
+
+                        component(Button, {
+                            variant: "danger",
+                            children: ["Delete"],
+                            onClick: () =>
+                                controller.deleteTodoc(todo.id),
+                        }),
+
+                    ],
+
                 }),
 
-            )
-        ]
-    });
+            ],
+
+        }),
+
+    ],
+
+});
 }

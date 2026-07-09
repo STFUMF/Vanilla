@@ -1,26 +1,37 @@
-import { element } from "@core/renderer";
+import "../../styles/components/input.css"
+
+import { createComponentElement } from "../../utils/createComponentElement.js";
 
 /**
  * Shared input component.
- * 
+ *
  * @param {object} props
  * @returns {object}
  */
 export function Input({
     type = "text",
     value = "",
+    size,
+    variant,
     placeholder = "",
-    className = "",
+    className,
     onInput,
+    ...props
 }) {
-    return element(
-        "input",
-        {
+    return createComponentElement({
+        tag: "input",
+
+        baseClass: "input",
+        variant,
+        size,
+        className,
+
+        props: {
             type,
             value,
             placeholder,
-            class: `input ${className}`.trim(),
             onInput,
-        }
-    );
+            ...props,
+        },
+    });
 }

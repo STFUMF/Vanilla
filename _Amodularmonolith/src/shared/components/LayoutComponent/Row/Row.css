@@ -6,11 +6,11 @@
 /* Gap */
 
 .row-gap-none { gap: 0; }
-.row-gap-xs   { gap: .25rem; }
-.row-gap-sm   { gap: .5rem; }
-.row-gap-md   { gap: 1rem; }
-.row-gap-lg   { gap: 1.5rem; }
-.row-gap-xl   { gap: 2rem; }
+.row-gap-xs   {  gap:var(--space-xs); }
+.row-gap-sm   {  gap:var(--space-sm); }
+.row-gap-md   {  gap:var(--space-md); }
+.row-gap-lg   {  gap:var(--space-lg); }
+.row-gap-xl   {  gap:var(--space-xl); }
 
 /* Justify */
 

@@ -1,47 +1,34 @@
-body {
-    font-family: var(--font-family-base);
-    font-size: var(--font-size-base);
+@import "./tokens.css";
 
-    background: var(--color-background);
-    color: var(--color-text);
+*,
+*::before,
+*::after{
+    box-sizing:border-box;
 }
 
-#app {
-    min-height: 100vh;
+html{
+
+    font-family:var(--font-family);
+
 }
 
-.badge {
-    display: inline-block;
-    padding: .2rem .6rem;
-    border-radius: 999px;
-    font-size: .75rem;
-    font-weight: 600;
+body{
+
+    margin:0;
+
+    background:var(--color-background);
+
+    color:var(--color-text);
+
+    font-size:var(--font-size-md);
+
 }
 
+button,
+input,
+select,
+textarea{
 
-.badge-high {}
-.badge-medium {}
-.badge-low {}
+    font:inherit;
 
-.badge-overdue {}
-.badge-today {}
-.badge-tomorrow {}
-.badge-week {}
-
-.btn {
-    padding: .5rem .9rem;
-    border: 1px solid transparent;
-    border-radius: 6px;
-    cursor: pointer;
-    font: inherit;
 }
-
-.btn-primary {}
-
-.btn-secondary {}
-
-.btn-success {}
-
-.btn-danger {}
-
-.btn-outline {}

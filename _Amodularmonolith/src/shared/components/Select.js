@@ -1,6 +1,6 @@
 
-
-import { element } from "../../core/renderer";
+import "../styles/components/select.css";
+import { element } from "@core/renderer";
 
 
 export function Select({

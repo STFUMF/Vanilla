@@ -1,0 +1,11 @@
+.select {
+    padding: .6rem .8rem;
+
+    border-radius: .5rem;
+
+    border: 1px solid #d1d5db;
+
+    font: inherit;
+
+    background: white;
+}
