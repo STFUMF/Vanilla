@@ -1,40 +1,50 @@
 .btn {
-    border: none;
-    border-radius: .5rem;
-    padding: .6rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1rem;
 
-    cursor: pointer;
+  cursor: pointer;
 
-    font: inherit;
+  font: inherit;
 
-    transition: .2s;
+  transition: 0.2s;
 }
 
 .btn:hover {
-    opacity: .9;
+  opacity: 0.9;
 }
 
-.btn-primary{
+.btn-primary {
+  background: var(--color-primary);
 
-    background:var(--color-primary);
-
-    color:var(--color-white);
-
+  color: var(--color-white);
 }
 .btn-secondary {
-    background: #6b7280;
-    color: white;
+  background: #6b7280;
+  color: white;
 }
 
 .btn-success {
-    background:var(--color-success);
+  background: var(--color-success);
 }
 
 .btn-danger {
-     background:var(--color-danger);
+  background: var(--color-danger);
 }
 
 .btn-outline {
-    background: transparent;
-    border: 1px solid #d1d5db;
+  background: transparent;
+  border: 1px solid #d1d5db;
+}
+
+.btn-ghost {
+  background: transparent;
+
+  color: var(--color-text);
+
+  border: none;
+}
+
+.btn-ghost:hover {
+  background: var(--color-surface-hover);
 }

@@ -1,17 +1,9 @@
 import { component } from "@core/components";
 
-import { Container, Stack } from "../../shared/components";
+import { Container, Navigation, Stack } from "../../shared/components";
 
-export function AppLayout({ header, navigation, children, footer }) {
+export function AppLayout({ header, footer, children }) {
   return component(Container, {
-    size: "lg",
-
-    children: [
-      component(Stack, {
-        gap: "lg",
-
-        children: [header, navigation, ...children, footer],
-      }),
-    ],
+    children: [header, component(Navigation), ...children, footer],
   });
 }

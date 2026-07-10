@@ -7,7 +7,6 @@ import { TodoContent } from "./components/TodoContent.js";
 export function TodoPage({ controller }) {
   return component(AppLayout, {
     header: component(Header),
-    navigation: component(Navigation),
     footer: component(Footer),
     children: [
       component(TodoContent, {

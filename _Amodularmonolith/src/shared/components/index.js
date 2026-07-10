@@ -23,4 +23,4 @@ export { Chip } from "./Chip.js";
 // layouts
 export { Header } from "./AppLayout/Header/Header.js";
 export { Footer } from "./AppLayout/Footer/Footer.js";
-export { Navigation } from "./AppLayout/Navigation.js";
+export { Navigation } from "./AppLayout/Navigation/Navigation.js";

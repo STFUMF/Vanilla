@@ -13,10 +13,25 @@ import { DashboardPage } from "../features/Dashboard/pages/DashboardPage.js";
 export function registerRoutes({ todoController }) {
   return {
     routes: [
-      createRoute("/", DashboardPage, { controller: todoController }),
-      createRoute("/todos", TodoPage, { controller: todoController }),
+      createRoute(
+        "/",
+        DashboardPage,
+        { controller: todoController },
+        { title: "Dashboard", navigation: true },
+      ),
+      createRoute(
+        "/todos",
+        TodoPage,
+        { controller: todoController },
+        { title: "Todos", navigation: true },
+      ),
 
-      createRoute("/about", AboutPage),
+      createRoute(
+        "/about",
+        AboutPage,
+        {},
+        { title: "About", navigation: true },
+      ),
     ],
     notFound: NotFoundPage,
   };
