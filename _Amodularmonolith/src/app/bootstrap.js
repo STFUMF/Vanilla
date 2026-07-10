@@ -1,8 +1,7 @@
 import { createApp } from "./app";
 
-import { createStore } from "../core/store"
-import { thunk } from "../core/store/middleware/thunk.js"
-
+import { createStore } from "../core/store";
+import { thunk } from "../core/store/middleware/thunk.js";
 
 import { createStoreService as StorageService } from "../core/storage";
 import { LocalStorageAdapter } from "../core/storage";
@@ -11,52 +10,45 @@ import { TodoRepository } from "../features/todo/repository/TodoRepository.js";
 import { TodoController } from "../features/todo/controllers/TodoController.js";
 import { TodoService } from "../features/todo/services/TodoService.js";
 import { todoActions } from "../features/todo/store/todoActionTypes.js";
-import { createTodoPersistenceMiddleware as persistTodos} from "../features/todo/store/todoPersistenceMiddleware.js";
+import { createTodoPersistenceMiddleware as persistTodos } from "../features/todo/store/todoPersistenceMiddleware.js";
 
 import { rootReducer } from "./registerStore.js";
 
 /**
  * Bootstraps starts the application.
- * 
+ *
  * @param {object} store
  * @param {TodoService} todoService
  */
 
-
-
 export function bootstrap() {
+  // Storage
 
-    // Storage
+  const storage = StorageService(LocalStorageAdapter);
 
-    const storage = StorageService(
-        LocalStorageAdapter
-    );
+  // Repository
 
-    // Repository
+  const todoRepository = new TodoRepository(storage);
 
-    const todoRepository = new TodoRepository(storage);
+  // Service
 
-    // Service
+  const todoService = new TodoService(todoRepository);
 
-    const todoService = new TodoService(todoRepository);
-    const persistTodosMiddleware = persistTodos(todoService);
-    // Store
+  // Store
 
-    const store = createStore(rootReducer, [thunk, persistTodos(todoService) ]);
-    // Controller
+  const store = createStore(rootReducer, [thunk, persistTodos(todoService)]);
 
-    const todoController = new TodoController(store);
+  // Controller
 
-    // Initial data
-    todoController.loadTodos(
-        todoService.loadTodos()
-    );
+  const todoController = new TodoController(store);
 
-    // Start UI
-    createApp({
-        root: document.querySelector("#app"),
-        store,
-        todoController,
-    })
+  // Initial data
+  todoController.loadTodos(todoService.loadTodos());
 
+  // Start UI
+  createApp({
+    root: document.querySelector("#app"),
+    store,
+    todoController,
+  });
 }
