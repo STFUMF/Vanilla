@@ -9,236 +9,228 @@ import { todoActions } from "../store/todoActionTypes.js";
 import { todoSelectors } from "../store/todoSelectors.js";
 
 export class TodoController {
-    /**
-     * @param {Store} store
-     */
-    constructor(store) {
-        this.store = store;
+  /**
+   * @param {Store} store
+   */
+  constructor(store) {
+    this.store = store;
 
-        // View state
-        this.title = "";
+    // View state
+    this.title = "";
 
-        // Edit UI state
-        this.editingTodoId = null;
-        this.editTitle = "";
+    // Edit UI state
+    this.editingTodoId = null;
+    this.editTitle = "";
 
-        this.search = "";
+    this.search = "";
 
-        this.filters = {
-            status: "all",
-            priority: "all",
-            dueDate: "all",
-        };
+    this.filters = {
+      status: "all",
+      priority: "all",
+      dueDate: "all",
+    };
 
-        this.sort = "created-desc";
+    this.sort = "created-desc";
 
-        this.priority = "medium";
+    this.priority = "medium";
 
-        this.dueDate = "";
+    this.dueDate = "";
 
-        // View update callback
-        this.onViewChanged = () => {};
+    // View update callback
+    this.onViewChanged = () => {};
+  }
+
+  /**
+   * Loads the initial todos into the store.
+   *
+   * @param {Array} todos
+   */
+
+  /**
+   * Updates the current input value.
+   *
+   * @param {string} title
+   */
+  setTitle(title) {
+    this.title = title;
+    this.notifyViewChanged();
+  }
+
+  /**
+   * Returns all todos.
+   *
+   * @returns {Array}
+   */
+  getTodos() {
+    return todoSelectors.items(this.store.getState());
+  }
+
+  /**
+   * Returns statistics for the UI.
+   *
+   * @returns {{total:number, completed:number, remaining:number}}
+   */
+  getStats() {
+    const state = this.store.getState();
+
+    return {
+      total: todoSelectors.total(state),
+      completed: todoSelectors.completed(state).length,
+      remaining: todoSelectors.remaining(state).length,
+    };
+  }
+
+  /**
+   * Adds a new todo.
+   */
+  addTodoc() {
+    const title = this.title.trim();
+    if (!title) {
+      return;
     }
 
-    /**
-     * Loads the initial todos into the store.
-     *
-     * @param {Array} todos
-     */
-    loadTodos(todos) {
-        this.store.dispatch(
-            todoActions.set(todos)
-        );
+    addTodo(this.store, {
+      id: crypto.randomUUID(),
+      title,
+      completed: false,
+      dueDate: this.dueDate || null,
+      priority: this.priority,
+      category: null,
+      tags: [],
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    });
+
+    console.log(this.store.getState());
+    this.title = "";
+    this.priority = "medium";
+    this.dueDate = "";
+  }
+
+  /**
+   * Deletes a todo.
+   *
+   * @param {string} id
+   */
+  deleteTodoc(id) {
+    deleteTodo(this.store, id);
+  }
+
+  /**
+   * Toggles completion.
+   *
+   * @param {string} id
+   */
+  toggleTodoc(id) {
+    toggleTodo(this.store, id);
+    console.log("toggled");
+  }
+
+  startEditing(todo) {
+    console.log("test");
+    this.editingTodoId = todo.id;
+    this.editTitle = todo.title;
+
+    this.notifyViewChanged();
+  }
+
+  setEditTitle(title) {
+    this.editTitle = title;
+
+    this.notifyViewChanged();
+  }
+
+  cancelEditing() {
+    this.editingTodoId = null;
+    this.editTitle = "";
+
+    this.notifyViewChanged();
+  }
+
+  isEditing(id) {
+    return this.editingTodoId === id;
+  }
+
+  saveEdit(todo) {
+    const title = this.editTitle.trim();
+
+    if (!title) {
+      return;
     }
+    updateTodo(this.store, {
+      ...todo,
+      title,
+      updatedAt: Date.now(),
+    });
 
-    /**
-     * Updates the current input value.
-     *
-     * @param {string} title
-     */
-    setTitle(title) {
-        this.title = title;
-        this.notifyViewChanged();
-    }
+    this.cancelEditing();
+  }
 
-    /**
-     * Returns all todos.
-     *
-     * @returns {Array}
-     */
-    getTodos() {
-        return todoSelectors.items(
-            this.store.getState()
-        );
-    }
+  setViewChangedListener(listener) {
+    this.onViewChanged = listener;
+  }
 
-    /**
-     * Returns statistics for the UI.
-     *
-     * @returns {{total:number, completed:number, remaining:number}}
-     */
-    getStats() {
-        const state = this.store.getState();
+  notifyViewChanged() {
+    this.onViewChanged();
+  }
 
-        return {
-            total: todoSelectors.total(state),
-            completed: todoSelectors.completed(state).length,
-            remaining: todoSelectors.remaining(state).length,
-        };
-    }
+  setSearch(search) {
+    this.search = search;
+    this.notifyViewChanged();
+  }
 
-    /**
-     * Adds a new todo.
-     */
-    addTodoc() {
-        const title = this.title.trim();
-        if (!title) {
-            return;
-        }
+  getVisibleTodos() {
+    return todoSelectors.visible(
+      this.store.getState(),
+      this.search,
+      this.filters,
+      this.sort,
+    );
+  }
 
-        addTodo(this.store, {
-            id: crypto.randomUUID(),
-            title,
-            completed: false,
-            dueDate: this.dueDate || null,
-            priority: this.priority,
-            category: null,
-            tags: [],
-            createdAt: Date.now(),
-            updatedAt: Date.now(),
-        });
+  setStatusFilter(status) {
+    this.filters.status = status;
+    this.notifyViewChanged();
+  }
 
-        console.log(this.store.getState())
-        this.title = "";
-        this.priority = "medium";
-        this.dueDate = "";
-    }
+  setPriorityFilter(priority) {
+    this.filters.priority = priority;
+    this.notifyViewChanged();
+  }
 
-    /**
-     * Deletes a todo.
-     *
-     * @param {string} id
-     */
-    deleteTodoc(id) {
-        deleteTodo(this.store, id);
-    }
+  setDueDateFilter(filter) {
+    this.filters.dueDate = filter;
+    this.notifyViewChanged();
+  }
 
-    /**
-     * Toggles completion.
-     *
-     * @param {string} id
-     */
-    toggleTodoc(id) {
-        toggleTodo(this.store, id);
-        console.log('toggled')
-    }
+  getFilters() {
+    return this.filters;
+  }
 
-    startEditing(todo) {
-        console.log('test')
-        this.editingTodoId = todo.id;
-        this.editTitle = todo.title;
+  setSort(sort) {
+    this.sort = sort;
+    this.notifyViewChanged();
+  }
 
-        this.notifyViewChanged();
-    }
+  getSort() {
+    return this.sort;
+  }
 
-    setEditTitle(title) {
-        this.editTitle = title;
+  setPriority(priority) {
+    this.priority = priority;
+    this.notifyViewChanged();
+  }
 
-        this.notifyViewChanged();
-    }
+  getPriority() {
+    return this.priority;
+  }
 
-    cancelEditing() {
-        this.editingTodoId = null;
-        this.editTitle = "";
+  setDueDate(date) {
+    this.dueDate = date;
+    this.notifyViewChanged();
+  }
 
-        this.notifyViewChanged();
-    }
-
-    isEditing(id) {
-        return this.editingTodoId === id;
-    }
-
-    saveEdit(todo) {
-        const title = this.editTitle.trim();
-
-        if (!title){
-            return;
-        }
-        updateTodo(this.store, {
-            ...todo,
-            title,
-            updatedAt: Date.now(),
-        });
-
-        this.cancelEditing();
-    }
-
-    setViewChangedListener(listener) {
-        this.onViewChanged = listener;
-    }
-
-    notifyViewChanged() {
-        this.onViewChanged();
-    }
-
-    setSearch(search){
-        this.search = search;
-        this.notifyViewChanged();
-    }
-
-    getVisibleTodos(){
-        return todoSelectors.visible(
-            this.store.getState(),
-            this.search,
-            this.filters,
-            this.sort
-        );
-    }
-
-
-    setStatusFilter(status) {
-        this.filters.status = status;
-        this.notifyViewChanged();
-    }
-
-    setPriorityFilter(priority){
-        this.filters.priority = priority;
-        this.notifyViewChanged();
-    }
-    
-    setDueDateFilter(filter){
-        this.filters.dueDate = filter;
-        this.notifyViewChanged();
-    }
-    
-    getFilters() {
-        return this.filters;
-    }
-
-    setSort(sort) {
-        this.sort = sort;
-        this.notifyViewChanged();
-    }
-
-    getSort() {
-        return this.sort;
-    }
-
-    setPriority(priority){
-        this.priority = priority;
-        this.notifyViewChanged();
-    }
-
-    getPriority(){
-        return this.priority;
-    }
-
-    setDueDate(date) {
-        this.dueDate = date;
-        this.notifyViewChanged();
-    }
-
-    getDueDate(){
-        return this.dueDate;
-    }
+  getDueDate() {
+    return this.dueDate;
+  }
 }

@@ -1,17 +1,16 @@
-
 export class TodoService {
-    /**
-     * @param {TodoRepository} repository
-     */
-    constructor(repository) {
-        this.repository = repository;
-    }
+  /**
+   * @param {TodoRepository} repository
+   */
+  constructor(repository) {
+    this.repository = repository;
+  }
 
-    loadTodos() {
-        return this.repository.getAll();
-    }
+  loadTodos() {
+    return this.repository.getAll();
+  }
 
-    persistTodos(todos) {
-        this.repository.saveAll(todos);
-    }
+  persistTodos(todos) {
+    return this.repository.saveAll(todos);
+  }
 }

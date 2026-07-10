@@ -1,22 +1,20 @@
-
 export class TodoRepository {
-    /**
-     * @param {object} storage
-     */
-    constructor(storage) {
-        this.storage = storage;
-        this.key = "todos";
-    }
+  /**
+   * @param {object} storage
+   */
+  constructor(api) {
+    this.api = api;
+  }
 
-    getAll() {
-        return this.storage.get(this.key) ?? [];
-    }
+  async getAll() {
+    return this.api.loadTodos();
+  }
 
-    saveAll(todos) {
-        this.storage.set(this.key, todos);
-    }
+  async saveAll(todos) {
+    return this.api.saveTodos(todos);
+  }
 
-    clear() {
-        this.storage.remove(this.key);
-    }
+  async clear() {
+    return this.api.remove(this.key);
+  }
 }

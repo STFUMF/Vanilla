@@ -9,10 +9,12 @@ export function FakeApi(storage) {
     },
 
     async saveTodos(todos) {
+      console.log("FakeApi saving:", todos);
       await delay(500);
 
       storage.save("todos", todos);
 
+      console.log("Stored:", storage.load("todos"));
       return todos;
     },
   };

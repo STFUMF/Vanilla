@@ -13,6 +13,8 @@ import { todoActions } from "../features/todo/store/todoActionTypes.js";
 import { createTodoPersistenceMiddleware as persistTodos } from "../features/todo/store/todoPersistenceMiddleware.js";
 
 import { rootReducer } from "./registerStore.js";
+import { FakeApi } from "../core/api";
+import { createLoadTodos } from "../features/todo/store/thunks/loadTodos.js";
 
 /**
  * Bootstraps starts the application.
@@ -22,13 +24,13 @@ import { rootReducer } from "./registerStore.js";
  */
 
 export function bootstrap() {
-  // Storage
+  // Storagea
 
   const storage = StorageService(LocalStorageAdapter);
 
-  // Repository
+  const api = FakeApi(storage);
 
-  const todoRepository = new TodoRepository(storage);
+  const todoRepository = new TodoRepository(api);
 
   // Service
 
@@ -43,7 +45,10 @@ export function bootstrap() {
   const todoController = new TodoController(store);
 
   // Initial data
-  todoController.loadTodos(todoService.loadTodos());
+  // todoController.loadTodos(todoService.loadTodos());
+  const loadTodos = createLoadTodos(todoService);
+
+  store.dispatch(loadTodos());
 
   // Start UI
   createApp({
