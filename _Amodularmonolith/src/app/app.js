@@ -5,44 +5,46 @@ import { component } from "../core/components/component.js";
 import { registerRoutes } from "./registerRoutes.js";
 import { createRouter } from "../core/router";
 
-
 /**
  * Starts the application UI.
- * 
+ *
  * @param {object} options
  * @param {HTMLElement} options.root
  * @param {TodoController} options.todoController
  */
 
-export function createApp({root, store, todoController}) {
-    const renderer = createRenderer(root);
+export function createApp({ root, store, todoController }) {
+  const renderer = createRenderer(root);
 
-    const { routes, notFound } = registerRoutes({
-        todoController,
-    });
+  const { routes, notFound } = registerRoutes({
+    todoController,
+  });
 
-    let currentRoute = null;
+  let currentRoute = null;
 
-    function render() {
-        const Page = currentRoute?.component ?? notFound;
+  function render() {
+    const Page = currentRoute?.component ?? notFound;
 
-        renderer.render(
-            createRenderContext(component(Page))
-        )
-    }
+    console.log("Current Route:", currentRoute);
+    console.log("Page:", Page);
+    console.log("typeof Page:", typeof Page);
 
-    todoController.setViewChangedListener(render);
+    const props = currentRoute?.props ?? {};
 
-    const router = createRouter(
-        routes,
+    renderer.render(createRenderContext(component(Page, props)));
+  }
 
-        (route) => {
-            currentRoute = route;
-            render();
+  todoController.setViewChangedListener(render);
 
-        }
-    )
-    
-    store.subscribe(render);
-    router.start();
+  const router = createRouter(
+    routes,
+
+    (route) => {
+      currentRoute = route;
+      render();
+    },
+  );
+
+  store.subscribe(render);
+  router.start();
 }

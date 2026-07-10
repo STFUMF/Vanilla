@@ -1,14 +1,10 @@
 import { element } from "../core/renderer";
 
 export function AboutPage() {
-    return element(
-        "main",
-        {},
+  return element(
+    "main",
+    {},
 
-        element(
-            "h1",
-            {},
-            "About"
-        )
-    );
+    element("h1", {}, "About"),
+  );
 }
