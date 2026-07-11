@@ -1,10 +1,13 @@
+import { todoActions } from "../../features/todo/store/todoActionTypes.js";
 import { delay } from "./delay.js";
 
 export function FakeApi(storage) {
   return {
     async loadTodos() {
       await delay(800);
-
+      if (Math.random() < 0.3) {
+        throw new Error("Unable to load todos.");
+      }
       return storage.load("todos") ?? [];
     },
 

@@ -14,6 +14,7 @@ import {
   Toolbar,
   Divider,
   Input,
+  ErrorMessage,
 } from "../../../../shared/components/index.js";
 
 export function TodoContent({ controller }) {
@@ -25,8 +26,10 @@ export function TodoContent({ controller }) {
   }
 
   if (controller.getError()) {
+    let errorMessage = controller.getError();
     return component(ErrorMessage, {
-      message: controller.getError(),
+      message: errorMessage,
+      onRetry: () => controller.reloadTodos(),
     });
   }
 

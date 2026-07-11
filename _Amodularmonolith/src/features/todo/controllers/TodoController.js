@@ -12,8 +12,10 @@ export class TodoController {
   /**
    * @param {Store} store
    */
-  constructor(store) {
+  constructor(store, actions) {
     this.store = store;
+
+    this.actions = actions;
 
     // View state
     this.title = "";
@@ -86,6 +88,10 @@ export class TodoController {
 
   getError() {
     return todoSelectors.error(this.store.getState());
+  }
+
+  reloadTodos() {
+    this.store.dispatch(this.actions.loadTodos());
   }
 
   /**

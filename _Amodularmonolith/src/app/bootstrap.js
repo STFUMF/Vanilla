@@ -25,7 +25,6 @@ import { createLoadTodos } from "../features/todo/store/thunks/loadTodos.js";
 
 export function bootstrap() {
   // Storagea
-
   const storage = StorageService(LocalStorageAdapter);
 
   const api = FakeApi(storage);
@@ -41,12 +40,14 @@ export function bootstrap() {
   const store = createStore(rootReducer, [thunk, persistTodos(todoService)]);
 
   // Controller
+  const loadTodos = createLoadTodos(todoService);
 
-  const todoController = new TodoController(store);
+  const todoController = new TodoController(store, {
+    loadTodos,
+  });
 
   // Initial data
   // todoController.loadTodos(todoService.loadTodos());
-  const loadTodos = createLoadTodos(todoService);
 
   store.dispatch(loadTodos());
 
