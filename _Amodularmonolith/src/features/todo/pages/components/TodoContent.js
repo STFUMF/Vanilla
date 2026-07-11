@@ -14,24 +14,12 @@ import {
   Toolbar,
   Divider,
   Input,
-  ErrorMessage,
+  Button,
 } from "../../../../shared/components/index.js";
 
 export function TodoContent({ controller }) {
   const todos = controller.getVisibleTodos();
   const stats = controller.getStats();
-
-  if (controller.isLoading()) {
-    return element("p", {}, "Loading todos...");
-  }
-
-  if (controller.getError()) {
-    let errorMessage = controller.getError();
-    return component(ErrorMessage, {
-      message: errorMessage,
-      onRetry: () => controller.reloadTodos(),
-    });
-  }
 
   return component(Container, {
     size: "md",
@@ -75,6 +63,15 @@ export function TodoContent({ controller }) {
                 controller,
               }),
             ],
+          }),
+
+          component(Button, {
+            children: [controller.isLoading() ? "Refreshing..." : "Refresh"],
+
+            variant: "secondary",
+            disabled: controller.isLoading(),
+
+            onClick: () => controller.reloadTodos(),
           }),
 
           component(Divider),
