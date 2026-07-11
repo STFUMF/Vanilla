@@ -3,6 +3,14 @@ import { getDueDateStatus } from "../../../shared/utils/date/dateStatus.js";
 // Selectors prevent pages and components from knowing that state's internal structure.
 
 export const todoSelectors = {
+  loading(state) {
+    return state.todo.loading;
+  },
+
+  error(state) {
+    return state.todo.error;
+  },
+
   items(state) {
     return state.todo.items;
   },

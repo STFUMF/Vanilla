@@ -1,44 +1,59 @@
-import { 
-    TODO_ADD, 
-    TODO_UPDATE,
-    TODO_DELETE,
-    TODO_TOGGLE,
-    TODO_SET
+import {
+  TODO_ADD,
+  TODO_UPDATE,
+  TODO_DELETE,
+  TODO_TOGGLE,
+  TODO_SET,
+  TODO_LOAD_STARTED,
+  TODO_LOAD_FAILED,
 } from "./todoActions.js";
 
 export const todoActions = {
-    add(todo) {
-        return {
-            type: TODO_ADD,
-            payload: todo,
-        }
-    },
+  loadStarted() {
+    return {
+      type: TODO_LOAD_STARTED,
+    };
+  },
 
-    update(todo) {
-        return {
-            type: TODO_UPDATE,
-            payload: todo,
-        };
-    },
+  loadFailed(error) {
+    return {
+      type: TODO_LOAD_FAILED,
+      payload: error,
+    };
+  },
 
-    remove(id){ 
-        return {
-            type: TODO_DELETE,
-            payload: id,
-        };
-    },
+  add(todo) {
+    return {
+      type: TODO_ADD,
+      payload: todo,
+    };
+  },
 
-    toggle(id) {
-        return {
-            type: TODO_TOGGLE,
-            payload: id,
-        };
-    },
+  update(todo) {
+    return {
+      type: TODO_UPDATE,
+      payload: todo,
+    };
+  },
 
-    set(todos) {
-        return {
-            type: TODO_SET,
-            payload: todos,
-        };
-    },
+  remove(id) {
+    return {
+      type: TODO_DELETE,
+      payload: id,
+    };
+  },
+
+  toggle(id) {
+    return {
+      type: TODO_TOGGLE,
+      payload: id,
+    };
+  },
+
+  set(todos) {
+    return {
+      type: TODO_SET,
+      payload: todos,
+    };
+  },
 };

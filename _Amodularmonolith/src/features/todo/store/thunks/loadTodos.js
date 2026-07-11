@@ -3,10 +3,15 @@ import { todoActions } from "../todoActionTypes.js";
 export function createLoadTodos(todoService) {
   return function loadTodosThunk() {
     return async function (dispatch) {
-      const todos = await todoService.loadTodos();
-      console.log("todos:", todos);
-      console.log(Array.isArray(todos));
-      dispatch(todoActions.set(todos));
+      dispatch(todoActions.loadStarted());
+
+      try {
+        const todos = await todoService.loadTodos();
+        dispatch(todoActions.set(todos));
+        console;
+      } catch (error) {
+        dispatch(todoActions.loadFailed(error.message));
+      }
     };
   };
 }

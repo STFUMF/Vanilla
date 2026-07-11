@@ -20,6 +20,16 @@ export function TodoContent({ controller }) {
   const todos = controller.getVisibleTodos();
   const stats = controller.getStats();
 
+  if (controller.isLoading()) {
+    return element("p", {}, "Loading todos...");
+  }
+
+  if (controller.getError()) {
+    return component(ErrorMessage, {
+      message: controller.getError(),
+    });
+  }
+
   return component(Container, {
     size: "md",
 

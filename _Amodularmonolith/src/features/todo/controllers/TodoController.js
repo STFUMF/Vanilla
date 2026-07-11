@@ -80,6 +80,14 @@ export class TodoController {
     };
   }
 
+  isLoading() {
+    return todoSelectors.loading(this.store.getState());
+  }
+
+  getError() {
+    return todoSelectors.error(this.store.getState());
+  }
+
   /**
    * Adds a new todo.
    */
