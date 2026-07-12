@@ -29,8 +29,7 @@ export const todoSelectors = {
 
   visible(state, search, filters, sort) {
     let items = this.items(state);
-    console.log("Selector items:", items);
-    console.log("Array?", Array.isArray(items));
+
     // search
     if (search.trim()) {
       const query = search.toLowerCase();

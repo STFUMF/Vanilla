@@ -126,8 +126,8 @@ export class TodoController {
    *
    * @param {string} id
    */
-  deleteTodoc(id) {
-    deleteTodo(this.store, id);
+  deleteTodoc(todo) {
+    this.store.dispatch(this.actions.deleteTodo(todo));
   }
 
   /**
@@ -166,7 +166,15 @@ export class TodoController {
   }
 
   saveEdit(todo) {
-    const title = this.editTitle.trim();
+    const updatedTodo = {
+      ...todo,
+      title: this.editTitle.trim(),
+    };
+
+    this.store.dispatch(this.actions.updateTodo(todo, updatedTodo));
+    console.log("saved todocontroller");
+    this.cancelEditing();
+    /* const title = this.editTitle.trim();
 
     if (!title) {
       return;
@@ -177,7 +185,7 @@ export class TodoController {
       updatedAt: Date.now(),
     });
 
-    this.cancelEditing();
+    this.cancelEditing(); */
   }
 
   setViewChangedListener(listener) {

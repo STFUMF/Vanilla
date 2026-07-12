@@ -6,11 +6,27 @@ export class TodoService {
     this.repository = repository;
   }
 
-  loadTodos() {
+  async loadTodos() {
     return this.repository.getAll();
   }
 
-  persistTodos(todos) {
+  async persistTodos(todos) {
     return this.repository.saveAll(todos);
+  }
+
+  async addTodo(todo) {
+    return this.repository.add(todo);
+  }
+
+  async updateTodo(todo) {
+    console.log("update service");
+    return this.repository.update(todo);
+  }
+
+  async deleteTodo(id) {
+    return this.repository.remove(id);
+  }
+  async toggleTodo(id) {
+    return this.repository.remove(id);
   }
 }
