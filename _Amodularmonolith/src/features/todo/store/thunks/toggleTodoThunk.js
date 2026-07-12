@@ -1,19 +1,20 @@
 import { todoActions } from "../todoActionTypes.js";
 
-export function createToggleTodo(todoService) {
-  return function toggleTodoThunk(todo) {
+export function createToggleTodoThunk(todoService) {
+  return function toggleTodoThunk(todo, updatedTodo) {
     return async function (dispatch) {
-      dispatch(todoActions.update(todo));
+      return createOptimisticThunk({
+        optimistic: () => todoActions.toggle(todo.id),
 
-      try {
-        await todoService.toggle(todo);
-      } catch (error) {
-        dispatch(
+        request: () => todoService.updateTodo(updatedTodo),
+
+        rollback: () => todoActions.update(todo),
+
+        onError: (error) =>
           todoActions.loadFailed({
             message: error.message,
           }),
-        );
-      }
+      })(dispatch);
     };
   };
 }

@@ -11,6 +11,7 @@ export class TodoRepository {
   }
 
   async add(todo) {
+    console.log("add from repository");
     return this.api.addTodo(todo);
   }
 
@@ -21,10 +22,6 @@ export class TodoRepository {
 
   async remove(id) {
     return this.api.deleteTodo(id);
-  }
-
-  async saveAll(todos) {
-    return this.api.saveTodos(todos);
   }
 
   async toggle(id) {

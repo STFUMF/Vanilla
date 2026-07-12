@@ -1,23 +1,21 @@
 import { todoActions } from "../todoActionTypes.js";
+import { createOptimisticThunk } from "./createOptimisticThunk.js";
 
 export function createDeleteTodo(todoService) {
-  return function addTodoThunk(todo) {
+  return function deleteTodoThunk(todo) {
     return async function (dispatch) {
-      // Optimistic update
-      dispatch(todoActions.remove(todo.id));
+      return createOptimisticThunk({
+        optimistic: () => todoActions.remove(todo.id),
 
-      try {
-        await todoService.deleteTodo(todo.id);
-      } catch (error) {
-        // Rollback
-        dispatch(todoActions.add(todo));
+        request: () => todoService.deleteTodo(todo.id),
 
-        dispatch(
+        rollback: () => todoActions.add(todo),
+
+        onError: (error) =>
           todoActions.loadFailed({
             message: error.message,
           }),
-        );
-      }
+      })(dispatch);
     };
   };
 }

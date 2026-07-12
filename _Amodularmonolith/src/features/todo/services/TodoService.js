@@ -10,11 +10,8 @@ export class TodoService {
     return this.repository.getAll();
   }
 
-  async persistTodos(todos) {
-    return this.repository.saveAll(todos);
-  }
-
   async addTodo(todo) {
+    console.log("add from todoservice");
     return this.repository.add(todo);
   }
 

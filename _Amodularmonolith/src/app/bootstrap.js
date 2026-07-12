@@ -15,9 +15,10 @@ import { createTodoPersistenceMiddleware as persistTodos } from "../features/tod
 import { rootReducer } from "./registerStore.js";
 import { FakeApi } from "../core/api";
 import { createLoadTodos } from "../features/todo/store/thunks/loadTodos.js";
-import { createAddTodo } from "../features/todo/store/thunks/addTodoThunk.js";
+import { createAddTodoThunk } from "../features/todo/store/thunks/addTodoThunk.js";
 import { createUpdateTodo } from "../features/todo/store/thunks/updateTodoThunk.js";
 import { createDeleteTodo } from "../features/todo/store/thunks/deleteTodoThunk.js";
+import { createToggleTodoThunk } from "../features/todo/store/thunks/toggleTodoThunk.js";
 
 /**
  * Bootstraps starts the application.
@@ -40,14 +41,15 @@ export function bootstrap() {
 
   // Store
 
-  const store = createStore(rootReducer, [thunk, persistTodos(todoService)]);
+  const store = createStore(rootReducer, [thunk]);
 
   // Controller
   const todoThunks = {
     loadTodos: createLoadTodos(todoService),
-    addTodo: createAddTodo(todoService),
+    addTodo: createAddTodoThunk(todoService),
     updateTodo: createUpdateTodo(todoService),
     deleteTodo: createDeleteTodo(todoService),
+    toggleTodo: createToggleTodoThunk(todoService),
   };
 
   const todoController = new TodoController(store, todoThunks);

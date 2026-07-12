@@ -1,21 +1,17 @@
 // src/features/todo/controllers/TodoController.js
 
-import { addTodo } from "../commands/addTodo.js";
-import { deleteTodo } from "../commands/deleteTodo.js";
-import { toggleTodo } from "../commands/toggleTodo.js";
-import { updateTodo } from "../commands/updateTodo.js";
-
-import { todoActions } from "../store/todoActionTypes.js";
 import { todoSelectors } from "../store/todoSelectors.js";
 
 export class TodoController {
   /**
    * @param {Store} store
    */
-  constructor(store, actions) {
+
+  /// rename actions to thunks
+  constructor(store, thunks) {
     this.store = store;
 
-    this.actions = actions;
+    this.thunks = thunks;
 
     // View state
     this.title = "";
@@ -91,7 +87,7 @@ export class TodoController {
   }
 
   reloadTodos() {
-    this.store.dispatch(this.actions.loadTodos());
+    this.store.dispatch(this.thunks.loadTodos());
   }
 
   /**
@@ -103,7 +99,7 @@ export class TodoController {
       return;
     }
 
-    addTodo(this.store, {
+    const todo = {
       id: crypto.randomUUID(),
       title,
       completed: false,
@@ -113,9 +109,10 @@ export class TodoController {
       tags: [],
       createdAt: Date.now(),
       updatedAt: Date.now(),
-    });
+    };
 
-    console.log(this.store.getState());
+    this.store.dispatch(this.thunks.addTodo(todo));
+
     this.title = "";
     this.priority = "medium";
     this.dueDate = "";
@@ -127,7 +124,7 @@ export class TodoController {
    * @param {string} id
    */
   deleteTodoc(todo) {
-    this.store.dispatch(this.actions.deleteTodo(todo));
+    this.store.dispatch(this.thunks.deleteTodo(todo));
   }
 
   /**
@@ -135,9 +132,8 @@ export class TodoController {
    *
    * @param {string} id
    */
-  toggleTodoc(id) {
-    toggleTodo(this.store, id);
-    console.log("toggled");
+  toggleTodoc(todo) {
+    this.store.dispatch(this.thunks.toggleTodo(todo));
   }
 
   startEditing(todo) {
@@ -171,7 +167,7 @@ export class TodoController {
       title: this.editTitle.trim(),
     };
 
-    this.store.dispatch(this.actions.updateTodo(todo, updatedTodo));
+    this.store.dispatch(this.thunks.updateTodo(todo, updatedTodo));
     console.log("saved todocontroller");
     this.cancelEditing();
     /* const title = this.editTitle.trim();
