@@ -15,7 +15,7 @@ export function registerRoutes({ todoController }) {
   return {
     routes: [
       createLazyRoute(
-        "/dashboard",
+        "/",
 
         async () => {
           console.log("called hover");

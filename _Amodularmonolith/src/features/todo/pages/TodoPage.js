@@ -3,8 +3,10 @@ import { component } from "@core/components";
 import { AppLayout } from "../../../app/layout/AppLayout.js";
 import { Header, Navigation, Footer } from "../../../shared/components";
 import { TodoContent } from "./components/TodoContent.js";
+import { Logger } from "@core/logger";
 
 export function TodoPage({ controller }) {
+  Logger.debug("loaded todos");
   return component(AppLayout, {
     header: component(Header),
     footer: component(Footer),

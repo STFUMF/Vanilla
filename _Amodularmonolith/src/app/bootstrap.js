@@ -20,6 +20,8 @@ import { createUpdateTodo } from "../features/todo/store/thunks/updateTodoThunk.
 import { createDeleteTodo } from "../features/todo/store/thunks/deleteTodoThunk.js";
 import { createToggleTodoThunk } from "../features/todo/store/thunks/toggleTodoThunk.js";
 
+import { createConfig, ConfigService } from "@core/config";
+
 /**
  * Bootstraps starts the application.
  *
@@ -28,6 +30,10 @@ import { createToggleTodoThunk } from "../features/todo/store/thunks/toggleTodoT
  */
 
 export function bootstrap() {
+  const config = createConfig({
+    debug: true,
+    dev: true,
+  });
   // Storagea
   const storage = StorageService(LocalStorageAdapter);
 
@@ -65,4 +71,7 @@ export function bootstrap() {
     store,
     todoController,
   });
+
+  ConfigService.set(config);
+  console.log(ConfigService.get());
 }
