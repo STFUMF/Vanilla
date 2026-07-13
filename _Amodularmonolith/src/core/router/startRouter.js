@@ -1,27 +1,30 @@
+import { loadRoute } from "./loadRoute.js";
 import { resolveRoute } from "./resolveRoute.js";
 
 /**
  * Starts the router.
- * 
+ *
  * @param {object} state
  * @param {Function} onRouteChange
  */
 export function startRouter(state, onRouteChange) {
-    if (state.isStarted) {
-        return;
-    }
+  if (state.isStarted) {
+    return;
+  }
 
-    function handleRouteChange(){
-        const route = resolveRoute(state);
+  async function handleRouteChange() {
+    const route = resolveRoute(state);
 
-        onRouteChange(route, state.currentPath);
-    }
+    const loadedRoute = await loadRoute(route);
 
-    state.handleRouteChange = handleRouteChange;
+    onRouteChange(loadedRoute, state.currentPath);
+  }
 
-    window.addEventListener('hashchange', handleRouteChange);
+  state.handleRouteChange = handleRouteChange;
 
-    state.isStarted = true;
+  window.addEventListener("hashchange", handleRouteChange);
 
-    handleRouteChange();
+  state.isStarted = true;
+
+  handleRouteChange();
 }

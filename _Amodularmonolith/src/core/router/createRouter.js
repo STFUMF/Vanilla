@@ -4,22 +4,22 @@ import { stopRouter } from "./stopRouter.js";
 
 /**
  * Creates a router.
- * 
+ *
  * @param {Array} routes
  * @param {Function} onRouteChange
  */
 export function createRouter(routes, onRouteChange) {
-    const state = createRouterState();
+  const state = createRouterState();
 
-    state.routes = [...routes];
+  state.routes = [...routes];
 
-    return {
-        start() {
-            startRouter(state, onRouteChange);
-        },
+  return {
+    start() {
+      startRouter(state, onRouteChange);
+    },
 
-        stop() {
-            stopRouter(state);
-        }
-    }
+    stop() {
+      stopRouter(state);
+    },
+  };
 }

@@ -4,6 +4,7 @@ import { AboutPage } from "../features/About/pages/AboutPage.js";
 import { NotFoundPage } from "../shared/pages/NotFoundPage.js";
 import { TodoPage } from "../features/todo/pages/TodoPage.js";
 import { DashboardPage } from "../features/Dashboard/pages/DashboardPage.js";
+import { createLazyRoute } from "../core/router/createLazyRoute.js";
 
 /**
  * Regisers all application routes.
@@ -13,22 +14,44 @@ import { DashboardPage } from "../features/Dashboard/pages/DashboardPage.js";
 export function registerRoutes({ todoController }) {
   return {
     routes: [
-      createRoute(
+      createLazyRoute(
+        "/dashboard",
+
+        async () => {
+          const module =
+            await import("../features/Dashboard/pages/DashboardPage.js");
+
+          console.log(module);
+          return module.DashboardPage;
+        },
+        { controller: todoController },
+        { title: "Dashboard", navigation: true },
+      ),
+      /* createRoute(
         "/",
         DashboardPage,
         { controller: todoController },
         { title: "Dashboard", navigation: true },
-      ),
+      ), */
       createRoute(
         "/todos",
-        TodoPage,
+
+        async () => {
+          const module = await import("../features/todo/pages/TodoPage.js");
+
+          return module.TodoPage;
+        },
         { controller: todoController },
         { title: "Todos", navigation: true },
       ),
 
       createRoute(
         "/about",
-        AboutPage,
+        async () => {
+          const module = await import("../features/About/pages/AboutPage.js");
+
+          return module.AboutPage;
+        },
         {},
         { title: "About", navigation: true },
       ),

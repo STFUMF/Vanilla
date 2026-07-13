@@ -5,10 +5,12 @@
  * @param {Functioon} component
  * @returns {object}
  */
-export function createRoute(path, component, props = {}, meta = {}) {
+export function createRoute(path, loader, props = {}, meta = {}) {
   return Object.freeze({
     path,
-    component,
+    type: "lazy",
+    loader,
+    component: null,
     props,
     meta,
   });
