@@ -73,5 +73,4 @@ export function bootstrap() {
   });
 
   ConfigService.set(config);
-  console.log(ConfigService.get());
 }

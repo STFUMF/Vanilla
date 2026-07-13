@@ -1,6 +1,9 @@
 // Given any route, return a route that is ready to render.
 
+import { assertRoute } from "@core/assert";
+
 export async function loadRoute(route) {
+  assertRoute(route);
   try {
     if (!route) {
       return null;

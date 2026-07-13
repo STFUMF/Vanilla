@@ -9,6 +9,10 @@ export const Logger = {
     console.log(...args);
   },
 
+  info(...args) {
+    console.info(...args);
+  },
+
   warn(...args) {
     console.warn(...args);
   },

@@ -1,4 +1,5 @@
 import { todoActions } from "../../features/todo/store/todoActionTypes.js";
+import { Logger } from "@core/Logger";
 import { delay } from "./delay.js";
 
 export function FakeApi(storage) {
@@ -8,6 +9,7 @@ export function FakeApi(storage) {
       if (Math.random() < 0.3) {
         //  throw new Error("Unable to load todos.");
       }
+
       return storage.load("todos") ?? [];
     },
 
@@ -19,7 +21,7 @@ export function FakeApi(storage) {
       todos.push(todo);
 
       storage.save("todos", todos);
-
+      Logger.debug("Sorage,", "Saving todos", todos);
       return todo;
     },
 
