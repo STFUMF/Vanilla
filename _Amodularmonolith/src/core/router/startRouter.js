@@ -7,7 +7,7 @@ import { resolveRoute } from "./resolveRoute.js";
  * @param {object} state
  * @param {Function} onRouteChange
  */
-export function startRouter(state, onRouteChange) {
+export function startRouter(state, { onLoading, onChange, onError }) {
   if (state.isStarted) {
     return;
   }
@@ -15,9 +15,16 @@ export function startRouter(state, onRouteChange) {
   async function handleRouteChange() {
     const route = resolveRoute(state);
 
-    const loadedRoute = await loadRoute(route);
+    onLoading?.(route);
 
-    onRouteChange(loadedRoute, state.currentPath);
+    try {
+      const loadedRoute = await loadRoute(route);
+
+      onChange?.(loadedRoute);
+    } catch (error) {
+      onError?.(error);
+    }
+    // onRouteChange(loadedRoute, state.currentPath);
   }
 
   state.handleRouteChange = handleRouteChange;

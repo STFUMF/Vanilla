@@ -8,14 +8,14 @@ import { stopRouter } from "./stopRouter.js";
  * @param {Array} routes
  * @param {Function} onRouteChange
  */
-export function createRouter(routes, onRouteChange) {
+export function createRouter(routes, { onLoading, onChange, onError }) {
   const state = createRouterState();
 
   state.routes = [...routes];
 
   return {
     start() {
-      startRouter(state, onRouteChange);
+      startRouter(state, { onLoading, onChange, onError });
     },
 
     stop() {

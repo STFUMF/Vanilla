@@ -4,6 +4,7 @@ import { createRenderContext, createRenderer } from "../core/renderer";
 import { component } from "../core/components/component.js";
 import { registerRoutes } from "./registerRoutes.js";
 import { createRouter, RouterService } from "@core/router";
+import { Loading } from "../shared/components/index.js";
 
 /**
  * Starts the application UI.
@@ -22,12 +23,21 @@ export function createApp({ root, store, todoController }) {
 
   RouterService.setRoutes(routes);
 
-  let currentRoute = null;
+  const routerState = {
+    currentRoute: null,
+    isRouteLoading: false,
+    routeError: null,
+  };
 
   function render() {
-    const Page = currentRoute?.component ?? notFound;
+    const Page = routerState.currentRoute?.component ?? notFound;
 
-    const props = currentRoute?.props ?? {};
+    const props = routerState.currentRoute?.props ?? {};
+
+    if (routerState.isRouteLoading) {
+      renderer.render(createRenderContext(component(Loading)));
+      return;
+    }
 
     renderer.render(createRenderContext(component(Page, props)));
   }
@@ -37,9 +47,24 @@ export function createApp({ root, store, todoController }) {
   const router = createRouter(
     routes,
 
-    (route) => {
-      currentRoute = route;
-      render();
+    {
+      onLoading() {
+        routerState.routeError = null;
+        routerState.isRouteLoading = true;
+        render();
+      },
+
+      onChange(route) {
+        routerState.currentRoute = route;
+        routerState.isRouteLoading = false;
+        render();
+      },
+
+      onError(route) {
+        routerState.isRouteLoading = false;
+        routerState.routeError = error;
+        render();
+      },
     },
   );
 

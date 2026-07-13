@@ -26,3 +26,5 @@ export { Footer } from "./AppLayout/Footer/Footer.js";
 export { Navigation } from "./AppLayout/Navigation/Navigation.js";
 
 export { ErrorMessage } from "./ErrorMessage/ErrorMessage.js";
+
+export { Loading } from "./Loading/Loading.js";

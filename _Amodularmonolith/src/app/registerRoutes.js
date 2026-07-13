@@ -18,6 +18,7 @@ export function registerRoutes({ todoController }) {
         "/dashboard",
 
         async () => {
+          await new Promise((resolve) => setTimeout(resolve, 2000));
           const module =
             await import("../features/Dashboard/pages/DashboardPage.js");
 
@@ -35,23 +36,14 @@ export function registerRoutes({ todoController }) {
       ), */
       createRoute(
         "/todos",
-
-        async () => {
-          const module = await import("../features/todo/pages/TodoPage.js");
-
-          return module.TodoPage;
-        },
+        TodoPage,
         { controller: todoController },
         { title: "Todos", navigation: true },
       ),
 
       createRoute(
         "/about",
-        async () => {
-          const module = await import("../features/About/pages/AboutPage.js");
-
-          return module.AboutPage;
-        },
+        AboutPage,
         {},
         { title: "About", navigation: true },
       ),
