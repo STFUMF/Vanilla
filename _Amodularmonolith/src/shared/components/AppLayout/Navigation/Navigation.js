@@ -5,6 +5,7 @@ import { Row } from "../../LayoutComponent/Row/Row.js";
 
 import { NavLink } from "./NavLink.js";
 import { getCurrentPath, RouterService } from "@core/router";
+import { prefetchRoute } from "../../../../core/router/prefetchRoute.js";
 
 export function Navigation() {
   const currentPath = getCurrentPath();
@@ -17,6 +18,7 @@ export function Navigation() {
       .map((route) =>
         component(NavLink, {
           to: route.path,
+          onRoutes: { allRoute: routes, routePath: route.path },
 
           active: currentPath === route.path,
 

@@ -3,8 +3,9 @@ import { component } from "@core/components/";
 import { Button } from "../../Button/Button.js";
 
 import { navigate, getCurrentPath } from "@core/router";
+import { prefetchRoute } from "../../../../core/router/prefetchRoute.js";
 
-export function NavLink({ to, active, children }) {
+export function NavLink({ to, onRoutes, active, children }) {
   return component(Button, {
     variant: active ? "primary" : "ghost",
 
@@ -14,6 +15,10 @@ export function NavLink({ to, active, children }) {
 
     onClick() {
       navigate(to);
+    },
+    onMouseEnter() {
+      prefetchRoute(onRoutes.allRoute, onRoutes.routePath);
+      console.log("test");
     },
   });
 }

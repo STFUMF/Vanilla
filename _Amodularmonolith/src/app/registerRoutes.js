@@ -18,6 +18,7 @@ export function registerRoutes({ todoController }) {
         "/dashboard",
 
         async () => {
+          console.log("called hover");
           await new Promise((resolve) => setTimeout(resolve, 2000));
           const module =
             await import("../features/Dashboard/pages/DashboardPage.js");
