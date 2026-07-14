@@ -9,7 +9,6 @@ import { LocalStorageAdapter } from "../core/storage";
 import { TodoRepository } from "../features/todo/repository/TodoRepository.js";
 import { TodoController } from "../features/todo/controllers/TodoController.js";
 import { TodoService } from "../features/todo/services/TodoService.js";
-import { todoActions } from "../features/todo/store/todoActionTypes.js";
 
 import { rootReducer } from "./registerStore.js";
 import { FakeApi } from "../core/api";
@@ -24,6 +23,7 @@ import { DebugService } from "@core/debug";
 import { inspectFramework } from "../core/debug/inspectFramework.js";
 import { createApplication } from "@core/application";
 import { registerRoutes } from "./registerRoutes.js";
+import { LoggerPlugin } from "../core/plugin/LoggerPlugin.js";
 
 /**
  * Bootstraps starts the application.
@@ -33,11 +33,6 @@ import { registerRoutes } from "./registerRoutes.js";
  */
 
 export function bootstrap() {
-  const routerState = {
-    currentRoute: null,
-    isRouteLoading: false,
-    routeError: null,
-  };
   const config = createConfig({
     debug: true,
     dev: true,
@@ -69,10 +64,6 @@ export function bootstrap() {
 
   const todoController = new TodoController(store, todoThunks);
 
-  // Initial data
-  // todoController.loadTodos(todoService.loadTodos());
-
-  store.dispatch(todoThunks.loadTodos());
   const app = createApplication()
     .configure(config)
     .mount(document.querySelector("#app"))
@@ -88,16 +79,23 @@ export function bootstrap() {
     root: app.getRoot(),
     store,
     routes,
-    routerState,
     notFound,
     todoController,
   });
 
-  app.attachRenderer(ui.render).attachRouter(ui.router);
+  app.attachRenderer(ui.renderer).attachRouter(ui.router);
 
-  DebugService.register("store", store);
-  DebugService.register("config", config);
-  inspectFramework();
+  console.log(app.getStatus());
 
+  app.on("started", () => {
+    console.log("Frame work started");
+  });
+
+  app.use(LoggerPlugin);
   app.start();
+
+  // Initial data
+  // todoController.loadTodos(todoService.loadTodos());
+
+  store.dispatch(todoThunks.loadTodos());
 }

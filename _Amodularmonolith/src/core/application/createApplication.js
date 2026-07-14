@@ -1,7 +1,9 @@
 import { inspectFramework } from "../debug/inspectFramework.js";
+import { createPluginContext } from "../plugin/PluginContext.js";
 
 export function createApplication() {
   const state = {
+    status: "created",
     root: null,
     config: null,
     store: null,
@@ -12,16 +14,27 @@ export function createApplication() {
     plugins: [],
   };
 
+  const listeners = {
+    created: [],
+    configured: [],
+    mounted: [],
+    started: [],
+    stopped: [],
+  };
+
   const app = {
     configure(config) {
       state.config = config;
-
+      state.status = "configured";
+      emit("configured");
       return app;
     },
 
     mount(root) {
       state.root = root;
+      state.status = "mounted";
 
+      emit("mounted");
       return app;
     },
 
@@ -60,7 +73,12 @@ export function createApplication() {
     },
 
     start() {
+      if (state.status === "started") {
+        return app;
+      }
       state.router?.start();
+      state.status = "started";
+      emit("started");
       return app;
     },
 
@@ -98,9 +116,33 @@ export function createApplication() {
     },
 
     getPlugins() {
-      return [...state, plugins];
+      return [...state.plugins];
+    },
+
+    getStatus() {
+      return state.status;
+    },
+    on(event, listener) {
+      listeners[event]?.push(listener);
+      return app;
+    },
+    use(plugin) {
+      if (state.plugins.some((p) => p.name === plugin.name)) {
+        console.warn(`Plugin "${plugin.name}" is already installed.`);
+        return app;
+      }
+
+      plugin.install(createPluginContext(app));
+
+      state.plugins.push(plugin);
+
+      return app;
     },
   };
+
+  function emit(event) {
+    listeners[event]?.forEach((listener) => listener(app));
+  }
 
   return app;
 }

@@ -15,8 +15,6 @@ export async function loadRoute(route) {
 
     const component = await route.loader();
 
-    console.log(component);
-    console.log(typeof component);
     return {
       ...route,
       component,

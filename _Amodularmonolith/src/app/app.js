@@ -18,14 +18,12 @@ import { createApplicationRouter } from "./createApplicationRouter.js";
  * @param {TodoController} options.todoController
  */
 
-export function createUI({
-  root,
-  store,
-  routes,
-  routerState,
-  notFound,
-  todoController,
-}) {
+export function createUI({ root, store, routes, notFound, todoController }) {
+  const routerState = {
+    currentRoute: null,
+    isRouteLoading: false,
+    routeError: null,
+  };
   const renderer = createApplicationRenderer(root);
 
   RouterService.setRoutes(routes);

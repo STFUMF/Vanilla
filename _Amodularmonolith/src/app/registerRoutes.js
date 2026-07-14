@@ -23,7 +23,6 @@ export function registerRoutes({ todoController }) {
           const module =
             await import("../features/Dashboard/pages/DashboardPage.js");
 
-          console.log(module);
           return module.DashboardPage;
         },
         { controller: todoController },
