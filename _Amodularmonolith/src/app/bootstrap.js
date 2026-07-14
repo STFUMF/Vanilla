@@ -1,4 +1,4 @@
-import { createApp } from "./app";
+import { createUI } from "./app";
 
 import { createStore } from "../core/store";
 import { thunk } from "../core/store/middleware/thunk.js";
@@ -10,7 +10,6 @@ import { TodoRepository } from "../features/todo/repository/TodoRepository.js";
 import { TodoController } from "../features/todo/controllers/TodoController.js";
 import { TodoService } from "../features/todo/services/TodoService.js";
 import { todoActions } from "../features/todo/store/todoActionTypes.js";
-import { createTodoPersistenceMiddleware as persistTodos } from "../features/todo/store/todoPersistenceMiddleware.js";
 
 import { rootReducer } from "./registerStore.js";
 import { FakeApi } from "../core/api";
@@ -21,6 +20,9 @@ import { createDeleteTodo } from "../features/todo/store/thunks/deleteTodoThunk.
 import { createToggleTodoThunk } from "../features/todo/store/thunks/toggleTodoThunk.js";
 
 import { createConfig, ConfigService } from "@core/config";
+import { DebugService } from "@core/debug";
+import { inspectFramework } from "../core/debug/inspectFramework.js";
+import { createApplication } from "@core/application";
 
 /**
  * Bootstraps starts the application.
@@ -64,13 +66,25 @@ export function bootstrap() {
   // todoController.loadTodos(todoService.loadTodos());
 
   store.dispatch(todoThunks.loadTodos());
+  const app = createApplication()
+    .configure(config)
+    .mount(document.querySelector("#app"))
+    .attachStore(store)
+    .registerController(todoController)
+    .registerService("todo", todoService);
 
   // Start UI
-  createApp({
-    root: document.querySelector("#app"),
+  const ui = createUI({
+    root: app.getRoot(),
     store,
     todoController,
   });
 
-  ConfigService.set(config);
+  app.attachRenderer(ui.render).attachRouter(ui.router);
+
+  DebugService.register("store", store);
+  DebugService.register("config", config);
+  inspectFramework();
+
+  app.start();
 }

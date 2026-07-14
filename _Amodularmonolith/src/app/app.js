@@ -5,6 +5,8 @@ import { component } from "../core/components/component.js";
 import { registerRoutes } from "./registerRoutes.js";
 import { createRouter, RouterService } from "@core/router";
 import { Loading } from "../shared/components/index.js";
+import { DebugService } from "@core/debug";
+import { inspectFramework } from "../core/debug/inspectFramework.js";
 
 /**
  * Starts the application UI.
@@ -14,7 +16,7 @@ import { Loading } from "../shared/components/index.js";
  * @param {TodoController} options.todoController
  */
 
-export function createApp({ root, store, todoController }) {
+export function createUI({ root, store, todoController }) {
   const renderer = createRenderer(root);
 
   const { routes, notFound } = registerRoutes({
@@ -60,7 +62,7 @@ export function createApp({ root, store, todoController }) {
         render();
       },
 
-      onError(route) {
+      onError(error) {
         routerState.isRouteLoading = false;
         routerState.routeError = error;
         render();
@@ -68,6 +70,13 @@ export function createApp({ root, store, todoController }) {
     },
   );
 
+  DebugService.register("router", router);
+  DebugService.register("renderer", renderer);
+
   store.subscribe(render);
-  router.start();
+
+  return {
+    renderer,
+    router,
+  };
 }
