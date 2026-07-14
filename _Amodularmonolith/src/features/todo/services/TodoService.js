@@ -23,7 +23,4 @@ export class TodoService {
   async deleteTodo(id) {
     return this.repository.remove(id);
   }
-  async toggleTodo(id) {
-    return this.repository.remove(id);
-  }
 }

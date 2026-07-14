@@ -25,6 +25,7 @@ export class TodoRepository {
   }
 
   async toggle(id) {
+    console.log(`Repo ${id}`);
     return this.api.toggle(id);
   }
 

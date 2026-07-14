@@ -1,8 +1,14 @@
 import { todoActions } from "../todoActionTypes.js";
+import { createOptimisticThunk } from "./createOptimisticThunk.js";
 
 export function createToggleTodoThunk(todoService) {
-  return function toggleTodoThunk(todo, updatedTodo) {
+  return function toggleTodoThunk(todo) {
     return async function (dispatch) {
+      const updatedTodo = {
+        ...todo,
+        completed: !todo.completed,
+        updatedAt: Date.now(),
+      };
       return createOptimisticThunk({
         optimistic: () => todoActions.toggle(todo.id),
 

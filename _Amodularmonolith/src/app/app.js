@@ -4,9 +4,11 @@ import { createRenderContext, createRenderer } from "../core/renderer";
 import { component } from "../core/components/component.js";
 import { registerRoutes } from "./registerRoutes.js";
 import { createRouter, RouterService } from "@core/router";
-import { Loading } from "../shared/components/index.js";
 import { DebugService } from "@core/debug";
 import { inspectFramework } from "../core/debug/inspectFramework.js";
+import { createApplicationRenderer } from "./createApplicationRenderer.js";
+import { createRenderLoop } from "./createRenderLoop.js";
+import { createApplicationRouter } from "./createApplicationRouter.js";
 
 /**
  * Starts the application UI.
@@ -16,59 +18,23 @@ import { inspectFramework } from "../core/debug/inspectFramework.js";
  * @param {TodoController} options.todoController
  */
 
-export function createUI({ root, store, todoController }) {
-  const renderer = createRenderer(root);
-
-  const { routes, notFound } = registerRoutes({
-    todoController,
-  });
+export function createUI({
+  root,
+  store,
+  routes,
+  routerState,
+  notFound,
+  todoController,
+}) {
+  const renderer = createApplicationRenderer(root);
 
   RouterService.setRoutes(routes);
 
-  const routerState = {
-    currentRoute: null,
-    isRouteLoading: false,
-    routeError: null,
-  };
-
-  function render() {
-    const Page = routerState.currentRoute?.component ?? notFound;
-
-    const props = routerState.currentRoute?.props ?? {};
-
-    if (routerState.isRouteLoading) {
-      renderer.render(createRenderContext(component(Loading)));
-      return;
-    }
-
-    renderer.render(createRenderContext(component(Page, props)));
-  }
+  const render = createRenderLoop({ renderer, routerState, notFound });
 
   todoController.setViewChangedListener(render);
 
-  const router = createRouter(
-    routes,
-
-    {
-      onLoading() {
-        routerState.routeError = null;
-        routerState.isRouteLoading = true;
-        render();
-      },
-
-      onChange(route) {
-        routerState.currentRoute = route;
-        routerState.isRouteLoading = false;
-        render();
-      },
-
-      onError(error) {
-        routerState.isRouteLoading = false;
-        routerState.routeError = error;
-        render();
-      },
-    },
-  );
+  const router = createApplicationRouter(routes, routerState, render);
 
   DebugService.register("router", router);
   DebugService.register("renderer", renderer);

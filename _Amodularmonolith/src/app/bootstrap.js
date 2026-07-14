@@ -23,6 +23,7 @@ import { createConfig, ConfigService } from "@core/config";
 import { DebugService } from "@core/debug";
 import { inspectFramework } from "../core/debug/inspectFramework.js";
 import { createApplication } from "@core/application";
+import { registerRoutes } from "./registerRoutes.js";
 
 /**
  * Bootstraps starts the application.
@@ -32,10 +33,16 @@ import { createApplication } from "@core/application";
  */
 
 export function bootstrap() {
+  const routerState = {
+    currentRoute: null,
+    isRouteLoading: false,
+    routeError: null,
+  };
   const config = createConfig({
     debug: true,
     dev: true,
   });
+
   // Storagea
   const storage = StorageService(LocalStorageAdapter);
 
@@ -73,10 +80,16 @@ export function bootstrap() {
     .registerController(todoController)
     .registerService("todo", todoService);
 
+  const { routes, notFound } = registerRoutes({
+    todoController,
+  });
   // Start UI
   const ui = createUI({
     root: app.getRoot(),
     store,
+    routes,
+    routerState,
+    notFound,
     todoController,
   });
 

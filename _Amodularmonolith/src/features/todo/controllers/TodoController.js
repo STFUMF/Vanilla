@@ -133,6 +133,7 @@ export class TodoController {
    * @param {string} id
    */
   toggleTodoc(todo) {
+    console.log("toggle controller");
     this.store.dispatch(this.thunks.toggleTodo(todo));
   }
 
