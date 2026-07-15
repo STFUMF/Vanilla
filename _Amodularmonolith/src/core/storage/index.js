@@ -1,2 +1,2 @@
-export { createStoreService } from "./createStorageService.js";
-export { LocalStorageAdapter } from "./adapters/LocalStorageAdapter.js"
+export * from "./createStorageService.js";
+export * from "./adapters/LocalStorageAdapter.js";

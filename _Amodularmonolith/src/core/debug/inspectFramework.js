@@ -1,6 +1,6 @@
 import { DebugService } from "./DebugService.js";
 
-export function inspectFramework() {
+export function inspectFramework(app) {
   console.group("Frontend");
 
   console.log(DebugService.inspect());

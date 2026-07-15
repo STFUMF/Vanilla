@@ -72,7 +72,8 @@ export function createApplication() {
     },
 
     inspect() {
-      inspectFramework(app);
+      inspectFramework(this);
+      return app;
     },
 
     start() {
@@ -150,7 +151,7 @@ export function createApplication() {
       return app;
     },
 
-    register(name, value) {
+    registerServiceApp(name, value) {
       if (!name) {
         throw new Error("Registry name is required");
       }
@@ -164,7 +165,7 @@ export function createApplication() {
       return app;
     },
 
-    resolve(name) {
+    resolveServiceApp(name) {
       return state.registry.get(name);
       return app;
     },

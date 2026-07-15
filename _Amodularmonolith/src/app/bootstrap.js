@@ -24,7 +24,7 @@ import { inspectFramework } from "../core/debug/inspectFramework.js";
 import { createApplication } from "@core/application";
 import { registerRoutes } from "./registerRoutes.js";
 import { LoggerPlugin } from "../core/plugin/LoggerPlugin.js";
-import { DebugPlugin } from "../core/plugin/DebugPlugin.js";
+import { DebugPlugin } from "../core/debug/DebugPlugin.js";
 import { InspectorPlugin } from "../core/plugin/InspectorPlugin.js";
 
 /**
