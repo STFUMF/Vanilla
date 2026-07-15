@@ -13,6 +13,8 @@ export function createApplication() {
     controllers: [],
     services: new Map(),
     plugins: [],
+
+    registry: new Map(),
   };
 
   const listeners = {
@@ -140,10 +142,45 @@ export function createApplication() {
       const context = createPluginContext(app);
 
       plugin.install(context);
+
       emit("plugin:installed", plugin);
+
       state.plugins.push(plugin);
 
       return app;
+    },
+
+    register(name, value) {
+      if (!name) {
+        throw new Error("Registry name is required");
+      }
+
+      if (state.registry.has(name)) {
+        throw new Error(`"${name}" is already registered.`);
+      }
+
+      state.registry.set(name, value);
+
+      return app;
+    },
+
+    resolve(name) {
+      return state.registry.get(name);
+      return app;
+    },
+
+    has(name) {
+      return state.registry.has(name);
+    },
+
+    unregister(name) {
+      state.registry.delete(name);
+
+      return app;
+    },
+
+    getRegistry() {
+      return new Map(state.registry);
     },
   };
 

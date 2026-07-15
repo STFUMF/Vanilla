@@ -12,6 +12,12 @@ export function createPluginContext(app) {
 
     getControllers: () => app.getControllers(),
 
+    register: app.register,
+
+    resolve: app.resolve,
+
+    has: app.has,
+
     on: app.on,
     inspect: app.inspect,
   });

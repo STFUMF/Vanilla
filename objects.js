@@ -9,8 +9,35 @@ mapping.delete(42)
 
 console.log(mapping.get("name")); */
 
-let num = 20;
+function createApp() {
+  const state = {
+    name: null,
+    age: null,
+    address: null,
+  };
 
-num = 30;
-let myAge = num;
-console.log(myAge);
+  const app = {
+    getName(value) {
+      state.name = value;
+
+      return app;
+    },
+
+    getAge(value) {
+      state.age = value;
+
+      return app;
+    },
+
+    getAddress(value) {
+      state.address = value;
+      return app;
+    },
+  };
+
+  return app;
+}
+
+const testss = createApp().getName("soc");
+
+console.log(testss);

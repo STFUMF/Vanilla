@@ -1,15 +1,12 @@
+import { DebugService } from "../debug/DebugService.js";
 import { createPlugin } from "./createPlugin.js";
 
 export const DebugPlugin = createPlugin({
   name: "DebugPlugin",
 
-  install({ on }) {
-    on("started", () => {
-      console.log("🚀 Debug plugin started");
-    });
-
-    on("stopped", () => {
-      console.log("🛑 Debug plugin  stopped.");
-    });
+  install({ getStore, getConfig }) {
+    DebugService.register("store", getStore());
+    console.log("debug");
+    DebugService.register("config", getConfig());
   },
 });
