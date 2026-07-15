@@ -1,6 +1,8 @@
-export function createPlugin(name, install) {
+export function createPlugin(options) {
   return Object.freeze({
-    name,
-    install,
+    name: options.name,
+    version: options.version ?? "1.0.0",
+    dependencies: options.dependencies ?? [],
+    install: options.install,
   });
 }

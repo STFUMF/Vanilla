@@ -24,6 +24,7 @@ import { inspectFramework } from "../core/debug/inspectFramework.js";
 import { createApplication } from "@core/application";
 import { registerRoutes } from "./registerRoutes.js";
 import { LoggerPlugin } from "../core/plugin/LoggerPlugin.js";
+import { DebugPlugin } from "../core/plugin/DebugPlugin.js";
 
 /**
  * Bootstraps starts the application.
@@ -91,8 +92,7 @@ export function bootstrap() {
     console.log("Frame work started");
   });
 
-  app.use(LoggerPlugin);
-  app.start();
+  app.use(LoggerPlugin).use(DebugPlugin).start();
 
   // Initial data
   // todoController.loadTodos(todoService.loadTodos());

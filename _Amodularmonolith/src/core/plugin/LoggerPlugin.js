@@ -1,15 +1,15 @@
 import { createPlugin } from "./createPlugin.js";
 
-export const LoggerPlugin = createPlugin(
-  "logger",
+export const LoggerPlugin = createPlugin({
+  name: "logger",
 
-  ({ on }) => {
+  install({ on }) {
     on("started", () => {
-      console.log("🚀 Framework started.");
+      console.log("🚀 Frontend Framework started.");
     });
 
     on("stopped", () => {
-      console.log("🛑 Framework stopped.");
+      console.log("🛑 Frontend Framework stopped.");
     });
   },
-);
+});

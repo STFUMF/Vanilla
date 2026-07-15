@@ -1,7 +1,5 @@
 export function createPluginContext(app) {
   return Object.freeze({
-    app,
-
     getConfig: () => app.getConfig(),
 
     getStore: () => app.getStore(),
@@ -12,8 +10,9 @@ export function createPluginContext(app) {
 
     getSerivces: () => app.getSerivces(),
 
-    controllers: () => app.getControllers(),
+    getControllers: () => app.getControllers(),
 
     on: app.on,
+    inspect: app.inspect,
   });
 }

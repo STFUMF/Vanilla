@@ -1,5 +1,6 @@
 import { inspectFramework } from "../debug/inspectFramework.js";
 import { createPluginContext } from "../plugin/PluginContext.js";
+import { validatePlugin } from "../plugin/validatePlugin.js";
 
 export function createApplication() {
   const state = {
@@ -122,18 +123,24 @@ export function createApplication() {
     getStatus() {
       return state.status;
     },
+
     on(event, listener) {
       listeners[event]?.push(listener);
       return app;
     },
+
     use(plugin) {
+      validatePlugin(plugin);
+
       if (state.plugins.some((p) => p.name === plugin.name)) {
         console.warn(`Plugin "${plugin.name}" is already installed.`);
         return app;
       }
 
-      plugin.install(createPluginContext(app));
+      const context = createPluginContext(app);
 
+      plugin.install(context);
+      emit("plugin:installed", plugin);
       state.plugins.push(plugin);
 
       return app;
