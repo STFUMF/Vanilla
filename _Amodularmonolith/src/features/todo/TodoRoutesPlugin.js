@@ -25,6 +25,7 @@ export const TodoRoutesPlugin = createPlugin({
       label: "Todos",
       path: "/todos",
       title: "Todos",
+      routePath: "/todos",
     });
   },
 });

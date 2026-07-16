@@ -5,10 +5,12 @@ import { Header, Navigation, Footer } from "../../../shared/components";
 import { TodoContent } from "./components/TodoContent.js";
 import { Logger } from "@core/logger";
 
-export function TodoPage({ controller }) {
+export function TodoPage({ controller, navigation, routes }) {
   Logger.debug("loaded todos");
   return component(AppLayout, {
     header: component(Header),
+    navigation,
+    routes,
     footer: component(Footer),
     children: [
       component(TodoContent, {

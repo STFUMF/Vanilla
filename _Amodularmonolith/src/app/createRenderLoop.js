@@ -3,11 +3,19 @@ import { component } from "@core/components";
 import { createRenderContext } from "@core/renderer";
 import { Loading } from "../shared/components";
 
-export function createRenderLoop({ renderer, routerState, notFound }) {
+export function createRenderLoop({
+  renderer,
+  routerState,
+  notFound,
+  navigation,
+  routes,
+}) {
   return function render() {
     const Page = routerState.currentRoute?.component ?? notFound;
 
-    const props = routerState.currentRoute?.props ?? {};
+    const routeProps = routerState.currentRoute?.props ?? {};
+
+    const props = { ...routeProps, navigation, routes };
 
     if (routerState.isRouteLoading) {
       renderer.render(createRenderContext(component(Loading)));

@@ -7,23 +7,21 @@ import { NavLink } from "./NavLink.js";
 import { getCurrentPath, RouterService } from "@core/router";
 import { prefetchRoute } from "../../../../core/router/prefetchRoute.js";
 
-export function Navigation() {
+export function Navigation({ navigation, routes }) {
   const currentPath = getCurrentPath();
-  const routes = RouterService.getRoutes();
+
   return component(Row, {
     gap: "sm",
 
-    children: routes
-      .filter((route) => route.meta.navigation)
-      .map((route) =>
-        component(NavLink, {
-          to: route.path,
-          onRoutes: { allRoute: routes, routePath: route.path },
+    children: navigation.map((item) =>
+      component(NavLink, {
+        to: item.path,
+        onRoutes: { allRoute: routes, routePath: item.path },
 
-          active: currentPath === route.path,
+        active: currentPath === item.path,
 
-          children: [route.meta.title],
-        }),
-      ),
+        children: [item.label],
+      }),
+    ),
   });
 }

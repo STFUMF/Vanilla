@@ -26,8 +26,9 @@ export const DashboardRoutesPlugin = createPlugin({
 
     contribute(ContributionTypes.NAVIGATION, {
       label: "Dashboard",
-      path: "/dashboard",
+      path: "/",
       title: "Dashboard",
+      routePath: "/",
     });
   },
 });

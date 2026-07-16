@@ -23,6 +23,7 @@ export const AboutRoutesPlugin = createPlugin({
       label: "About",
       path: "/about",
       title: "About",
+      routePath: "/about",
     });
   },
 });

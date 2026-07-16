@@ -16,10 +16,12 @@ import { AppLayout } from "../../../app/layout/AppLayout.js";
 import { Header, Navigation, Footer } from "../../../shared/components";
 import { DashboardContent } from "../components/DashboardContent.js";
 
-export function DashboardPage({ controller }) {
+export function DashboardPage({ controller, navigation, routes }) {
   console.log("page controller:", controller);
   return component(AppLayout, {
     header: component(Header),
+    navigation,
+    routes,
 
     footer: component(Footer),
 

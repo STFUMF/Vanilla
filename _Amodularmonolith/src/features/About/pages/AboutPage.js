@@ -16,10 +16,11 @@ import { AppLayout } from "../../../app/layout/AppLayout.js";
 
 import { Header, Navigation, Footer } from "../../../shared/components";
 
-export function AboutPage() {
+export function AboutPage({ navigation, routes }) {
   return component(AppLayout, {
     header: component(Header),
-
+    navigation,
+    routes,
     footer: component(Footer),
 
     children: [
