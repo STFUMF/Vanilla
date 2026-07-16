@@ -1,8 +1,6 @@
 import { createUI } from "./app";
 
 import { createStore } from "../core/store";
-import { thunk } from "../core/store/middleware/thunk.js";
-
 import { createStoreService as StorageService } from "../core/storage";
 import { LocalStorageAdapter } from "../core/storage";
 
@@ -18,11 +16,8 @@ import { createUpdateTodo } from "../features/todo/store/thunks/updateTodoThunk.
 import { createDeleteTodo } from "../features/todo/store/thunks/deleteTodoThunk.js";
 import { createToggleTodoThunk } from "../features/todo/store/thunks/toggleTodoThunk.js";
 
-import { createConfig, ConfigService } from "@core/config";
-import { DebugService } from "@core/debug";
-import { inspectFramework } from "../core/debug/inspectFramework.js";
+import { createConfig } from "@core/config";
 import { createApplication } from "@core/application";
-import { registerRoutes } from "./registerRoutes.js";
 import { LoggerPlugin } from "../core/plugin/LoggerPlugin.js";
 import { DebugPlugin } from "../core/debug/DebugPlugin.js";
 import { InspectorPlugin } from "../core/plugin/InspectorPlugin.js";
@@ -32,6 +27,7 @@ import { AboutRoutesPlugin } from "../features/About/AboutRoutesPlugin.js";
 
 import { ContributionTypes } from "@core/contribution";
 import { NotFoundPage } from "../shared/pages/NotFoundPage.js";
+import { StorePlugin } from "../core/store/StorePlugin.js";
 
 /**
  * Bootstraps starts the application.
@@ -52,9 +48,6 @@ export function bootstrap() {
   const todoRepository = new TodoRepository(api);
   const todoService = new TodoService(todoRepository);
 
-  // Store
-  const store = createStore(rootReducer, [thunk]);
-
   // Controller
   const todoThunks = {
     loadTodos: createLoadTodos(todoService),
@@ -64,19 +57,27 @@ export function bootstrap() {
     toggleTodo: createToggleTodoThunk(todoService),
   };
 
+  const app = createApplication();
+  app.configure(config).mount(document.querySelector("#app")).use(StorePlugin);
+
+  const middleware = app.getContributions(ContributionTypes.MIDDLEWARE);
+  // Store
+  const store = createStore(rootReducer, middleware);
+
   const todoController = new TodoController(store, todoThunks);
 
-  const app = createApplication()
-    .configure(config)
-    .mount(document.querySelector("#app"))
-    .attachStore(store)
+  app
     .registerController(todoController)
     .register("todoController", todoController)
     .registerService("todo", todoService);
 
-  app.use(LoggerPlugin).use(DebugPlugin).use(InspectorPlugin);
-
-  app.use(TodoRoutesPlugin).use(DashboardRoutesPlugin).use(AboutRoutesPlugin);
+  app
+    .use(LoggerPlugin)
+    .use(DebugPlugin)
+    .use(InspectorPlugin)
+    .use(TodoRoutesPlugin)
+    .use(DashboardRoutesPlugin)
+    .use(AboutRoutesPlugin);
 
   const routes = app.getContributions(ContributionTypes.ROUTES);
   const navigation = app.getContributions(ContributionTypes.NAVIGATION);
@@ -91,7 +92,7 @@ export function bootstrap() {
     notFound,
     todoController,
   });
-
+  app.attachStore(store);
   app.attachRenderer(ui.renderer).attachRouter(ui.router);
   app.on("started", () => {
     console.log("Frame work started");
