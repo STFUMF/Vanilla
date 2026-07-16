@@ -5,6 +5,7 @@ import { createContributionRegistry } from "@core/contribution";
 
 export function createApplication() {
   const contributions = createContributionRegistry();
+
   const state = {
     status: "created",
     root: null,
@@ -12,10 +13,7 @@ export function createApplication() {
     store: null,
     router: null,
     renderer: null,
-    controllers: [],
-    services: new Map(),
     plugins: [],
-
     registry: new Map(),
   };
 
@@ -66,18 +64,6 @@ export function createApplication() {
       return app;
     },
 
-    registerController(controller) {
-      state.controllers.push(controller);
-
-      return app;
-    },
-
-    registerService(name, service) {
-      state.services.set(name, service);
-
-      return app;
-    },
-
     inspect() {
       inspectFramework(this);
       return app;
@@ -120,14 +106,6 @@ export function createApplication() {
 
     getRenderer() {
       return state.renderer;
-    },
-
-    getControllers() {
-      return [...state.controllers];
-    },
-
-    getServices() {
-      return state.services;
     },
 
     getPlugins() {

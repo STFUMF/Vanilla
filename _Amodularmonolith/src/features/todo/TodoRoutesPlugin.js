@@ -8,7 +8,13 @@ export const TodoRoutesPlugin = createPlugin({
 
   install({ contribute, resolve }) {
     const controller = resolve("todoController");
-    console.log("todo");
+
+    console.log(controller === resolve("todoController"));
+
+    if (!controller) {
+      throw new Error('TodoRoutesPlugin requires "todoController".');
+    }
+
     contribute(
       ContributionTypes.ROUTES,
       createRoute(
@@ -24,8 +30,6 @@ export const TodoRoutesPlugin = createPlugin({
     contribute(ContributionTypes.NAVIGATION, {
       label: "Todos",
       path: "/todos",
-      title: "Todos",
-      routePath: "/todos",
     });
   },
 });

@@ -28,6 +28,7 @@ import { AboutRoutesPlugin } from "../features/About/AboutRoutesPlugin.js";
 import { ContributionTypes } from "@core/contribution";
 import { NotFoundPage } from "../shared/pages/NotFoundPage.js";
 import { StorePlugin } from "../core/store/StorePlugin.js";
+import { createEventBus } from "@core/events";
 
 /**
  * Bootstraps starts the application.
@@ -43,6 +44,7 @@ export function bootstrap() {
   });
 
   // Storagea
+  const events = createEventBus();
   const storage = StorageService(LocalStorageAdapter);
   const api = FakeApi(storage);
   const todoRepository = new TodoRepository(api);
@@ -58,6 +60,7 @@ export function bootstrap() {
   };
 
   const app = createApplication();
+
   app.configure(config).mount(document.querySelector("#app")).use(StorePlugin);
 
   const middleware = app.getContributions(ContributionTypes.MIDDLEWARE);
@@ -67,41 +70,60 @@ export function bootstrap() {
   const todoController = new TodoController(store, todoThunks);
 
   app
-    .registerController(todoController)
-    .register("todoController", todoController)
-    .registerService("todo", todoService);
+    .attachStore(store)
+    .register("events", events)
+    .register("store", store)
+    .register("todoService", todoService)
+    .register("todoController", todoController);
 
   app
     .use(LoggerPlugin)
     .use(DebugPlugin)
     .use(InspectorPlugin)
-    .use(TodoRoutesPlugin)
     .use(DashboardRoutesPlugin)
+    .use(TodoRoutesPlugin)
     .use(AboutRoutesPlugin);
 
   const routes = app.getContributions(ContributionTypes.ROUTES);
   const navigation = app.getContributions(ContributionTypes.NAVIGATION);
 
-  const notFound = NotFoundPage;
   // Start UI
   const ui = createUI({
     root: app.getRoot(),
     store,
     routes,
     navigation,
-    notFound,
+    notFound: NotFoundPage,
     todoController,
   });
-  app.attachStore(store);
-  app.attachRenderer(ui.renderer).attachRouter(ui.router);
+
+  app
+    .attachRenderer(ui.renderer)
+    .attachRouter(ui.router)
+    .register("renderer", ui.renderer)
+    .register("router", ui.router);
+
   app.on("started", () => {
     console.log("Frame work started");
   });
 
+  console.log("Todo Controller:", app.resolve("todoController"));
+
+  console.log("Todo Service:", app.resolve("todoService"));
+
+  console.log("Store:", app.resolve("store"));
   app.start();
 
   // Initial data
   // todoController.loadTodos(todoService.loadTodos());
+  const unsubscribe = events.on("test:event", (payload) => {
+    console.log("Received event:", payload);
+  });
 
+  events.emit("test:event", {
+    message: "Event bus works!",
+  });
+
+  unsubscribe();
   store.dispatch(todoThunks.loadTodos());
 }

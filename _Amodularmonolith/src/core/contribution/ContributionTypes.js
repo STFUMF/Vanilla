@@ -7,6 +7,8 @@ export const ContributionTypes = Object.freeze({
 
   NAVIGATION: "navigation",
 
+  EVENTS: "events",
+
   INSPECTOR_PANELS: "inspector.panels",
 
   COMMANDS: "commands",

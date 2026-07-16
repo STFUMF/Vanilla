@@ -8,7 +8,10 @@ export const DashboardRoutesPlugin = createPlugin({
 
   install({ contribute, resolve }) {
     const controller = resolve("todoController");
-    console.log("plugin controller:", controller);
+
+    if (!controller) {
+      throw new Error('DashboardRoutesPlugin required "todoController');
+    }
 
     contribute(
       ContributionTypes.ROUTES,
@@ -27,8 +30,6 @@ export const DashboardRoutesPlugin = createPlugin({
     contribute(ContributionTypes.NAVIGATION, {
       label: "Dashboard",
       path: "/",
-      title: "Dashboard",
-      routePath: "/",
     });
   },
 });

@@ -22,8 +22,6 @@ export const AboutRoutesPlugin = createPlugin({
     contribute(ContributionTypes.NAVIGATION, {
       label: "About",
       path: "/about",
-      title: "About",
-      routePath: "/about",
     });
   },
 });
