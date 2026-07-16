@@ -1,8 +1,10 @@
 import { inspectFramework } from "../debug/inspectFramework.js";
 import { createPluginContext } from "../plugin/PluginContext.js";
 import { validatePlugin } from "../plugin/validatePlugin.js";
+import { createContributionRegistry } from "@core/contribution";
 
 export function createApplication() {
+  const contributions = createContributionRegistry();
   const state = {
     status: "created",
     root: null,
@@ -23,6 +25,11 @@ export function createApplication() {
     mounted: [],
     started: [],
     stopped: [],
+
+    "plugin:installed": [],
+    "contribution:added": [],
+    "registry:registered": [],
+    "registry:unregistered": [],
   };
 
   const app = {
@@ -88,6 +95,10 @@ export function createApplication() {
 
     stop() {
       state.router?.stop?.();
+
+      state.status = "stopped";
+      emit("stopped");
+
       return app;
     },
 
@@ -140,18 +151,18 @@ export function createApplication() {
         return app;
       }
 
+      state.plugins.push(plugin);
+
       const context = createPluginContext(app);
 
       plugin.install(context);
 
       emit("plugin:installed", plugin);
 
-      state.plugins.push(plugin);
-
       return app;
     },
 
-    registerServiceApp(name, value) {
+    register(name, value) {
       if (!name) {
         throw new Error("Registry name is required");
       }
@@ -162,12 +173,16 @@ export function createApplication() {
 
       state.registry.set(name, value);
 
+      emit("registry:registered", {
+        name,
+        value,
+      });
+
       return app;
     },
 
-    resolveServiceApp(name) {
+    resolve(name) {
       return state.registry.get(name);
-      return app;
     },
 
     has(name) {
@@ -175,13 +190,51 @@ export function createApplication() {
     },
 
     unregister(name) {
+      const value = state.registry.get(name);
+
       state.registry.delete(name);
 
+      emit("registry:unregistered", { name, value });
       return app;
     },
 
     getRegistry() {
       return new Map(state.registry);
+    },
+
+    contribute(type, value) {
+      contributions.add(type, value);
+
+      emit("contribution:added", {
+        type,
+        value,
+      });
+
+      return app;
+    },
+    getContributions(type) {
+      return contributions.get(type);
+    },
+
+    hasContributions(type) {
+      return contributions.has(type);
+    },
+
+    clearContributions(type) {
+      contributions.clear(type);
+
+      return app;
+    },
+
+    getAllContributions() {
+      return contributions.getAll();
+    },
+
+    contributeMany(type, values) {
+      values.forEach((value) => app.contribute(type, value));
+
+      emit("contribution:added", { type, values });
+      return app;
     },
   };
 

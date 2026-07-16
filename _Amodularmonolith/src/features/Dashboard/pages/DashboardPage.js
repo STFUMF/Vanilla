@@ -17,6 +17,7 @@ import { Header, Navigation, Footer } from "../../../shared/components";
 import { DashboardContent } from "../components/DashboardContent.js";
 
 export function DashboardPage({ controller }) {
+  console.log("page controller:", controller);
   return component(AppLayout, {
     header: component(Header),
 

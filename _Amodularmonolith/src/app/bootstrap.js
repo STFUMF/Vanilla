@@ -26,6 +26,12 @@ import { registerRoutes } from "./registerRoutes.js";
 import { LoggerPlugin } from "../core/plugin/LoggerPlugin.js";
 import { DebugPlugin } from "../core/debug/DebugPlugin.js";
 import { InspectorPlugin } from "../core/plugin/InspectorPlugin.js";
+import { TodoRoutesPlugin } from "../features/todo/TodoRoutesPlugin.js";
+import { DashboardRoutesPlugin } from "../features/Dashboard/DashboardRoutesPlugin.js";
+import { AboutRoutesPlugin } from "../features/About/AboutRoutesPlugin.js";
+
+import { ContributionTypes } from "@core/contribution";
+import { NotFoundPage } from "../shared/pages/NotFoundPage.js";
 
 /**
  * Bootstraps starts the application.
@@ -42,17 +48,11 @@ export function bootstrap() {
 
   // Storagea
   const storage = StorageService(LocalStorageAdapter);
-
   const api = FakeApi(storage);
-
   const todoRepository = new TodoRepository(api);
-
-  // Service
-
   const todoService = new TodoService(todoRepository);
 
   // Store
-
   const store = createStore(rootReducer, [thunk]);
 
   // Controller
@@ -71,29 +71,33 @@ export function bootstrap() {
     .mount(document.querySelector("#app"))
     .attachStore(store)
     .registerController(todoController)
+    .register("todoController", todoController)
     .registerService("todo", todoService);
 
-  const { routes, notFound } = registerRoutes({
-    todoController,
-  });
+  app.use(LoggerPlugin).use(DebugPlugin).use(InspectorPlugin);
+
+  app.use(TodoRoutesPlugin).use(DashboardRoutesPlugin).use(AboutRoutesPlugin);
+
+  const routes = app.getContributions(ContributionTypes.ROUTES);
+  const navigation = app.getContributions(ContributionTypes.NAVIGATION);
+
+  const notFound = NotFoundPage;
   // Start UI
   const ui = createUI({
     root: app.getRoot(),
     store,
     routes,
+    navigation,
     notFound,
     todoController,
   });
 
   app.attachRenderer(ui.renderer).attachRouter(ui.router);
-
-  console.log(app.getStatus());
-
   app.on("started", () => {
     console.log("Frame work started");
   });
 
-  app.use(LoggerPlugin).use(DebugPlugin).use(InspectorPlugin).start();
+  app.start();
 
   // Initial data
   // todoController.loadTodos(todoService.loadTodos());
