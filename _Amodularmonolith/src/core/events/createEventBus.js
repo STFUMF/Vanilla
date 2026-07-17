@@ -35,11 +35,15 @@ export function createEventBus() {
     },
 
     has(event) {
-      return state.listener.has(event);
+      return state.listeners.has(event);
     },
 
     getEvents() {
       return [...state.listeners.keys()];
+    },
+
+    listenerCount(event) {
+      return state.listeners.get(event)?.size ?? 0;
     },
   };
 }

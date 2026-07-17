@@ -128,5 +128,26 @@ export function bootstrap() {
     console.log("TOAST EVENT:", payload);
   });
 
+  function handleTodoCreated(payload) {
+    console.log("created:", payload);
+  }
+
+  const unsubscribe = events.on("todo:created", handleTodoCreated);
+
+  console.log(events.has("todo:created"));
+  // true
+
+  console.log(events.getEvents());
+  // ["todo:created"]
+
+  events.emit("todo:created", {
+    id: 1,
+  });
+
+  unsubscribe();
+
+  console.log(events.has("todo:created"));
+  // false
+
   store.dispatch(todoThunks.loadTodos());
 }

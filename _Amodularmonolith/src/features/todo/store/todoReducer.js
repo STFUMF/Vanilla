@@ -10,7 +10,7 @@ import {
 
 const initialState = {
   items: [],
-  loading: false,
+  status,
   error: null,
 };
 
@@ -19,14 +19,14 @@ export function todoReducer(state = initialState, action) {
     case TODO_LOAD_STARTED:
       return {
         ...state,
-        loading: true,
+        status: "idle",
         error: null,
       };
 
     case TODO_LOAD_FAILED:
       return {
         ...state,
-        loading: false,
+        status: "rejected",
         error: action.payload,
       };
 
@@ -34,7 +34,7 @@ export function todoReducer(state = initialState, action) {
       return {
         ...state,
         items: action.payload,
-        loading: false,
+        status: "fulfilled",
         error: null,
       };
 
