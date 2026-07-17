@@ -25,6 +25,7 @@ export function createUI({
   navigation,
   notFound,
   todoController,
+  toastController,
 }) {
   const routerState = {
     currentRoute: null,
@@ -45,6 +46,7 @@ export function createUI({
   });
 
   todoController.setViewChangedListener(render);
+  toastController.setViewChangedListener(render);
 
   const router = createApplicationRouter(routes, routerState, render);
 

@@ -1,5 +1,6 @@
 // src/features/todo/controllers/TodoController.js
 
+import { EventTypes } from "../../../core/events/eventTypes.js";
 import { todoSelectors } from "../store/todoSelectors.js";
 
 export class TodoController {
@@ -8,10 +9,11 @@ export class TodoController {
    */
 
   /// rename actions to thunks
-  constructor(store, thunks) {
+  constructor(store, thunks, events) {
     this.store = store;
 
     this.thunks = thunks;
+    this.events = events;
 
     // View state
     this.title = "";
@@ -93,7 +95,7 @@ export class TodoController {
   /**
    * Adds a new todo.
    */
-  addTodoc() {
+  async addTodoc() {
     const title = this.title.trim();
     if (!title) {
       return;
@@ -111,7 +113,21 @@ export class TodoController {
       updatedAt: Date.now(),
     };
 
-    this.store.dispatch(this.thunks.addTodo(todo));
+    try {
+      const result = await this.store.dispatch(this.thunks.addTodo(todo));
+
+      this.events.emit(EventTypes.TODO_CREATED, {
+        todo: result,
+      });
+
+      return result;
+    } catch (error) {
+      this.events.emit(EventTypes.TOAST_SHOW, {
+        operation: "create",
+        error,
+      });
+      throw error;
+    }
 
     this.title = "";
     this.priority = "medium";
@@ -123,8 +139,16 @@ export class TodoController {
    *
    * @param {string} id
    */
-  deleteTodoc(todo) {
-    this.store.dispatch(this.thunks.deleteTodo(todo));
+  async deleteTodoc(id) {
+    try {
+      const result = await this.store.dispatch(this.thunks.deleteTodo(id));
+      this.events.emit(EventTypes.TODO_DELETED, { todo: id });
+
+      return result;
+    } catch (error) {
+      this.emitError("update", error);
+      throw error;
+    }
   }
 
   /**
@@ -132,9 +156,16 @@ export class TodoController {
    *
    * @param {string} id
    */
-  toggleTodoc(todo) {
-    console.log("toggle controller");
-    this.store.dispatch(this.thunks.toggleTodo(todo));
+  async toggleTodoc(todo) {
+    try {
+      const result = await this.store.dispatch(this.thunks.toggleTodo(todo));
+      this.events.emit(EventTypes.TODO_UPDATED, { todo: result });
+
+      return result;
+    } catch (error) {
+      this.emitError("update", error);
+      throw error;
+    }
   }
 
   startEditing(todo) {
@@ -163,14 +194,22 @@ export class TodoController {
   }
 
   saveEdit(todo) {
-    const updatedTodo = {
-      ...todo,
-      title: this.editTitle.trim(),
-    };
+    try {
+      const updatedTodo = {
+        ...todo,
+        title: this.editTitle.trim(),
+      };
+      const result = this.store.dispatch(
+        this.thunks.updateTodo(todo, updatedTodo),
+      );
+      this.events.emit(EventTypes.TODO_UPDATED, { todo: result });
+      this.cancelEditing();
+      return result;
+    } catch (error) {
+      this.emitError("update", error);
+      throw error;
+    }
 
-    this.store.dispatch(this.thunks.updateTodo(todo, updatedTodo));
-    console.log("saved todocontroller");
-    this.cancelEditing();
     /* const title = this.editTitle.trim();
 
     if (!title) {
@@ -251,5 +290,12 @@ export class TodoController {
 
   getDueDate() {
     return this.dueDate;
+  }
+
+  emitError(operation, error) {
+    this.events.emit(EventTypes.TODO_OPERATION_FAILED, {
+      operation,
+      error,
+    });
   }
 }

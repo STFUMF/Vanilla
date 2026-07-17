@@ -7,9 +7,10 @@ export const DashboardRoutesPlugin = createPlugin({
   name: "dashboard",
 
   install({ contribute, resolve }) {
-    const controller = resolve("todoController");
-
-    if (!controller) {
+    const todoController = resolve("todoController");
+    const toastController = resolve("toastController");
+    console.log("route toast controller:", toastController);
+    if (!todoController) {
       throw new Error('DashboardRoutesPlugin required "todoController');
     }
 
@@ -19,7 +20,8 @@ export const DashboardRoutesPlugin = createPlugin({
         "/",
         DashboardPage,
         {
-          controller,
+          controller: todoController,
+          toastController,
         },
         {
           title: "Dashboard",
@@ -30,6 +32,8 @@ export const DashboardRoutesPlugin = createPlugin({
     contribute(ContributionTypes.NAVIGATION, {
       label: "Dashboard",
       path: "/",
+      title: "Dashboard",
+      routePath: "/",
     });
   },
 });

@@ -29,6 +29,9 @@ import { ContributionTypes } from "@core/contribution";
 import { NotFoundPage } from "../shared/pages/NotFoundPage.js";
 import { StorePlugin } from "../core/store/StorePlugin.js";
 import { createEventBus } from "@core/events";
+import { EventTypes } from "../core/events/eventTypes.js";
+import { ToastController } from "../shared/components/Toast/ToastController.js";
+import { NotificationPlugin } from "../core/notifications/NotificationPlugin.js";
 
 /**
  * Bootstraps starts the application.
@@ -59,27 +62,33 @@ export function bootstrap() {
     toggleTodo: createToggleTodoThunk(todoService),
   };
 
+  const toastController = new ToastController(events);
   const app = createApplication();
 
-  app.configure(config).mount(document.querySelector("#app")).use(StorePlugin);
+  app
+    .configure(config)
+    .mount(document.querySelector("#app"))
+    .use(StorePlugin)
+    .register("events", events);
 
   const middleware = app.getContributions(ContributionTypes.MIDDLEWARE);
   // Store
   const store = createStore(rootReducer, middleware);
 
-  const todoController = new TodoController(store, todoThunks);
+  const todoController = new TodoController(store, todoThunks, events);
 
   app
     .attachStore(store)
-    .register("events", events)
     .register("store", store)
     .register("todoService", todoService)
-    .register("todoController", todoController);
+    .register("todoController", todoController)
+    .register("toastController", toastController);
 
   app
     .use(LoggerPlugin)
     .use(DebugPlugin)
     .use(InspectorPlugin)
+    .use(NotificationPlugin)
     .use(DashboardRoutesPlugin)
     .use(TodoRoutesPlugin)
     .use(AboutRoutesPlugin);
@@ -87,6 +96,7 @@ export function bootstrap() {
   const routes = app.getContributions(ContributionTypes.ROUTES);
   const navigation = app.getContributions(ContributionTypes.NAVIGATION);
 
+  console.log(toastController);
   // Start UI
   const ui = createUI({
     root: app.getRoot(),
@@ -95,6 +105,7 @@ export function bootstrap() {
     navigation,
     notFound: NotFoundPage,
     todoController,
+    toastController,
   });
 
   app
@@ -107,23 +118,15 @@ export function bootstrap() {
     console.log("Frame work started");
   });
 
-  console.log("Todo Controller:", app.resolve("todoController"));
-
-  console.log("Todo Service:", app.resolve("todoService"));
-
-  console.log("Store:", app.resolve("store"));
+  console.log(app.getRegistry());
   app.start();
 
   // Initial data
   // todoController.loadTodos(todoService.loadTodos());
-  const unsubscribe = events.on("test:event", (payload) => {
-    console.log("Received event:", payload);
+
+  events.on(EventTypes.TOAST_SHOW, (payload) => {
+    console.log("TOAST EVENT:", payload);
   });
 
-  events.emit("test:event", {
-    message: "Event bus works!",
-  });
-
-  unsubscribe();
   store.dispatch(todoThunks.loadTodos());
 }
