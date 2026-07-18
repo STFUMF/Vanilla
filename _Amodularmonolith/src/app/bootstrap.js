@@ -74,7 +74,7 @@ export function bootstrap() {
   const middleware = app.getContributions(ContributionTypes.MIDDLEWARE);
   // Store
   const store = createStore(rootReducer, middleware);
-  console.log(middleware);
+
   const todoController = new TodoController(store, todoThunks, events);
 
   app
@@ -96,7 +96,6 @@ export function bootstrap() {
   const routes = app.getContributions(ContributionTypes.ROUTES);
   const navigation = app.getContributions(ContributionTypes.NAVIGATION);
 
-  console.log(toastController);
   // Start UI
   const ui = createUI({
     root: app.getRoot(),
@@ -125,29 +124,31 @@ export function bootstrap() {
   // todoController.loadTodos(todoService.loadTodos());
 
   events.on(EventTypes.TOAST_SHOW, (payload) => {
-    console.log("TOAST EVENT:", payload);
+    // console.log("TOAST EVENT:", payload);
   });
 
   function handleTodoCreated(payload) {
-    console.log("created:", payload);
+    //   console.log("created:", payload);
   }
 
   const unsubscribe = events.on("todo:created", handleTodoCreated);
-
-  console.log(events.has("todo:created"));
-  // true
-
-  console.log(events.getEvents());
-  // ["todo:created"]
 
   events.emit("todo:created", {
     id: 1,
   });
 
   unsubscribe();
+  const request1 = todoThunks.loadTodos();
 
-  console.log(events.has("todo:created"));
-  // false
+  store.dispatch(request1);
 
-  store.dispatch(todoThunks.loadTodos());
+  setTimeout(() => {
+    request1.cancel();
+
+    const request2 = todoThunks.loadTodos();
+
+    store.dispatch(request2);
+  }, 1000);
+
+  todoController.loadTodos();
 }

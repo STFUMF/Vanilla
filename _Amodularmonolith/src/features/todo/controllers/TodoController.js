@@ -14,6 +14,7 @@ export class TodoController {
 
     this.thunks = thunks;
     this.events = events;
+    this.currentLoadRequest = null;
 
     // View state
     this.title = "";
@@ -63,6 +64,15 @@ export class TodoController {
    */
   getTodos() {
     return todoSelectors.items(this.store.getState());
+  }
+
+  loadTodos() {
+    this.currentLoadRequest?.cancel();
+    const request = this.thunks.loadTodos();
+
+    this.currentLoadRequest = request;
+
+    this.store.dispatch(request);
   }
 
   /**

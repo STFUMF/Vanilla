@@ -5,10 +5,12 @@ import { delay } from "./delay.js";
 export function FakeApi(storage) {
   return {
     async loadTodos({ signal } = {}) {
+      await delay(1000, signal);
+
       if (signal?.aborted) {
         throw new Error("Request aborted");
       }
-      await delay(800);
+      await delay(800, signal);
       if (Math.random() < 0.3) {
         //  throw new Error("Unable to load todos.");
       }
@@ -16,8 +18,8 @@ export function FakeApi(storage) {
       return storage.load("todos") ?? [];
     },
 
-    async addTodo(todo) {
-      await delay(500);
+    async addTodo(todo, { signal } = {}) {
+      await delay(500, signal);
       console.log("added");
       const todos = storage.load("todos") ?? [];
 
