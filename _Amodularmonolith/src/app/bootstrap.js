@@ -74,7 +74,7 @@ export function bootstrap() {
   const middleware = app.getContributions(ContributionTypes.MIDDLEWARE);
   // Store
   const store = createStore(rootReducer, middleware);
-
+  console.log(middleware);
   const todoController = new TodoController(store, todoThunks, events);
 
   app
@@ -85,10 +85,10 @@ export function bootstrap() {
     .register("toastController", toastController);
 
   app
+    .use(NotificationPlugin)
     .use(LoggerPlugin)
     .use(DebugPlugin)
     .use(InspectorPlugin)
-    .use(NotificationPlugin)
     .use(DashboardRoutesPlugin)
     .use(TodoRoutesPlugin)
     .use(AboutRoutesPlugin);

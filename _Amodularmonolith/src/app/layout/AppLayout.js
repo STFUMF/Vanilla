@@ -15,12 +15,12 @@ export function AppLayout({
   return component(Container, {
     children: [
       header,
-      component(Navigation, { navigation }),
-
+      component(Navigation, { navigation, routes }),
+      ...children,
       component(ToastHost, {
         controller: toastController,
       }),
-      ...children,
+
       footer,
     ],
   });

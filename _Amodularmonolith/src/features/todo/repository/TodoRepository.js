@@ -6,8 +6,8 @@ export class TodoRepository {
     this.api = api;
   }
 
-  async getAll() {
-    return this.api.loadTodos();
+  async getAll(options = {}) {
+    return this.api.loadTodos(options);
   }
 
   async add(todo) {

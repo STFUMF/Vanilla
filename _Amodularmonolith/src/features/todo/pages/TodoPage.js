@@ -6,7 +6,6 @@ import { TodoContent } from "./components/TodoContent.js";
 import { Logger } from "@core/logger";
 
 export function TodoPage({ controller, navigation, routes, toastController }) {
-  Logger.debug("loaded todos");
   return component(AppLayout, {
     header: component(Header),
     navigation,

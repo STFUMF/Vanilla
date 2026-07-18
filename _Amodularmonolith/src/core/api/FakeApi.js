@@ -4,7 +4,10 @@ import { delay } from "./delay.js";
 
 export function FakeApi(storage) {
   return {
-    async loadTodos() {
+    async loadTodos({ signal } = {}) {
+      if (signal?.aborted) {
+        throw new Error("Request aborted");
+      }
       await delay(800);
       if (Math.random() < 0.3) {
         //  throw new Error("Unable to load todos.");
@@ -64,4 +67,10 @@ export function FakeApi(storage) {
       return id;
     },
   };
+}
+
+function throwIfAborted(signal) {
+  if (signal?.aborted) {
+    throw new Error("Request aborted");
+  }
 }

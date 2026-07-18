@@ -6,8 +6,8 @@ export class TodoService {
     this.repository = repository;
   }
 
-  async loadTodos() {
-    return this.repository.getAll();
+  async loadTodos(options = {}) {
+    return this.repository.getAll(options);
   }
 
   async addTodo(todo) {

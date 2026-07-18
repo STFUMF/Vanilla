@@ -6,13 +6,14 @@ import { AboutPage } from "./pages/AboutPage.js";
 export const AboutRoutesPlugin = createPlugin({
   name: "about",
 
-  install({ contribute }) {
+  install({ contribute, resolve }) {
+    const toastController = resolve("toastController");
     contribute(
       ContributionTypes.ROUTES,
       createRoute(
         "/about",
         AboutPage,
-        {},
+        { toastController },
         {
           title: "About",
         },
@@ -22,6 +23,8 @@ export const AboutRoutesPlugin = createPlugin({
     contribute(ContributionTypes.NAVIGATION, {
       label: "About",
       path: "/about",
+      title: "About",
+      routePath: "/about",
     });
   },
 });
