@@ -2,6 +2,7 @@ import { component } from "@core/components";
 
 import { createRenderContext } from "@core/renderer";
 import { Loading } from "../shared/components";
+import { createRenderScheduler } from "../core/renderer/createRenderScheduler";
 
 export function createRenderLoop({
   renderer,
@@ -23,5 +24,7 @@ export function createRenderLoop({
     }
 
     renderer.render(createRenderContext(component(Page, props)));
+
+    console.count("render");
   };
 }

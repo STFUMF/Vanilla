@@ -9,6 +9,7 @@ import { inspectFramework } from "../core/debug/inspectFramework.js";
 import { createApplicationRenderer } from "./createApplicationRenderer.js";
 import { createRenderLoop } from "./createRenderLoop.js";
 import { createApplicationRouter } from "./createApplicationRouter.js";
+import { createRenderScheduler } from "../core/renderer/createRenderScheduler.js";
 
 /**
  * Starts the application UI.
@@ -45,15 +46,17 @@ export function createUI({
     routes,
   });
 
-  todoController.setViewChangedListener(render);
+  const scheduleRender = createRenderScheduler(render);
+
+  todoController.setViewChangedListener(scheduleRender);
   toastController.setViewChangedListener(render);
 
-  const router = createApplicationRouter(routes, routerState, render);
+  const router = createApplicationRouter(routes, routerState, scheduleRender);
 
   DebugService.register("router", router);
   DebugService.register("renderer", renderer);
 
-  store.subscribe(render);
+  store.subscribe(scheduleRender);
 
   return {
     renderer,
