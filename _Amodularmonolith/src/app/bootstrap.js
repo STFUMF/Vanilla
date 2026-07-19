@@ -32,6 +32,7 @@ import { createEventBus } from "@core/events";
 import { EventTypes } from "../core/events/eventTypes.js";
 import { ToastController } from "../shared/components/Toast/ToastController.js";
 import { NotificationPlugin } from "../core/notifications/NotificationPlugin.js";
+import { PerformanceProfiler } from "../core/performance/PerformanceProfiler.js";
 
 /**
  * Bootstraps starts the application.
@@ -150,4 +151,5 @@ export function bootstrap() {
   }, 1000);
  */
   todoController.loadTodos();
+  console.table(PerformanceProfiler.getMetrics());
 }

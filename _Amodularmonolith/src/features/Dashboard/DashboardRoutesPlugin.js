@@ -9,7 +9,6 @@ export const DashboardRoutesPlugin = createPlugin({
   install({ contribute, resolve }) {
     const todoController = resolve("todoController");
     const toastController = resolve("toastController");
-    console.log("route toast controller:", toastController);
     if (!todoController) {
       throw new Error('DashboardRoutesPlugin required "todoController');
     }

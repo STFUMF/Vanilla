@@ -46,8 +46,8 @@ export const todoSelectors = {
       (_, __, ___, sort) => sort,
     ],
 
-    (state, search, filters, sort) => {
-      let items = state;
+    (items, search, filters, sort) => {
+      // let items = this.items(state);
 
       // search
       if (search.trim()) {

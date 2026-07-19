@@ -5,12 +5,12 @@ import { delay } from "./delay.js";
 export function FakeApi(storage) {
   return {
     async loadTodos({ signal } = {}) {
-      await delay(1000, signal);
+      //await delay(1000, signal);
 
       if (signal?.aborted) {
         throw new Error("Request aborted");
       }
-      await delay(800, signal);
+      //await delay(800, signal);
       if (Math.random() < 0.3) {
         //  throw new Error("Unable to load todos.");
       }
@@ -19,7 +19,7 @@ export function FakeApi(storage) {
     },
 
     async addTodo(todo, { signal } = {}) {
-      await delay(500, signal);
+      //await delay(500, signal);
       console.log("added");
       const todos = storage.load("todos") ?? [];
 
@@ -31,7 +31,7 @@ export function FakeApi(storage) {
     },
 
     async updateTodo(todo) {
-      await delay(500);
+      // await delay(500);
       // throw new Error("Update failed");
       const todos = storage.load("todos") ?? [];
 
@@ -43,7 +43,7 @@ export function FakeApi(storage) {
     },
 
     async deleteTodo(id) {
-      await delay(500);
+      // await delay(500);
 
       //  throw new Error("Delete failed");
       const todos = storage.load("todos") ?? [];
@@ -56,7 +56,7 @@ export function FakeApi(storage) {
     },
 
     async toggleTodo(todo) {
-      await delay(500);
+      //await delay(500);
 
       const todos = storage.load("todos") ?? [];
 

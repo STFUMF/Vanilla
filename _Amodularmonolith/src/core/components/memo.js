@@ -1,6 +1,6 @@
+import { PerformanceProfiler } from "../performance/PerformanceProfiler.js";
 import { shallowEqual } from "./shallowEqual.js";
 export function memo(component, compare = shallowEqual) {
-  console.log("Creating memo wrapper:", component.name);
   let previousProps = null;
   let previousResult = null;
 
@@ -15,9 +15,10 @@ export function memo(component, compare = shallowEqual) {
 
     if (isEqual) {
       console.log("MEMO HIT");
+      PerformanceProfiler.increment("memoHits");
       return previousResult;
     }
-    console.log("MEMO miss");
+    PerformanceProfiler.increment("memoMisses");
     previousProps = props;
     previousResult = component(props);
 

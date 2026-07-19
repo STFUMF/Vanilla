@@ -10,6 +10,7 @@ import { createApplicationRenderer } from "./createApplicationRenderer.js";
 import { createRenderLoop } from "./createRenderLoop.js";
 import { createApplicationRouter } from "./createApplicationRouter.js";
 import { createRenderScheduler } from "../core/renderer/createRenderScheduler.js";
+import { PerformanceProfiler } from "../core/performance/PerformanceProfiler.js";
 
 /**
  * Starts the application UI.
@@ -57,7 +58,6 @@ export function createUI({
   DebugService.register("renderer", renderer);
 
   store.subscribe(scheduleRender);
-
   return {
     renderer,
     router,

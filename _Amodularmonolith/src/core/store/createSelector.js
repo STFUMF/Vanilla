@@ -5,6 +5,8 @@
  * @param {Function} resultSelector
  */
 
+import { PerformanceProfiler } from "../performance/PerformanceProfiler.js";
+
 export function createSelector(inputSelectors, resultSelector) {
   if (!Array.isArray(inputSelectors)) {
     throw new TypeError("createSelctor expects an array of input selectors.");
@@ -24,9 +26,11 @@ export function createSelector(inputSelectors, resultSelector) {
       inputs.every((input, index) => input === previousInputs[index]);
 
     if (isSame) {
+      PerformanceProfiler.increment("selectorHits");
       return previousResults;
     }
 
+    PerformanceProfiler.increment("selectorMisses");
     previousInputs = inputs;
     previousResults = resultSelector(...inputs);
 

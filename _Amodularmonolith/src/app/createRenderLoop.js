@@ -2,7 +2,7 @@ import { component } from "@core/components";
 
 import { createRenderContext } from "@core/renderer";
 import { Loading } from "../shared/components";
-import { createRenderScheduler } from "../core/renderer/createRenderScheduler";
+import { PerformanceProfiler } from "../core/performance/PerformanceProfiler.js";
 
 export function createRenderLoop({
   renderer,
@@ -12,19 +12,27 @@ export function createRenderLoop({
   routes,
 }) {
   return function render() {
-    const Page = routerState.currentRoute?.component ?? notFound;
+    const start = performance.now();
 
-    const routeProps = routerState.currentRoute?.props ?? {};
+    try {
+      const Page = routerState.currentRoute?.component ?? notFound;
 
-    const props = { ...routeProps, navigation, routes };
+      const routeProps = routerState.currentRoute?.props ?? {};
 
-    if (routerState.isRouteLoading) {
-      renderer.render(createRenderContext(component(Loading)));
-      return;
+      const props = { ...routeProps, navigation, routes };
+
+      if (routerState.isRouteLoading) {
+        renderer.render(createRenderContext(component(Loading)));
+        return;
+      }
+
+      renderer.render(createRenderContext(component(Page, props)));
+    } finally {
+      const elapsed = performance.now() - start;
+      PerformanceProfiler.increment("renders");
+      console.log("Render took:", elapsed);
+      PerformanceProfiler.add("renderTime", elapsed);
+      console.table(PerformanceProfiler.getMetrics());
     }
-
-    renderer.render(createRenderContext(component(Page, props)));
-
-    console.count("render");
   };
 }
