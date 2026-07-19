@@ -117,7 +117,6 @@ export function bootstrap() {
     console.log("Frame work started");
   });
 
-  console.log(app.getRegistry());
   app.start();
 
   // Initial data
@@ -140,7 +139,7 @@ export function bootstrap() {
   unsubscribe();
   const request1 = todoThunks.loadTodos();
 
-  store.dispatch(request1);
+  /*   store.dispatch(request1);
 
   setTimeout(() => {
     request1.cancel();
@@ -149,6 +148,6 @@ export function bootstrap() {
 
     store.dispatch(request2);
   }, 1000);
-
+ */
   todoController.loadTodos();
 }

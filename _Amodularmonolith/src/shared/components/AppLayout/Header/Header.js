@@ -1,7 +1,9 @@
+import { memo } from "@core/components";
 import "./Header.css";
 import { element } from "@core/renderer";
 
-export function Header() {
+function header() {
+  console.count("Header");
   return element(
     "header",
     {
@@ -11,3 +13,5 @@ export function Header() {
     element("h1", {}, "My Framework"),
   );
 }
+
+export const Header = memo(header);

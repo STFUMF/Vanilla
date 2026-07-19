@@ -11,7 +11,6 @@ export function AppLayout({
   toastController,
   children,
 }) {
-  console.log("layout toast controller:", toastController);
   return component(Container, {
     children: [
       header,

@@ -68,7 +68,7 @@ export class ToastController {
   }
 
   notify() {
-    console.log("TOAST NOTIFY", this.viewChangedListener);
+    //  console.log("TOAST NOTIFY", this.viewChangedListener);
     this.viewChangedListener?.();
   }
 

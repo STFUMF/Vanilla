@@ -33,7 +33,7 @@ export function createUI({
     isRouteLoading: false,
     routeError: null,
   };
-  console.log("UI nagivation:", navigation);
+
   const renderer = createApplicationRenderer(root);
 
   RouterService.setRoutes(routes);
