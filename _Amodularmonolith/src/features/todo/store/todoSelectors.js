@@ -1,4 +1,5 @@
 import { getDueDateStatus } from "../../../shared/utils/date/dateStatus.js";
+import { createSelector } from "../../../core/store/createSelector.js";
 
 // Selectors prevent pages and components from knowing that state's internal structure.
 
@@ -15,103 +16,124 @@ export const todoSelectors = {
     return state.todo.items;
   },
 
-  completed(state) {
-    return state.todo.items.filter((todo) => todo.completed);
-  },
+  completed: createSelector(
+    [(state) => state.todo.items],
 
-  remaining(state) {
-    return state.todo.items.filter((todo) => !todo.completed);
-  },
+    (items) => {
+      console.count("Computing completed");
 
-  total(state) {
-    return state.todo.items.length;
-  },
+      return items.filter((todo) => todo.completed);
+    },
+  ),
 
-  visible(state, search, filters, sort) {
-    let items = this.items(state);
+  remaining: createSelector(
+    [(state) => state.todo.items],
 
-    // search
-    if (search.trim()) {
-      const query = search.toLowerCase();
+    (items) => items.filter((todo) => !todo.completed),
+  ),
 
-      items = items.filter((todo) => todo.title.toLowerCase().includes(query));
-    }
+  total: createSelector(
+    [(state) => state.todo.items],
 
-    // Filter
-    switch (filters.status) {
-      case "active":
-        items = items.filter((todo) => !todo.completed);
-        break;
+    (items) => items.length,
+  ),
 
-      case "completed":
-        items = items.filter((todo) => todo.completed);
-        break;
+  visible: createSelector(
+    [
+      (state) => state.todo.items,
+      (_, search) => search,
+      (_, __, filters) => filters,
+      (_, __, ___, sort) => sort,
+    ],
 
-      default:
-        break;
-    }
+    (state, search, filters, sort) => {
+      let items = state;
 
-    switch (filters.priority) {
-      case "low":
-      case "medium":
-      case "high":
-        items = items.filter((todo) => todo.priority === filters.priority);
-        break;
+      // search
+      if (search.trim()) {
+        const query = search.toLowerCase();
 
-      default:
-        break;
-    }
-
-    switch (filters.dueDate) {
-      case "overdue":
-        items = items.filter(
-          (todo) => getDueDateStatus(todo.dueDate) === "overdue",
+        items = items.filter((todo) =>
+          todo.title.toLowerCase().includes(query),
         );
-        break;
+      }
 
-      case "today":
-        items = items.filter(
-          (todo) => getDueDateStatus(todo.dueDate) === "today",
-        );
-        break;
+      // Filter
+      switch (filters.status) {
+        case "active":
+          items = items.filter((todo) => !todo.completed);
+          break;
 
-      case "tomorrow":
-        items = items.filter(
-          (todo) => getDueDateStatus(todo.dueDate) === "tomorrow",
-        );
-        break;
+        case "completed":
+          items = items.filter((todo) => todo.completed);
+          break;
 
-      case "week":
-        items = items.filter(
-          (todo) => getDueDateStatus(todo.dueDate) === "week",
-        );
-        break;
+        default:
+          break;
+      }
 
-      case "none":
-        items = items.filter((todo) => !todo.dueDate);
-        break;
+      switch (filters.priority) {
+        case "low":
+        case "medium":
+        case "high":
+          items = items.filter((todo) => todo.priority === filters.priority);
+          break;
 
-      default:
-        break;
-    }
+        default:
+          break;
+      }
 
-    switch (sort) {
-      case "created-asc":
-        items.sort((a, b) => a.createdAt - b.createdAt);
-        break;
+      switch (filters.dueDate) {
+        case "overdue":
+          items = items.filter(
+            (todo) => getDueDateStatus(todo.dueDate) === "overdue",
+          );
+          break;
 
-      case "created-desc":
-        items.sort((a, b) => b.createdAt - a.createdAt);
-        break;
+        case "today":
+          items = items.filter(
+            (todo) => getDueDateStatus(todo.dueDate) === "today",
+          );
+          break;
 
-      case "title":
-        items.sort((a, b) => a.title.localeCompare(b.title));
-        break;
+        case "tomorrow":
+          items = items.filter(
+            (todo) => getDueDateStatus(todo.dueDate) === "tomorrow",
+          );
+          break;
 
-      default:
-        break;
-    }
+        case "week":
+          items = items.filter(
+            (todo) => getDueDateStatus(todo.dueDate) === "week",
+          );
+          break;
 
-    return items;
-  },
+        case "none":
+          items = items.filter((todo) => !todo.dueDate);
+          break;
+
+        default:
+          break;
+      }
+
+      switch (sort) {
+        case "created-asc":
+          items.sort((a, b) => a.createdAt - b.createdAt);
+          break;
+
+        case "created-desc":
+          items.sort((a, b) => b.createdAt - a.createdAt);
+          break;
+
+        case "title":
+          items.sort((a, b) => a.title.localeCompare(b.title));
+          break;
+
+        default:
+          break;
+      }
+
+      return items;
+    },
+  ),
 };

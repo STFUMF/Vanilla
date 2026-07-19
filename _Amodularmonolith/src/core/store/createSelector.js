@@ -5,20 +5,31 @@
  * @param {Function} resultSelector
  */
 
-export function createSelector(inputSelector, resultSelector) {
-  let previousInput;
-  let previousResult;
+export function createSelector(inputSelectors, resultSelector) {
+  if (!Array.isArray(inputSelectors)) {
+    throw new TypeError("createSelctor expects an array of input selectors.");
+  }
 
-  return function selector(state) {
-    const input = inputSelector(state);
+  if (typeof resultSelector !== "function") {
+    throw new TypeError("Result selector must be a function.");
+  }
+  let previousInputs = null;
+  let previousResults = null;
 
-    if (input === previousInput) {
-      return previousResult;
+  return function selector(state, ...args) {
+    const inputs = inputSelectors.map((selector) => selector(state, ...args));
+
+    const isSame =
+      previousInputs &&
+      inputs.every((input, index) => input === previousInputs[index]);
+
+    if (isSame) {
+      return previousResults;
     }
 
-    previousInput = input;
-    previousResult = resultSelector(input);
+    previousInputs = inputs;
+    previousResults = resultSelector(...inputs);
 
-    return previousResult;
+    return previousResults;
   };
 }
