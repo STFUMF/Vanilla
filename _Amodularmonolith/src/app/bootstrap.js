@@ -37,6 +37,9 @@ import "../tests/selector.test.js";
 import "../tests/createSelector.test.js";
 import "../tests/memo.test.js";
 import "../tests/shallowEqual.test.js";
+import "../tests/eventBus.test.js";
+import "../tests/store.test.js";
+import "../tests/middleware.test.js";
 import { runTests } from "../core/testing/index.js";
 
 /**

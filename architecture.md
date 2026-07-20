@@ -28,48 +28,47 @@ Advanced
 ├── Phase 17 Testing
 ├── Phase 18 Future Features
 
-
 Renderer
 
 Component
-      │
-      ▼
+│
+▼
 Virtual Tree
-      │
-      ▼
+│
+▼
 Renderer
-      │
-      ▼
+│
+▼
 
       --
 
 Component
-      │
-      ▼
+│
+▼
 Tree
-      │
-      ▼
+│
+▼
 Create DOM
-      │
-      ▼
+│
+▼
 Browser
 
-----
+---
 
 later
 
 Old Tree
-      │
-      ▼
+│
+▼
 New Tree
-      │
-      ▼
+│
+▼
 Diff
-      │
-      ▼
+│
+▼
 Patch DOM
 
---- 
+---
 
 -finally:
 
@@ -92,8 +91,8 @@ Patch
 Done
 
 /// The UI Tree is immutabable
-- Once created, a node should never be modified. Every update creates a new tree. Thats exactly what makes compare-and-patch predictable.
 
+- Once created, a node should never be modified. Every update creates a new tree. Thats exactly what makes compare-and-patch predictable.
 
 ---- ROUTER ----
 
@@ -123,8 +122,6 @@ matchRoute()
 
 notify App
 
-
-
 // Each middleware decides whether to:
 -continue the pipeline,
 -inspect the action,
@@ -137,53 +134,52 @@ notify App
 thunk
 
 dispatch(fn)
-      │
-      ▼
+│
+▼
 Thunk Middleware
-      │
-      ▼
+│
+▼
 Execute Function
-      │
-      ▼
+│
+▼
 dispatch(action)
-      │
-      ▼
+│
+▼
 Logger
-      │
-      ▼
+│
+▼
 Reducer
-      │
-      ▼
+│
+▼
 Subscribers
-
 
 ---
 
 Store Architecture
 
 dispatch(action)
-        │
-        ▼
+│
+▼
 Middleware Pipeline
-        │
-        ├── thunk
-        ├── logger
-        ├── persistence (future)
-        ├── analytics (future)
-        └── devtools (future)
-        │
-        ▼
+│
+├── thunk
+├── logger
+├── persistence (future)
+├── analytics (future)
+└── devtools (future)
+│
+▼
 combineReducers()
-        │
-        ▼
+│
+▼
 Feature Reducers
-        │
-        ▼
+│
+▼
 New State
-        │
-        ▼
+│
+▼
 Subscribers
 
-
 // Framework - A question when creating things that has a bug
+
 - is this a bug in the Core, or is the feature trying to do something it shouldn't?
