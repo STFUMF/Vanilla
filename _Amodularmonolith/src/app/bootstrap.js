@@ -33,6 +33,11 @@ import { EventTypes } from "../core/events/eventTypes.js";
 import { ToastController } from "../shared/components/Toast/ToastController.js";
 import { NotificationPlugin } from "../core/notifications/NotificationPlugin.js";
 import { PerformanceProfiler } from "../core/performance/PerformanceProfiler.js";
+import "../tests/selector.test.js";
+import "../tests/createSelector.test.js";
+import "../tests/memo.test.js";
+import "../tests/shallowEqual.test.js";
+import { runTests } from "../core/testing/index.js";
 
 /**
  * Bootstraps starts the application.
@@ -152,4 +157,5 @@ export function bootstrap() {
  */
   todoController.loadTodos();
   console.table(PerformanceProfiler.getMetrics());
+  runTests();
 }
