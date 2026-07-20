@@ -40,6 +40,7 @@ import "../tests/shallowEqual.test.js";
 import "../tests/eventBus.test.js";
 import "../tests/store.test.js";
 import "../tests/middleware.test.js";
+import "../tests/router/matcher.test.js";
 import { runTests } from "../core/testing/index.js";
 
 /**
@@ -141,9 +142,9 @@ export function bootstrap() {
 
   const unsubscribe = events.on("todo:created", handleTodoCreated);
 
-  events.emit("todo:created", {
+  /*  events.emit("todo:created", {
     id: 1,
-  });
+  }); */
 
   unsubscribe();
   const request1 = todoThunks.loadTodos();
