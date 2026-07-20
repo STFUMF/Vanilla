@@ -40,10 +40,8 @@ export class ToastController {
       duration: toast.duration ?? 3000,
     };
 
-    console.log("ADDING TOAST");
     this.toasts = [...this.toasts, newToast];
 
-    console.log("CURRENT TOASTS:", this.toasts);
     this.notify();
 
     if (newToast.duration > 0) {

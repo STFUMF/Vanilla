@@ -30,7 +30,6 @@ export function createRenderLoop({
     } finally {
       const elapsed = performance.now() - start;
       PerformanceProfiler.increment("renders");
-      console.log("Render took:", elapsed);
       PerformanceProfiler.add("renderTime", elapsed);
       console.table(PerformanceProfiler.getMetrics());
     }

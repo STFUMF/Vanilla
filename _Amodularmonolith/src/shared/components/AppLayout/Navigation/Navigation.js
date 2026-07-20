@@ -7,7 +7,6 @@ import { NavLink } from "./NavLink.js";
 import { getCurrentPath } from "@core/router";
 
 export function Navigation({ navigation, routes }) {
-  console.log("Navigation routes:", routes);
   const currentPath = getCurrentPath();
 
   return component(Row, {

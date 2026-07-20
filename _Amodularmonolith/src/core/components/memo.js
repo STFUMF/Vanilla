@@ -7,14 +7,7 @@ export function memo(component, compare = shallowEqual) {
   return function MemoizedComponent(props) {
     const isEqual = previousProps && compare(previousProps, props);
 
-    console.log({
-      previousProps,
-      props,
-      isEqual,
-    });
-
     if (isEqual) {
-      console.log("MEMO HIT");
       PerformanceProfiler.increment("memoHits");
       return previousResult;
     }

@@ -20,8 +20,6 @@ export const todoSelectors = {
     [(state) => state.todo.items],
 
     (items) => {
-      console.count("Computing completed");
-
       return items.filter((todo) => todo.completed);
     },
   ),

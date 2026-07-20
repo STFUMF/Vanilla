@@ -82,7 +82,6 @@ export class TodoController {
    */
   getStats() {
     const state = this.store.getState();
-    console.count("Computing stats");
     return {
       total: todoSelectors.total(state),
       completed: todoSelectors.completed(state).length,

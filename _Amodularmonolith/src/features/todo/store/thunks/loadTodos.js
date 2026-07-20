@@ -4,7 +4,6 @@ import { todoActions } from "../todoActionTypes.js";
 export function createLoadTodos(todoService) {
   return function loadTodosThunk() {
     const abortController = createAbortController();
-    console.log("Loading todos...");
     const thunk = async function (dispatch) {
       dispatch(todoActions.loadStarted());
 
@@ -16,7 +15,6 @@ export function createLoadTodos(todoService) {
         if (abortController.aborted) {
           return;
         }
-        console.log("Loading finished");
         dispatch(todoActions.set(todos));
       } catch (error) {
         if (abortController.aborted) {
@@ -27,7 +25,6 @@ export function createLoadTodos(todoService) {
     };
 
     thunk.cancel = () => {
-      console.log("Request cancelled");
       abortController.abort();
     };
 
