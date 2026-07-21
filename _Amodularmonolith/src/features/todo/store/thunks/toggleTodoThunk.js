@@ -4,17 +4,16 @@ import { createOptimisticThunk } from "./createOptimisticThunk.js";
 export function createToggleTodoThunk(todoService) {
   return function toggleTodoThunk(todo) {
     return async function (dispatch) {
-      const updatedTodo = {
-        ...todo,
-        completed: !todo.completed,
-        updatedAt: Date.now(),
-      };
       return createOptimisticThunk({
-        optimistic: () => todoActions.toggle(todo.id),
+        optimistic: () => todoActions.update(todo),
 
-        request: () => todoService.updateTodo(updatedTodo),
+        request: () => todoService.updateTodo(todo),
 
-        rollback: () => todoActions.update(todo),
+        rollback: () =>
+          todoActions.update({
+            ...todo,
+            completed: !todo.completed,
+          }),
 
         onError: (error) =>
           todoActions.loadFailed({

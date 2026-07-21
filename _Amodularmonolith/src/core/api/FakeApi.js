@@ -37,6 +37,7 @@ export function FakeApi(storage) {
       const updated = todos.map((item) => (item.id === todo.id ? todo : item));
 
       storage.save("todos", updated);
+      console.log(storage.load("todos"));
 
       return todo;
     },

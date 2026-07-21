@@ -103,7 +103,6 @@ export class TodoController {
   async toggleTodo(todo) {
     try {
       const result = await this.store.dispatch(this.thunks.toggleTodo(todo));
-
       this.events.emit(EventTypes.TODO_UPDATED, {
         todo: result,
       });
@@ -224,17 +223,28 @@ export class TodoController {
   }
 
   setStatusFilter(status) {
-    this.filters.status = status;
+    this.filters = {
+      ...this.filters,
+      status,
+    };
+
     this.notifyViewChanged();
   }
 
   setPriorityFilter(priority) {
-    this.filters.priority = priority;
+    this.filters = {
+      ...this.filters,
+      priority,
+    };
+
     this.notifyViewChanged();
   }
 
   setDueDateFilter(filter) {
-    this.filters.dueDate = filter;
+    this.filters = {
+      ...this.filters,
+      dueDate: filter,
+    };
     this.notifyViewChanged();
   }
 

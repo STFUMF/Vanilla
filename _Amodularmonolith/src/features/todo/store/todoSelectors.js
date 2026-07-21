@@ -45,12 +45,12 @@ export const todoSelectors = {
     ],
 
     (items, search, filters, sort) => {
-      // let items = this.items(state);
-
+      items = [...items];
+      console.log("Selector recomputed", filters.status);
       // search
       if (search.trim()) {
         const query = search.toLowerCase();
-
+        console.log("searching");
         items = items.filter((todo) =>
           todo.title.toLowerCase().includes(query),
         );
@@ -59,6 +59,7 @@ export const todoSelectors = {
       // Filter
       switch (filters.status) {
         case "active":
+          console.log("filtering");
           items = items.filter((todo) => !todo.completed);
           break;
 
