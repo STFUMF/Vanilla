@@ -31,7 +31,7 @@ export function createRenderLoop({
       const elapsed = performance.now() - start;
       PerformanceProfiler.increment("renders");
       PerformanceProfiler.add("renderTime", elapsed);
-      console.table(PerformanceProfiler.getMetrics());
+      // console.table(PerformanceProfiler.getMetrics());
     }
   };
 }

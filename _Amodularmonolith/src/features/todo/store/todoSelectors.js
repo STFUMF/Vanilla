@@ -13,7 +13,7 @@ export const todoSelectors = {
   },
 
   items(state) {
-    return state.todo.items;
+    return state?.todo?.items ?? [];
   },
 
   completed: createSelector(

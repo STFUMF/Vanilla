@@ -22,7 +22,7 @@ export function DashboardPage({
   routes,
   toastController,
 }) {
-  console.log("page toast controller:", toastController);
+  //console.log("page toast controller:", toastController);
   return component(AppLayout, {
     header: component(Header),
     navigation,

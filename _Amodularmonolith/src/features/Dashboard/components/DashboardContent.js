@@ -5,7 +5,7 @@ import { Stack, Row, Card, Button } from "../../../shared/components";
 import { navigate } from "@core/router";
 
 export function DashboardContent({ controller }) {
-  console.log("content controller:", controller);
+  //console.log("content controller:", controller);
   const stats = controller.getStats();
 
   return component(Stack, {

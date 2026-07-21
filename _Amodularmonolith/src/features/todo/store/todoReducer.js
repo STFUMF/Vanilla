@@ -31,6 +31,7 @@ export function todoReducer(state = initialState, action) {
       };
 
     case TODO_SET:
+      console.log("TODO_SET payload:", action.payload);
       return {
         ...state,
         items: action.payload,

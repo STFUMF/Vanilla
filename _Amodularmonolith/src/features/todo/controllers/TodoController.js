@@ -41,71 +41,87 @@ export class TodoController {
     this.onViewChanged = () => {};
   }
 
-  /**
-   * Loads the initial todos into the store.
-   *
-   * @param {Array} todos
-   */
-
-  /**
-   * Updates the current input value.
-   *
-   * @param {string} title
-   */
-  setTitle(title) {
-    this.title = title;
-    this.notifyViewChanged();
-  }
-
-  /**
-   * Returns all todos.
-   *
-   * @returns {Array}
-   */
-  getTodos() {
-    return todoSelectors.items(this.store.getState());
-  }
+  // ---------------------------------------------------------------------
+  // Business Commands
+  // ---------------------------------------------------------------------
 
   loadTodos() {
     this.currentLoadRequest?.cancel();
+
     const request = this.thunks.loadTodos();
 
     this.currentLoadRequest = request;
 
-    this.store.dispatch(request);
+    return this.store.dispatch(request);
   }
 
-  /**
-   * Returns statistics for the UI.
-   *
-   * @returns {{total:number, completed:number, remaining:number}}
-   */
-  getStats() {
-    const state = this.store.getState();
-    return {
-      total: todoSelectors.total(state),
-      completed: todoSelectors.completed(state).length,
-      remaining: todoSelectors.remaining(state).length,
-    };
+  async addTodo(todo) {
+    try {
+      const result = await this.store.dispatch(this.thunks.addTodo(todo));
+
+      this.events.emit(EventTypes.TODO_CREATED, {
+        todo: result,
+      });
+
+      return result;
+    } catch (error) {
+      this.emitError("create", error);
+      throw error;
+    }
   }
 
-  isLoading() {
-    return todoSelectors.loading(this.store.getState());
+  async updateTodo(todo) {
+    try {
+      const result = await this.store.dispatch(this.thunks.updateTodo(todo));
+
+      this.events.emit(EventTypes.TODO_UPDATED, {
+        todo: result,
+      });
+
+      return result;
+    } catch (error) {
+      this.emitError("update", error);
+      throw error;
+    }
   }
 
-  getError() {
-    return todoSelectors.error(this.store.getState());
+  async deleteTodo(todo) {
+    try {
+      const result = await this.store.dispatch(this.thunks.deleteTodo(todo));
+
+      this.events.emit(EventTypes.TODO_DELETED, {
+        todo,
+      });
+
+      return result;
+    } catch (error) {
+      this.emitError("delete", error);
+      throw error;
+    }
   }
 
-  reloadTodos() {
-    this.store.dispatch(this.thunks.loadTodos());
+  async toggleTodo(todo) {
+    try {
+      const result = await this.store.dispatch(this.thunks.toggleTodo(todo));
+
+      this.events.emit(EventTypes.TODO_UPDATED, {
+        todo: result,
+      });
+
+      return result;
+    } catch (error) {
+      this.emitError("toggle", error);
+      throw error;
+    }
   }
 
-  /**
-   * Adds a new todo.
-   */
+  // ---------------------------------------------------------------------
+  // ViewModel Commands
+  // ---------------------------------------------------------------------
+
   async addTodoc() {
     const title = this.title.trim();
+
     if (!title) {
       return;
     }
@@ -122,63 +138,18 @@ export class TodoController {
       updatedAt: Date.now(),
     };
 
-    try {
-      const result = await this.store.dispatch(this.thunks.addTodo(todo));
-
-      this.events.emit(EventTypes.TODO_CREATED, {
-        todo: result,
-      });
-
-      return result;
-    } catch (error) {
-      this.events.emit(EventTypes.TOAST_SHOW, {
-        operation: "create",
-        error,
-      });
-      throw error;
-    }
+    const result = await this.addTodo(todo);
 
     this.title = "";
     this.priority = "medium";
     this.dueDate = "";
-  }
 
-  /**
-   * Deletes a todo.
-   *
-   * @param {string} id
-   */
-  async deleteTodoc(id) {
-    try {
-      const result = await this.store.dispatch(this.thunks.deleteTodo(id));
-      this.events.emit(EventTypes.TODO_DELETED, { todo: id });
+    this.notifyViewChanged();
 
-      return result;
-    } catch (error) {
-      this.emitError("update", error);
-      throw error;
-    }
-  }
-
-  /**
-   * Toggles completion.
-   *
-   * @param {string} id
-   */
-  async toggleTodoc(todo) {
-    try {
-      const result = await this.store.dispatch(this.thunks.toggleTodo(todo));
-      this.events.emit(EventTypes.TODO_UPDATED, { todo: result });
-
-      return result;
-    } catch (error) {
-      this.emitError("update", error);
-      throw error;
-    }
+    return result;
   }
 
   startEditing(todo) {
-    console.log("test");
     this.editingTodoId = todo.id;
     this.editTitle = todo.title;
 
@@ -202,43 +173,39 @@ export class TodoController {
     return this.editingTodoId === id;
   }
 
-  saveEdit(todo) {
-    try {
-      const updatedTodo = {
-        ...todo,
-        title: this.editTitle.trim(),
-      };
-      const result = this.store.dispatch(
-        this.thunks.updateTodo(todo, updatedTodo),
-      );
-      this.events.emit(EventTypes.TODO_UPDATED, { todo: result });
-      this.cancelEditing();
-      return result;
-    } catch (error) {
-      this.emitError("update", error);
-      throw error;
-    }
-
-    /* const title = this.editTitle.trim();
-
-    if (!title) {
-      return;
-    }
-    updateTodo(this.store, {
+  async saveEdit(todo) {
+    const updatedTodo = {
       ...todo,
-      title,
+      title: this.editTitle.trim(),
+      updatedAt: Date.now(),
+    };
+
+    const result = await this.updateTodo(updatedTodo);
+
+    this.cancelEditing();
+
+    return result;
+  }
+
+  async deleteTodoc(todo) {
+    return this.deleteTodo(todo);
+  }
+
+  async toggleTodoc(todo) {
+    return this.toggleTodo({
+      ...todo,
+      completed: !todo.completed,
       updatedAt: Date.now(),
     });
-
-    this.cancelEditing(); */
   }
 
-  setViewChangedListener(listener) {
-    this.onViewChanged = listener;
-  }
+  // ---------------------------------------------------------------------
+  // View State
+  // ---------------------------------------------------------------------
 
-  notifyViewChanged() {
-    this.onViewChanged();
+  setTitle(title) {
+    this.title = title;
+    this.notifyViewChanged();
   }
 
   setSearch(search) {
@@ -246,13 +213,14 @@ export class TodoController {
     this.notifyViewChanged();
   }
 
-  getVisibleTodos() {
-    return todoSelectors.visible(
-      this.store.getState(),
-      this.search,
-      this.filters,
-      this.sort,
-    );
+  setPriority(priority) {
+    this.priority = priority;
+    this.notifyViewChanged();
+  }
+
+  setDueDate(date) {
+    this.dueDate = date;
+    this.notifyViewChanged();
   }
 
   setStatusFilter(status) {
@@ -270,35 +238,76 @@ export class TodoController {
     this.notifyViewChanged();
   }
 
-  getFilters() {
-    return this.filters;
-  }
-
   setSort(sort) {
     this.sort = sort;
     this.notifyViewChanged();
+  }
+
+  setViewChangedListener(listener) {
+    this.onViewChanged = listener;
+  }
+
+  notifyViewChanged() {
+    this.onViewChanged();
+  }
+
+  // ---------------------------------------------------------------------
+  // Selectors
+  // ---------------------------------------------------------------------
+
+  getTodos() {
+    return todoSelectors.items(this.store.getState());
+  }
+
+  getVisibleTodos() {
+    return todoSelectors.visible(
+      this.store.getState(),
+      this.search,
+      this.filters,
+      this.sort,
+    );
+  }
+
+  getStats() {
+    const state = this.store.getState();
+
+    return {
+      total: todoSelectors.total(state),
+      completed: todoSelectors.completed(state).length,
+      remaining: todoSelectors.remaining(state).length,
+    };
+  }
+
+  isLoading() {
+    return todoSelectors.loading(this.store.getState());
+  }
+
+  getError() {
+    return todoSelectors.error(this.store.getState());
+  }
+
+  getFilters() {
+    return this.filters;
   }
 
   getSort() {
     return this.sort;
   }
 
-  setPriority(priority) {
-    this.priority = priority;
-    this.notifyViewChanged();
-  }
-
   getPriority() {
     return this.priority;
   }
 
-  setDueDate(date) {
-    this.dueDate = date;
-    this.notifyViewChanged();
-  }
-
   getDueDate() {
     return this.dueDate;
+  }
+
+  // ---------------------------------------------------------------------
+  // Utilities
+  // ---------------------------------------------------------------------
+
+  reloadTodos() {
+    return this.loadTodos();
   }
 
   emitError(operation, error) {

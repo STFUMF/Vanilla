@@ -1,6 +1,6 @@
 import { runner } from "./index.js";
 
-export function runTests() {
+export async function runTests() {
   let passed = 0;
   let failed = 0;
 
@@ -9,13 +9,13 @@ export function runTests() {
 
     for (const test of suite.tests) {
       try {
-        test.callback();
+        await test.callback();
 
         console.log(`✅ ${test.name}`);
 
         passed++;
       } catch (error) {
-        console.error(`❌ ${test.name}`, error.message);
+        await console.error(`❌ ${test.name}`, error.message);
 
         failed++;
       }

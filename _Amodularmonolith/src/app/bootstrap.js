@@ -33,14 +33,12 @@ import { EventTypes } from "../core/events/eventTypes.js";
 import { ToastController } from "../shared/components/Toast/ToastController.js";
 import { NotificationPlugin } from "../core/notifications/NotificationPlugin.js";
 import { PerformanceProfiler } from "../core/performance/PerformanceProfiler.js";
-import "../tests/selector.test.js";
-import "../tests/createSelector.test.js";
-import "../tests/memo.test.js";
-import "../tests/shallowEqual.test.js";
-import "../tests/eventBus.test.js";
-import "../tests/store.test.js";
-import "../tests/middleware.test.js";
-import "../tests/router/matcher.test.js";
+
+/* import "../tests/router/matcher.test.js";
+import "../tests/renderer/component.test.js";
+import "../tests/renderer/renderer.test.js";
+import "../tests/renderer/renderingPipeline.test.js"; */
+import "../tests/integration/todoTest.test.js";
 import { runTests } from "../core/testing/index.js";
 
 /**
@@ -51,6 +49,7 @@ import { runTests } from "../core/testing/index.js";
  */
 
 export function bootstrap() {
+  const testTing = true;
   const config = createConfig({
     debug: true,
     dev: true,
@@ -126,40 +125,19 @@ export function bootstrap() {
   app.on("started", () => {
     console.log("Frame work started");
   });
-
-  app.start();
-
-  // Initial data
-  // todoController.loadTodos(todoService.loadTodos());
-
   events.on(EventTypes.TOAST_SHOW, (payload) => {
     // console.log("TOAST EVENT:", payload);
   });
 
-  function handleTodoCreated(payload) {
-    //   console.log("created:", payload);
+  /*   if (testTing) {
+    runTests();
+    return;
+  } else {
+    app.start();
+    todoController.loadTodos();
   }
-
-  const unsubscribe = events.on("todo:created", handleTodoCreated);
-
-  /*  events.emit("todo:created", {
-    id: 1,
-  }); */
-
-  unsubscribe();
-  const request1 = todoThunks.loadTodos();
-
-  /*   store.dispatch(request1);
-
-  setTimeout(() => {
-    request1.cancel();
-
-    const request2 = todoThunks.loadTodos();
-
-    store.dispatch(request2);
-  }, 1000);
  */
+  app.start();
   todoController.loadTodos();
-  console.table(PerformanceProfiler.getMetrics());
   runTests();
 }

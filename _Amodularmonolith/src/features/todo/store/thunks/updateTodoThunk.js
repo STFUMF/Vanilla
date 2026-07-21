@@ -2,14 +2,14 @@ import { todoActions } from "../todoActionTypes.js";
 import { createOptimisticThunk } from "./createOptimisticThunk.js";
 
 export function createUpdateTodo(todoService) {
-  return function updateTodoThunk(oldTodo, updatedTodo) {
+  return function updateTodoThunk(todo) {
     return async function (dispatch) {
       return createOptimisticThunk({
-        optimistic: () => todoActions.update(updatedTodo),
+        optimistic: () => todoActions.update(todo),
 
-        request: () => todoService.updateTodo(updatedTodo),
+        request: () => todoService.updateTodo(todo),
 
-        rollback: () => todoActions.update(oldTodo),
+        rollback: null,
 
         onError: (error) =>
           todoActions.loadFailed({
