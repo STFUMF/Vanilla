@@ -3,7 +3,6 @@ import "./Header.css";
 import { element } from "@core/renderer";
 
 function header() {
-  console.count("Header");
   return element(
     "header",
     {

@@ -7,7 +7,6 @@ export const DebugPlugin = createPlugin({
   install({ getStore, getConfig, on }) {
     on("started", () => {
       DebugService.register("store", getStore());
-      console.log("debug");
       DebugService.register("config", getConfig());
     });
   },

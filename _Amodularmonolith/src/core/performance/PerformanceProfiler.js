@@ -35,4 +35,3 @@ export const PerformanceProfiler = {
     });
   },
 };
-console.log("PerformanceProfiler initialized");
