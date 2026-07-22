@@ -7,6 +7,7 @@ import { Badge } from "../../../shared/components/Badge/Badge.js";
 import { Checkbox } from "../../../shared/components";
 import { PriorityBdage } from "./PriorityBdage.js";
 import { DueDateBadge } from "./DueDateBadge.js";
+import { CategoryBadge } from "./CategoryBadge.js";
 
 export function TodoItem({ todo, controller }) {
   const labels = {
@@ -76,6 +77,11 @@ export function TodoItem({ todo, controller }) {
               todo.dueDate &&
                 component(DueDateBadge, {
                   dueDate: todo.dueDate,
+                }),
+
+              todo.category &&
+                component(CategoryBadge, {
+                  category: todo.category,
                 }),
             ],
           }),

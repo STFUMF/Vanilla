@@ -16,6 +16,7 @@ import {
   Input,
   Button,
 } from "../../../../shared/components/index.js";
+import { TodoCategoryFilter } from "../../components/TodoCategoryFilter.js";
 
 export function TodoContent({ controller }) {
   const todos = controller.getVisibleTodos();
@@ -37,17 +38,7 @@ export function TodoContent({ controller }) {
 
           component(Toolbar, {
             children: [
-              component(Input, {
-                size: "sm",
-
-                value: controller.search,
-
-                placeholder: "Search todos...",
-
-                onInput: (e) => controller.setSearch(e.target.value),
-              }),
-
-              component(TodoFilter, {
+              component(TodoCategoryFilter, {
                 controller,
               }),
 
@@ -60,6 +51,23 @@ export function TodoContent({ controller }) {
               }),
 
               component(TodoSort, {
+                controller,
+              }),
+            ],
+          }),
+
+          component(Toolbar, {
+            children: [
+              component(Input, {
+                size: "sm",
+
+                value: controller.search,
+
+                placeholder: "Search todos...",
+
+                onInput: (e) => controller.setSearch(e.target.value),
+              }),
+              component(TodoFilter, {
                 controller,
               }),
             ],

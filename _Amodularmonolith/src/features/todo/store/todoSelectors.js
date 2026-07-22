@@ -132,6 +132,19 @@ export const todoSelectors = {
           break;
       }
 
+      switch (filters.category) {
+        case "work":
+        case "personal":
+        case "shopping":
+        case "school":
+        case "health":
+          items = items.filter((todo) => todo.category === filters.category);
+          break;
+
+        default:
+          break;
+      }
+
       return items;
     },
   ),

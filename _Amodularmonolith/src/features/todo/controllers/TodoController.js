@@ -1,6 +1,7 @@
 // src/features/todo/controllers/TodoController.js
 
 import { EventTypes } from "../../../core/events/eventTypes.js";
+import { TodoCategories } from "../constants/TodoCategories.js";
 import { todoSelectors } from "../store/todoSelectors.js";
 
 export class TodoController {
@@ -18,6 +19,7 @@ export class TodoController {
 
     // View state
     this.title = "";
+    this.category = TodoCategories.PERSONAL;
 
     // Edit UI state
     this.editingTodoId = null;
@@ -28,6 +30,7 @@ export class TodoController {
     this.filters = {
       status: "all",
       priority: "all",
+      category: TodoCategories.ALL,
       dueDate: "all",
     };
 
@@ -131,7 +134,7 @@ export class TodoController {
       completed: false,
       dueDate: this.dueDate || null,
       priority: this.priority,
-      category: null,
+      category: this.category,
       tags: [],
       createdAt: Date.now(),
       updatedAt: Date.now(),
@@ -206,6 +209,10 @@ export class TodoController {
     this.title = title;
     this.notifyViewChanged();
   }
+  setCategory(category) {
+    this.category = category;
+    this.notifyViewChanged();
+  }
 
   setSearch(search) {
     this.search = search;
@@ -245,6 +252,15 @@ export class TodoController {
       ...this.filters,
       dueDate: filter,
     };
+    this.notifyViewChanged();
+  }
+
+  setCategoryFilter(category) {
+    this.filters = {
+      ...this.filters,
+      category,
+    };
+
     this.notifyViewChanged();
   }
 
@@ -310,6 +326,10 @@ export class TodoController {
 
   getDueDate() {
     return this.dueDate;
+  }
+
+  getCategory() {
+    return this.category;
   }
 
   // ---------------------------------------------------------------------

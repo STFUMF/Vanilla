@@ -2,48 +2,57 @@ import { component } from "@core/components";
 
 import { Button, Input, Row, Select } from "../../../shared/components";
 
-export function TodoForm({controller}) {
+export function TodoForm({ controller }) {
+  return component(Row, {
+    gap: "sm",
+    children: [
+      component(Input, {
+        value: controller.title,
+        placeholder: "Add a todo...",
+        size: "sm",
+        onInput: (e) => controller.setTitle(e.target.value),
+      }),
 
-    return component(Row, {
-        gap: "sm",
-        children: [
-                    component(Input, {
-                        value: controller.title,
-                        placeholder: "Add a todo...",
-                        size: "sm",
-                        onInput: e => controller.setTitle(e.target.value)
-                    }),
+      component(Select, {
+        value: controller.getPriority(),
 
-                    component(Select, {
+        options: [
+          { value: "low", label: "Low" },
+          { value: "medium", label: "Medium" },
+          { value: "high", label: "High" },
+        ],
 
-                        value: controller.getPriority(),
+        onChange: (e) => controller.setPriority(e.target.value),
+      }),
 
-                        options: [
-                            { value: "low", label: "Low" },
-                            { value: "medium", label: "Medium" },
-                            { value: "high", label: "High" },
-                        ],
+      component(Select, {
+        value: controller.getCategory(),
 
-                        onChange: e =>
-                            controller.setPriority(e.target.value)
-                    }),
+        options: [
+          { value: "all", label: "All" },
+          { value: "work", label: "Work" },
+          { value: "personal", label: "Personal" },
+          { value: "shopping", label: "Shopping" },
+          { value: "school", label: "School" },
+          { value: "health", label: "Health" },
+        ],
 
-                    component(Input, {
-                        type: "date",
-                        size: "sm",
-                        value: controller.getDueDate(),
-                        onInput: e => controller.setDueDate(e.target.value)
-                    }),
-                    component(Button, 
-                        {
-                        size: "md",
-                        variant: "primary",
-                        className: "btn-add",
-                        onClick: () => controller.addTodoc(),
-                        children: ["Add"]
-                        },
-                    ),
-                ]
-        }
-    )
+        onChange: (e) => controller.setCategory(e.target.value),
+      }),
+
+      component(Input, {
+        type: "date",
+        size: "sm",
+        value: controller.getDueDate(),
+        onInput: (e) => controller.setDueDate(e.target.value),
+      }),
+      component(Button, {
+        size: "md",
+        variant: "primary",
+        className: "btn-add",
+        onClick: () => controller.addTodoc(),
+        children: ["Add"],
+      }),
+    ],
+  });
 }
