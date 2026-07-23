@@ -227,11 +227,13 @@ export class TodoController {
   async deleteSelected() {
     return this.forEachSelected((todo) => this.deleteTodo(todo));
   }
+
   async completeSelected() {
     return this.forEachSelected((todo) =>
-      this.toggleTodo({
+      this.updateTodo({
         ...todo,
         completed: true,
+        updatedAt: Date.now(),
       }),
     );
   }
@@ -256,12 +258,18 @@ export class TodoController {
     return this.forEachSelected((todo) => this.archiveTodo(todo));
   }
 
+  async restoreSelected() {
+    return this.forEachSelected((todo) => this.restoreTodo(todo));
+  }
+
   async forEachSelected(callback) {
     const todos = this.getSelectedTodos();
 
-    for (const todo of todos) {
-      await callback(todo);
-    }
+    await this.store.transaction(async () => {
+      for (const todo of todos) {
+        await callback(todo);
+      }
+    });
 
     this.clearSelection();
   }

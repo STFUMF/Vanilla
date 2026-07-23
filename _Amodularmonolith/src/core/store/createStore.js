@@ -29,6 +29,18 @@ export function createStore(reducer, middlewares = []) {
       return subscribe(state, listener);
     },
 
+    beginTransaction() {
+      state.history.begin(state.state);
+    },
+
+    commitTransaction() {
+      state.history.commit();
+    },
+
+    rollbackTransaction() {
+      state.history.rollback();
+    },
+
     canUndo() {
       return state.history.canUndo();
     },
@@ -43,6 +55,19 @@ export function createStore(reducer, middlewares = []) {
 
     redo() {
       return store.dispatch(historyActions.redo());
+    },
+    async transaction(callback) {
+      store.beginTransaction();
+
+      try {
+        const result = await callback();
+
+        store.commitTransaction();
+        return result;
+      } catch (error) {
+        store.rollbackTransaction();
+        throw error;
+      }
     },
   };
 

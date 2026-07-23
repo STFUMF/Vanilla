@@ -1,46 +1,88 @@
 export function createHistory({ limit = 50, shouldRecord = () => true }) {
-  return {
-    past: [],
-    future: [],
+  const past = [];
+  const future = [];
 
+  let transaction = null;
+  return {
     push(action, state) {
       if (action.meta?.history !== true) {
         return;
       }
-      this.past.push(structuredClone(state));
-      if (this.past.length > limit) {
-        this.past.shift();
+
+      // Already inside a transaction
+      if (transaction !== null) {
+        return;
       }
 
-      this.future.length = 0;
+      past.push(structuredClone(state));
+
+      if (past.length > limit) {
+        past.shift();
+      }
+
+      future.length = 0;
+    },
+
+    begin(state) {
+      if (transaction !== null) {
+        return;
+      }
+
+      transaction = structuredClone(state);
+    },
+
+    commit() {
+      if (transaction === null) {
+        return;
+      }
+
+      past.push(transaction);
+
+      if (past.length > limit) {
+        past.shift();
+      }
+
+      future.length = 0;
+
+      transaction = null;
+    },
+
+    rollback() {
+      transaction = null;
     },
 
     undo(currentState) {
-      if (this.past.length === 0) {
+      if (past.length === 0) {
         return currentState;
       }
 
-      this.future.push(structuredClone(currentState));
+      future.push(structuredClone(currentState));
 
-      return this.past.pop();
+      return past.pop();
     },
 
     redo(currentState) {
-      if (this.future.length === 0) {
+      if (future.length === 0) {
         return currentState;
       }
 
-      this.past.push(structuredClone(currentState));
+      past.push(structuredClone(currentState));
 
-      return this.future.pop();
+      return future.pop();
     },
 
     canUndo() {
-      return this.past.length > 0;
+      return past.length > 0;
     },
 
     canRedo() {
-      return this.future.length > 0;
+      return future.length > 0;
+    },
+
+    clear() {
+      past.length = 0;
+      future.length = 0;
+      transaction = null;
     },
   };
 }
