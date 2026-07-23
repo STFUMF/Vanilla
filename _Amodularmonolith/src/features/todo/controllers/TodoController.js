@@ -40,6 +40,8 @@ export class TodoController {
 
     this.dueDate = "";
 
+    this.selectedTodoIds = new Set();
+
     // View update callback
     this.onViewChanged = () => {};
   }
@@ -201,6 +203,47 @@ export class TodoController {
     });
   }
 
+  toggleSelection(id) {
+    if (this.selectedTodoIds.has(id)) {
+      this.selectedTodoIds.delete(id);
+    } else {
+      this.selectedTodoIds.add(id);
+    }
+
+    this.notifyViewChanged();
+  }
+
+  clearSelection() {
+    this.selectedTodoIds.clear();
+    this.notifyViewChanged();
+  }
+
+  isSelected(id) {
+    return this.selectedTodoIds.has(id);
+  }
+
+  async deleteSelected() {
+    return this.forEachSelected((todo) => this.deleteTodo(todo));
+  }
+  async completeSelected() {
+    return this.forEachSelected((todo) =>
+      this.toggleTodo({
+        ...todo,
+        completed: true,
+      }),
+    );
+  }
+
+  async forEachSelected(callback) {
+    const todos = this.getSelectedTodos();
+
+    for (const todo of todos) {
+      await callback(todo);
+    }
+
+    this.clearSelection();
+  }
+
   // ---------------------------------------------------------------------
   // View State
   // ---------------------------------------------------------------------
@@ -273,6 +316,23 @@ export class TodoController {
     this.onViewChanged = listener;
   }
 
+  hasSelection() {
+    return this.selectedTodoIds.size > 0;
+  }
+
+  selectAll() {
+    this.selectedTodoIds = new Set(this.getTodos().map((todo) => todo.id));
+
+    this.notifyViewChanged();
+  }
+
+  areAllSelected() {
+    return (
+      this.getTodos().length > 0 &&
+      this.selectedTodoIds.size === this.getTodos().length
+    );
+  }
+
   notifyViewChanged() {
     this.onViewChanged();
   }
@@ -330,6 +390,14 @@ export class TodoController {
 
   getCategory() {
     return this.category;
+  }
+
+  getSelectedCount() {
+    return this.selectedTodoIds.size;
+  }
+
+  getSelectedTodos() {
+    return this.getTodos().filter((todo) => this.selectedTodoIds.has(todo.id));
   }
 
   // ---------------------------------------------------------------------

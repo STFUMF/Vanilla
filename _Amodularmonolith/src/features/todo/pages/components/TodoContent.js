@@ -1,6 +1,7 @@
 import { element } from "@core/renderer";
 import { component } from "@core/components";
 
+import { BulkToolbar } from "../../components/BulkToolbar.js";
 import { TodoForm } from "../../components/TodoForm.js";
 import { TodoFilter } from "../../components/TodoFilter.js";
 import { TodoPriorityFilter } from "../../components/TodoPriorityFilter.js";
@@ -80,6 +81,10 @@ export function TodoContent({ controller }) {
             disabled: controller.isLoading(),
 
             onClick: () => controller.reloadTodos(),
+          }),
+
+          component(BulkToolbar, {
+            controller,
           }),
 
           component(Divider),

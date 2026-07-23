@@ -64,6 +64,11 @@ export function TodoItem({ todo, controller }) {
 
             children: [
               component(Checkbox, {
+                checked: controller.isSelected(todo.id),
+                onChange: () => controller.toggleSelection(todo.id),
+              }),
+
+              component(Checkbox, {
                 checked: todo.completed,
                 onChange: () => controller.toggleTodoc(todo),
               }),

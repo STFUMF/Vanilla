@@ -39,8 +39,10 @@ import "../tests/renderer/component.test.js";
 import "../tests/renderer/renderer.test.js";
 import "../tests/renderer/renderingPipeline.test.js";
 import "../tests/integration/todoTest.test.js";
-import "../tests/plugin.test.js";
-import { runTests } from "../core/testing/index.js"; */
+import "../tests/plugin.test.js"; */
+
+import "../tests/controller/controller.test.js";
+import { runTests } from "../core/testing/index.js";
 
 /**
  * Bootstraps starts the application.
@@ -140,4 +142,5 @@ export function bootstrap() {
  */
   app.start();
   todoController.loadTodos();
+  /*  runTests(); */
 }
