@@ -12,6 +12,9 @@ export const todoActions = {
   loadStarted() {
     return {
       type: TODO_LOAD_STARTED,
+      meta: {
+        history: false,
+      },
     };
   },
 
@@ -19,6 +22,9 @@ export const todoActions = {
     return {
       type: TODO_LOAD_FAILED,
       payload: error,
+      meta: {
+        history: false,
+      },
     };
   },
 
@@ -26,6 +32,9 @@ export const todoActions = {
     return {
       type: TODO_ADD,
       payload: todo,
+      meta: {
+        history: true,
+      },
     };
   },
 
@@ -33,6 +42,9 @@ export const todoActions = {
     return {
       type: TODO_UPDATE,
       payload: todo,
+      meta: {
+        history: true,
+      },
     };
   },
 
@@ -40,6 +52,9 @@ export const todoActions = {
     return {
       type: TODO_DELETE,
       payload: id,
+      meta: {
+        history: true,
+      },
     };
   },
 
@@ -47,6 +62,9 @@ export const todoActions = {
     return {
       type: TODO_TOGGLE,
       payload: id,
+      meta: {
+        history: true,
+      },
     };
   },
 
@@ -54,6 +72,9 @@ export const todoActions = {
     return {
       type: TODO_SET,
       payload: todos,
+      meta: {
+        history: false,
+      },
     };
   },
 };

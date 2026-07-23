@@ -266,6 +266,22 @@ export class TodoController {
     this.clearSelection();
   }
 
+  undo() {
+    return this.store.undo();
+  }
+
+  redo() {
+    return this.store.redo();
+  }
+
+  canUndo() {
+    return this.store.canUndo();
+  }
+
+  canRedo() {
+    return this.store.canRedo();
+  }
+
   // ---------------------------------------------------------------------
   // View State
   // ---------------------------------------------------------------------
@@ -374,6 +390,14 @@ export class TodoController {
       this.filters,
       this.sort,
     );
+  }
+  getStatsWithoutArchive() {
+    const state = this.store.getState();
+    return {
+      total: todoSelectors.active(this.store.getState()).length,
+      completed: todoSelectors.completed(state).length,
+      remaining: todoSelectors.remaining(state).length,
+    };
   }
 
   getStats() {

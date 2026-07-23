@@ -27,7 +27,7 @@ export const todoSelectors = {
   remaining: createSelector(
     [(state) => state.todo.items],
 
-    (items) => items.filter((todo) => !todo.completed),
+    (items) => items.filter((todo) => !todo.completed && !todo.archived),
   ),
 
   total: createSelector(
@@ -45,6 +45,11 @@ export const todoSelectors = {
 
     (items) => items.filter((todo) => !todo.archived),
   ),
+
+  /*   getStatsWithoutArchive: createSelector(
+    [(state) => state.todo.items],
+    (items) => items.filter((todo) => todo.archived),
+  ), */
 
   visible: createSelector(
     [

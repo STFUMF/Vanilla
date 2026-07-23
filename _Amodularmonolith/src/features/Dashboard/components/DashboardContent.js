@@ -6,8 +6,8 @@ import { navigate } from "@core/router";
 
 export function DashboardContent({ controller }) {
   //console.log("content controller:", controller);
-  const stats = controller.getStats();
-
+  const stats = controller.getStatsWithoutArchive();
+  //const totals = controller.getStatsWithoutArchive();
   return component(Stack, {
     gap: "lg",
 

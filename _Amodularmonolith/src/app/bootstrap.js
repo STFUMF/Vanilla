@@ -41,7 +41,9 @@ import "../tests/renderer/renderingPipeline.test.js";
 import "../tests/integration/todoTest.test.js";
 import "../tests/plugin.test.js"; */
 
-import "../tests/controller/controller.test.js";
+import "../tests/history.test.js";
+
+//import "../tests/controller/controller.test.js";
 import { runTests } from "../core/testing/index.js";
 import { ArchivePlugin } from "../features/todo/pages/Archived/ArchivePlugin.js";
 
@@ -144,5 +146,5 @@ export function bootstrap() {
  */
   app.start();
   todoController.loadTodos();
-  /*  runTests(); */
+  //runTests();
 }

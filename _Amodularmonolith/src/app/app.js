@@ -57,6 +57,16 @@ export function createUI({
   DebugService.register("router", router);
   DebugService.register("renderer", renderer);
 
+  window.addEventListener("keydown", (event) => {
+    if (event.ctrlKey && event.key === "z") {
+      todoController.undo();
+    }
+
+    if (event.ctrlKey && event.shiftKey && event.key === "Z") {
+      todoController.redo();
+    }
+  });
+
   store.subscribe(scheduleRender);
   return {
     renderer,

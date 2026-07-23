@@ -75,6 +75,22 @@ export function TodoContent({ controller }) {
           }),
 
           component(Button, {
+            children: ["Undo"],
+
+            disabled: !controller.canUndo(),
+
+            onClick: () => controller.undo(),
+          }),
+
+          component(Button, {
+            children: ["Redo"],
+
+            disabled: !controller.canRedo(),
+
+            onClick: () => controller.redo(),
+          }),
+
+          component(Button, {
             children: [controller.isLoading() ? "Refreshing..." : "Refresh"],
 
             variant: "secondary",
