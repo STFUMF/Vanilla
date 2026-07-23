@@ -19,6 +19,33 @@ export function TodoItem({ todo, controller }) {
   };
   const status = getDueDateStatus(todo.dueDate);
 
+  const actions = todo.archived
+    ? [
+        component(Button, {
+          variant: "secondary",
+          children: ["Restore"],
+          onClick: () => controller.restoreTodo(todo),
+        }),
+
+        component(Button, {
+          variant: "danger",
+          children: ["Delete"],
+          onClick: () => controller.deleteTodoc(todo),
+        }),
+      ]
+    : [
+        component(Button, {
+          variant: "secondary",
+          children: ["Edit"],
+          onClick: () => controller.startEditing(todo),
+        }),
+
+        component(Button, {
+          children: ["Archive"],
+          onClick: () => controller.archiveTodo(todo),
+        }),
+      ];
+
   // Editing
   if (controller.isEditing(todo.id)) {
     return component(Row, {
@@ -93,22 +120,8 @@ export function TodoItem({ todo, controller }) {
 
           component(Row, {
             justify: "end",
-
             gap: "sm",
-
-            children: [
-              component(Button, {
-                variant: "secondary",
-                children: ["Edit"],
-                onClick: () => controller.startEditing(todo),
-              }),
-
-              component(Button, {
-                variant: "danger",
-                children: ["Delete"],
-                onClick: () => controller.deleteTodoc(todo),
-              }),
-            ],
+            children: actions,
           }),
         ],
       }),

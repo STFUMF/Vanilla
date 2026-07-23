@@ -138,6 +138,8 @@ export class TodoController {
       priority: this.priority,
       category: this.category,
       tags: [],
+
+      archived: false,
       createdAt: Date.now(),
       updatedAt: Date.now(),
     };
@@ -232,6 +234,26 @@ export class TodoController {
         completed: true,
       }),
     );
+  }
+
+  async archiveTodo(todo) {
+    return this.updateTodo({
+      ...todo,
+      archived: true,
+      updatedAt: Date.now(),
+    });
+  }
+
+  async restoreTodo(todo) {
+    return this.updateTodo({
+      ...todo,
+      archived: false,
+      updatedAt: Date.now(),
+    });
+  }
+
+  async archiveSelected() {
+    return this.forEachSelected((todo) => this.archiveTodo(todo));
   }
 
   async forEachSelected(callback) {
@@ -398,6 +420,10 @@ export class TodoController {
 
   getSelectedTodos() {
     return this.getTodos().filter((todo) => this.selectedTodoIds.has(todo.id));
+  }
+
+  getArchivedTodos() {
+    return todoSelectors.archived(this.store.getState());
   }
 
   // ---------------------------------------------------------------------

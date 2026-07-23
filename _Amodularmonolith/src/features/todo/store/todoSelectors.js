@@ -36,9 +36,19 @@ export const todoSelectors = {
     (items) => items.length,
   ),
 
+  archived: createSelector([(state) => state.todo.items], (items) =>
+    items.filter((todo) => todo.archived),
+  ),
+
+  active: createSelector(
+    [(state) => state.todo.items],
+
+    (items) => items.filter((todo) => !todo.archived),
+  ),
+
   visible: createSelector(
     [
-      (state) => state.todo.items,
+      (state) => todoSelectors.active(state),
       (_, search) => search,
       (_, __, filters) => filters,
       (_, __, ___, sort) => sort,
@@ -47,6 +57,7 @@ export const todoSelectors = {
     (items, search, filters, sort) => {
       items = [...items];
       console.log("Selector recomputed", filters.status);
+
       // search
       if (search.trim()) {
         const query = search.toLowerCase();

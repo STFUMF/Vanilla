@@ -43,6 +43,7 @@ import "../tests/plugin.test.js"; */
 
 import "../tests/controller/controller.test.js";
 import { runTests } from "../core/testing/index.js";
+import { ArchivePlugin } from "../features/todo/pages/Archived/ArchivePlugin.js";
 
 /**
  * Bootstraps starts the application.
@@ -103,6 +104,7 @@ export function bootstrap() {
     .use(InspectorPlugin)
     .use(DashboardRoutesPlugin)
     .use(TodoRoutesPlugin)
+    .use(ArchivePlugin)
     .use(AboutRoutesPlugin);
 
   const routes = app.getContributions(ContributionTypes.ROUTES);
