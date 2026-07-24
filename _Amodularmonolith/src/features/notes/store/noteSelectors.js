@@ -22,4 +22,5 @@ export const noteSelectors = {
   active: createSelector([(state) => state.note.items], (items) =>
     items.filter((note) => !note.archived),
   ),
+  visible: {},
 };
