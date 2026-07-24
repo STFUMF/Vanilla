@@ -23,4 +23,8 @@ export class TodoService {
   async deleteTodo(id) {
     return this.repository.remove(id);
   }
+
+  async replaceTodos(todos) {
+    return this.repository.replaceTodos(todos);
+  }
 }

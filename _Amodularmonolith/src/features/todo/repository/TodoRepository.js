@@ -32,4 +32,8 @@ export class TodoRepository {
   async clear() {
     return this.api.remove(this.key);
   }
+
+  async replaceTodos(todos) {
+    return this.api.replaceTodos(todos);
+  }
 }

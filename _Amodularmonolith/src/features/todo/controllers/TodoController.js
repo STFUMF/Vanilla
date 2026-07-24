@@ -10,10 +10,11 @@ export class TodoController {
    */
 
   /// rename actions to thunks
-  constructor(store, thunks, events) {
+  constructor(store, thunks, todoService, events) {
     this.store = store;
 
     this.thunks = thunks;
+    this.todoService = todoService;
     this.events = events;
     this.currentLoadRequest = null;
 
@@ -274,12 +275,24 @@ export class TodoController {
     this.clearSelection();
   }
 
-  undo() {
-    return this.store.undo();
+  async undo() {
+    this.store.undo();
+
+    await this.todoService.replaceTodos(
+      todoSelectors.items(this.store.getState()),
+    );
+
+    this.notifyViewChanged();
   }
 
-  redo() {
-    return this.store.redo();
+  async redo() {
+    this.store.redo();
+
+    await this.todoService.replaceTodos(
+      todoSelectors.items(this.store.getState()),
+    );
+
+    this.notifyViewChanged();
   }
 
   canUndo() {

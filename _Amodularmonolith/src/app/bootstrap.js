@@ -90,7 +90,12 @@ export function bootstrap() {
   // Store
   const store = createStore(rootReducer, middleware);
 
-  const todoController = new TodoController(store, todoThunks, events);
+  const todoController = new TodoController(
+    store,
+    todoThunks,
+    todoService,
+    events,
+  );
 
   app
     .attachStore(store)

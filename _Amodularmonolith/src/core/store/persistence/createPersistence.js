@@ -1,15 +1,17 @@
-export function createPersistence({
-  storage,
-  key,
-  selector = (state) => state,
-}) {
+export function createPersistence({ storage, key } = {}) {
   return {
-    load() {
-      return storage.load(key);
+    load(initialState) {
+      const persisted = storage.load(key);
+
+      if (!persisted) {
+        return initialState;
+      }
+
+      return persisted;
     },
 
     save(state) {
-      storage.save(key, selector(state));
+      storage.save(key, state);
     },
 
     clear() {

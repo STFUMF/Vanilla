@@ -68,6 +68,12 @@ export function FakeApi(storage) {
 
       return id;
     },
+
+    async replaceTodos(todos) {
+      storage.save("todos", todos);
+
+      return todos;
+    },
   };
 }
 
