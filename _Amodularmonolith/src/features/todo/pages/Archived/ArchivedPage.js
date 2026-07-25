@@ -5,7 +5,8 @@ import { Header, Navigation, Footer } from "../../../../shared/components";
 import { ArchiveContent } from "./ArchivedContent.js";
 
 export function ArchivedPage({
-  controller,
+  todoController,
+  noteController,
   navigation,
   routes,
   toastController,
@@ -18,6 +19,6 @@ export function ArchivedPage({
     toastController,
     footer: component(Footer),
 
-    children: [component(ArchiveContent, { controller })],
+    children: [component(ArchiveContent, { todoController, noteController })],
   });
 }

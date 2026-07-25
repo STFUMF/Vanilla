@@ -10,7 +10,7 @@ import {
   TextArea,
 } from "../../../shared/components";
 
-export function NoteItem({ note, controller }) {
+export function NoteItem({ note, controller, archived = false }) {
   if (controller.isEditing(note.id)) {
     return component(Card, {
       children: [
@@ -37,21 +37,30 @@ export function NoteItem({ note, controller }) {
 
               gap: "sm",
 
-              children: [
-                component(Button, {
-                  children: ["Save"],
+              children: archived
+                ? [
+                    component(Button, {
+                      children: ["Restore"],
+                      onClick: () => controller.restoreNote(note),
+                    }),
+                  ]
+                : [
+                    component(Button, {
+                      children: ["Edit"],
+                      onClick: () => controller.startEditing(note),
+                    }),
 
-                  onClick: () => controller.saveEdit(note),
-                }),
+                    component(Button, {
+                      variant: "danger",
+                      children: ["Delete"],
+                      onClick: () => controller.deleteNotec(note),
+                    }),
 
-                component(Button, {
-                  variant: "secondary",
-
-                  children: ["Cancel"],
-
-                  onClick: () => controller.cancelEditing(),
-                }),
-              ],
+                    component(Button, {
+                      children: ["Archive"],
+                      onClick: () => controller.archiveNote(note),
+                    }),
+                  ],
             }),
           ],
         }),

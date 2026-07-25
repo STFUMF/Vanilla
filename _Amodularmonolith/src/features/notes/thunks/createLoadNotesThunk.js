@@ -11,7 +11,7 @@ export function createLoadNotesThunk(noteService) {
       dispatch(noteActions.loadStarted());
 
       try {
-        const notes = await noteActions.loadTodos({
+        const notes = await noteService.loadNotes({
           signal: abortController.signal,
         });
 
@@ -19,7 +19,7 @@ export function createLoadNotesThunk(noteService) {
           return;
         }
 
-        dispatch(noteActions.set(notes));
+        dispatch(noteActions.loadSucceeded(notes));
       } catch (error) {
         if (abortController.aborted) {
           return;

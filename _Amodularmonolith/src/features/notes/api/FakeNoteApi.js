@@ -1,7 +1,9 @@
 export function FakeNoteApi(storage) {
   return {
     async loadNotes() {
-      return storage.load("notes") ?? [];
+      const notes = storage.load("notes") ?? [];
+      console.log("Loaded notes:", notes);
+      return notes;
     },
 
     async addNote(note) {

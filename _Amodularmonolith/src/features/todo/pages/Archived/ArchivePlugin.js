@@ -10,6 +10,7 @@ export const ArchivePlugin = createPlugin({
   install({ contribute, resolve }) {
     const todoController = resolve("todoController");
     const toastController = resolve("toastController");
+    const noteController = resolve("noteController");
     if (!todoController) {
       throw new Error('Archive required "todoController');
     }
@@ -20,7 +21,8 @@ export const ArchivePlugin = createPlugin({
         "/archive",
         ArchivedPage,
         {
-          controller: todoController,
+          todoController,
+          noteController,
           toastController,
         },
         {
@@ -33,7 +35,7 @@ export const ArchivePlugin = createPlugin({
       label: "Archive",
       path: "/archive",
       title: "Archive",
-      routePath: "/",
+      routePath: "/archive",
     });
   },
 });

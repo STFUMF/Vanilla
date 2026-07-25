@@ -11,6 +11,7 @@ export function createNoteCommands(controller) {
     },
 
     addNote(note) {
+      console.log("added");
       return controller.store.dispatch(controller.thunks.addNote(note));
     },
 

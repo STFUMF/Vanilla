@@ -5,7 +5,7 @@ export function createDeleteNoteThunk(noteService) {
   return function updateNoteThunk(note) {
     return async function (dispatch) {
       return createOptimisticThunk({
-        optimistic: () => noteActions.remove(note.id),
+        optimistic: () => noteActions.delete(note.id),
 
         request: () => noteService.deleteNote(note.id),
 
