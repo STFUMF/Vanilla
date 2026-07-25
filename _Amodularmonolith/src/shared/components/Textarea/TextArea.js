@@ -12,10 +12,10 @@ export function TextArea({
   placeholder = "",
   rows = 6,
   disabled = false,
+  onInput,
 }) {
-  return element({
+  return element("textarea", {
     class: "-textarea",
-
     value,
     rows,
     placeholder,

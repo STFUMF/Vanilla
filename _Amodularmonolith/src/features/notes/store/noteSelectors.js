@@ -22,5 +22,25 @@ export const noteSelectors = {
   active: createSelector([(state) => state.note.items], (items) =>
     items.filter((note) => !note.archived),
   ),
-  visible: {},
+  visible: createSelector(
+    [(state) => state.note.items, (_, search) => search],
+
+    (items, search) => {
+      // Hide archived
+      items = items.filter((note) => !note.archived);
+
+      if (!search.trim()) {
+        return items;
+      }
+
+      const query = search.toLowerCase();
+
+      return items.filter((note) => {
+        return (
+          note.title.toLowerCase().includes(query) ||
+          note.content.toLowerCase().includes(query)
+        );
+      });
+    },
+  ),
 };

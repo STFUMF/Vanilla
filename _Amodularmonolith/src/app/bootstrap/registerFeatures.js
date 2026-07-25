@@ -6,6 +6,7 @@ import { InspectorPlugin } from "../../core/plugin/InspectorPlugin.js";
 import { DashboardRoutesPlugin } from "../../features/Dashboard/DashboardRoutesPlugin.js";
 import { AboutRoutesPlugin } from "../../features/About/AboutRoutesPlugin.js";
 import { NotificationPlugin } from "../../core/notifications/NotificationPlugin.js";
+import { NotesPlugin } from "../../features/notes/plugins/NotesPlugin.js";
 
 export function registerFeatures(app) {
   app
@@ -15,6 +16,7 @@ export function registerFeatures(app) {
     .use(InspectorPlugin)
 
     .use(TodoPlugin)
+    .use(NotesPlugin)
 
     .use(ArchivePlugin)
     .use(AboutRoutesPlugin)

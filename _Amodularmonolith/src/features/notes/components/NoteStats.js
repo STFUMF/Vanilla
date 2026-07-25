@@ -1,5 +1,6 @@
 import { element } from "@core/renderer";
 import { component } from "@core/components";
+import { Card, Column } from "../../../shared/components";
 
 export function NoteStats({ controller }) {
   const stats = controller.getStats();

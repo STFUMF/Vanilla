@@ -1,11 +1,11 @@
 import { element } from "@core/renderer";
 import { component } from "@core/components";
-
 import {
   Button,
   Card,
   Column,
   Divider,
+  Input,
   Row,
   TextArea,
 } from "../../../shared/components";

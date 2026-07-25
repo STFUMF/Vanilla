@@ -1,5 +1,6 @@
 import { ContributionTypes } from "../../../core/contribution/ContributionTypes";
 import { createPlugin } from "../../../core/plugin/createPlugin";
+import { createRoute } from "../../../core/router";
 import { NotesPage } from "../pages/NotesPage";
 
 export const NotesRoutesPlugin = createPlugin({
@@ -8,10 +9,6 @@ export const NotesRoutesPlugin = createPlugin({
   install({ contribute, resolve }) {
     const controller = resolve("noteController");
     const toastController = resolve("toastController");
-
-    if (!controller) {
-      throw new Error('NotesRoutesPlugin required "noteController"');
-    }
 
     contribute(
       ContributionTypes.ROUTES,

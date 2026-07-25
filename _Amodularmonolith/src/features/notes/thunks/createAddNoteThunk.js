@@ -9,7 +9,7 @@ export function createAddNoteThunk(noteService) {
 
         request: () => noteService.addNote(note),
 
-        rollback: () => noteActions.remove(note.id),
+        rollback: () => noteActions.delete(note.id),
 
         onError: (error) =>
           noteActions.loadFailed({
