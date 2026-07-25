@@ -10,11 +10,6 @@ import { TodoService } from "../features/todo/services/TodoService.js";
 
 import { rootReducer } from "./registerStore.js";
 import { FakeApi } from "../core/api";
-import { createLoadTodos } from "../features/todo/store/thunks/loadTodos.js";
-import { createAddTodoThunk } from "../features/todo/store/thunks/addTodoThunk.js";
-import { createUpdateTodo } from "../features/todo/store/thunks/updateTodoThunk.js";
-import { createDeleteTodo } from "../features/todo/store/thunks/deleteTodoThunk.js";
-import { createToggleTodoThunk } from "../features/todo/store/thunks/toggleTodoThunk.js";
 
 import { createConfig } from "@core/config";
 import { createApplication } from "@core/application";
@@ -46,6 +41,10 @@ import "../tests/history.test.js";
 //import "../tests/controller/controller.test.js";
 import { runTests } from "../core/testing/index.js";
 import { ArchivePlugin } from "../features/todo/pages/Archived/ArchivePlugin.js";
+import { TodoPlugin } from "../features/todo/TodoPlugin.js";
+import { registerCore } from "./bootstrap/registerCore.js";
+import { registerFeatures } from "./bootstrap/registerFeatures.js";
+import { createInterface } from "./bootstrap/createInterface.js";
 
 /**
  * Bootstraps starts the application.
@@ -56,100 +55,25 @@ import { ArchivePlugin } from "../features/todo/pages/Archived/ArchivePlugin.js"
 
 export function bootstrap() {
   const testTing = true;
-  const config = createConfig({
-    debug: true,
-    dev: true,
-  });
-
-  // Storagea
-  const events = createEventBus();
-  const storage = StorageService(LocalStorageAdapter);
-  const api = FakeApi(storage);
-  const todoRepository = new TodoRepository(api);
-  const todoService = new TodoService(todoRepository);
-
-  // Controller
-  const todoThunks = {
-    loadTodos: createLoadTodos(todoService),
-    addTodo: createAddTodoThunk(todoService),
-    updateTodo: createUpdateTodo(todoService),
-    deleteTodo: createDeleteTodo(todoService),
-    toggleTodo: createToggleTodoThunk(todoService),
-  };
-
-  const toastController = new ToastController(events);
   const app = createApplication();
 
-  app
-    .configure(config)
-    .mount(document.querySelector("#app"))
-    .use(StorePlugin)
-    .register("events", events);
+  registerCore(app);
 
   const middleware = app.getContributions(ContributionTypes.MIDDLEWARE);
-  // Store
+
   const store = createStore(rootReducer, middleware);
 
-  const todoController = new TodoController(
-    store,
-    todoThunks,
-    todoService,
-    events,
-  );
+  app.attachStore(store).register("store", store);
 
-  app
-    .attachStore(store)
-    .register("store", store)
-    .register("todoService", todoService)
-    .register("todoController", todoController)
-    .register("toastController", toastController);
+  registerFeatures(app);
 
-  app
-    .use(NotificationPlugin)
-    .use(LoggerPlugin)
-    .use(DebugPlugin)
-    .use(InspectorPlugin)
-    .use(DashboardRoutesPlugin)
-    .use(TodoRoutesPlugin)
-    .use(ArchivePlugin)
-    .use(AboutRoutesPlugin);
-
-  const routes = app.getContributions(ContributionTypes.ROUTES);
-  const navigation = app.getContributions(ContributionTypes.NAVIGATION);
-
-  // Start UI
-  const ui = createUI({
-    root: app.getRoot(),
-    store,
-    routes,
-    navigation,
-    notFound: NotFoundPage,
-    todoController,
-    toastController,
-  });
-
-  app
-    .attachRenderer(ui.renderer)
-    .attachRouter(ui.router)
-    .register("renderer", ui.renderer)
-    .register("router", ui.router);
+  createInterface(app);
 
   app.on("started", () => {
-    console.log("Frame work started");
-  });
-  events.on(EventTypes.TOAST_SHOW, (payload) => {
-    // console.log("TOAST EVENT:", payload);
+    console.log("Framework started");
   });
 
-  /*   if (testTing) {
-    runTests();
-    return;
-  } else {
-    app.start();
-    todoController.loadTodos();
-  }
- */
   app.start();
-  todoController.loadTodos();
+
   //runTests();
 }

@@ -2,6 +2,7 @@ import { createNoteQueries } from "./queries/createNoteQueries.js";
 import { createNoteViewState } from "./viewState/createNoteViewState.js";
 import { createNoteCommands } from "./commands/createNoteCommands.js";
 import { createNoteInteractions } from "./interactions/createNoteInteractions.js";
+
 export class NoteController {
   constructor(store, thunks, noteService, events) {
     this.store = store;

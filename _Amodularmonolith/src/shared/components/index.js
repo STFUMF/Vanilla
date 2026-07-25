@@ -8,10 +8,12 @@ export { Navbar } from "./Navbar/Navbar.js";
 export { Spinner } from "./Spinner/Spinner.js";
 export { Select } from "./Select.js";
 export { Checkbox } from "./Checkbox.js";
+export { TextArea } from "./Textarea/TextArea.js";
 
 // layout component
 export { Stack } from "./LayoutComponent/Stack/Stack.js";
 export { Row } from "./LayoutComponent/Row/Row.js";
+export { Column } from "./LayoutComponent/Column/Column.js";
 export { Container } from "./LayoutComponent/Container/Container.js";
 export { Divider } from "./LayoutComponent/Divider/Divider.js";
 export { Toolbar } from "./LayoutComponent/Toolbar/Toolbar.js";

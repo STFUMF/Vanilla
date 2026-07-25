@@ -65,6 +65,11 @@ export function createNoteInteractions(controller) {
       controller.cancelEditing();
     },
 
+    setEditContent(content) {
+      controller.editContent = content;
+      controller.notifyViewChanged();
+    },
+
     deleteNotec(note) {
       return controller.deleteNote(note);
     },

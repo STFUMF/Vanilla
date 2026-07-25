@@ -21,5 +21,6 @@ export function createPluginContext(app) {
     on: app.on,
     contribute: app.contribute,
     getContributions: app.getContributions,
+    use: app.use.bind(app),
   });
 }
