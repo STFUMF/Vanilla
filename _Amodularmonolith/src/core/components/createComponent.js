@@ -10,15 +10,16 @@ import { COMPONENT_TYPE } from "./constants.js";
  */
 export function createComponent(component, props, options = {}) {
   assertComponent(component);
-  return Object.freeze({
+  const { key = null, memo = false, debug = false } = options;
+  return {
     nodeType: COMPONENT_TYPE,
     component,
     props,
 
     options: {
-      memo: false,
-      debug: false,
-      ...options,
+      key,
+      memo,
+      debug,
     },
-  });
+  };
 }

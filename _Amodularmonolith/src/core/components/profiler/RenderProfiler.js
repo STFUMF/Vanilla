@@ -1,12 +1,14 @@
+import { createComponentIdentity } from "../../renderer/identity/createComponentIdentity.js";
+
 const renderCounts = new Map();
 
 export const RenderProfiler = {
-  onRender({ name, props }) {
+  onRender({ identity, name, props }) {
     const count = (renderCounts.get(name) ?? 0) + 1;
 
     renderCounts.set(name, count);
 
-    console.groupCollapsed(`[Render] ${name} (#${count})`);
+    console.groupCollapsed(`[Render] ${identity} (#${count})`);
     console.log("Props:", props);
     console.groupEnd();
   },
