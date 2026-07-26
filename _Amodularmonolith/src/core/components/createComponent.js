@@ -8,11 +8,17 @@ import { COMPONENT_TYPE } from "./constants.js";
  * @param {object} props
  * @returns {object}
  */
-export function createComponent(component, props = {}) {
+export function createComponent(component, props, options = {}) {
   assertComponent(component);
   return Object.freeze({
     nodeType: COMPONENT_TYPE,
     component,
     props,
+
+    options: {
+      memo: false,
+      debug: false,
+      ...options,
+    },
   });
 }

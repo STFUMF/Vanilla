@@ -3,18 +3,19 @@ import { createProps } from "./createProps.js";
 
 /**
  * Creates a component node.
- * 
+ *
  * @param {Function} component
  * @param {object} props
  * @param {...any} children
  * @returns {object}
  */
-export function component(component, props = {}, ...children) {
-    return createComponent(
-        component,
-        createProps({
-            ...props,
-            children: children.length ? children : (props.children ?? []),
-        })
-    );
+export function component(componentFn, props = {}, options = {}, ...children) {
+  return createComponent(
+    componentFn,
+    createProps({
+      ...props,
+      children: children.length ? children : (props.children ?? []),
+    }),
+    options,
+  );
 }
