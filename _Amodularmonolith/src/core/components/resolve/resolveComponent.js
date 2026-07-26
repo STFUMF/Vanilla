@@ -1,3 +1,5 @@
+import { ComponentCache } from "../../renderer/memo/ComponentCache.js";
+import { shallowEqual } from "../../renderer/utils/shallowEqual.js";
 import { RenderProfiler } from "../profiler/RenderProfiler.js";
 import { resolveNode } from "./resolveNode.js";
 
@@ -13,5 +15,22 @@ export function resolveComponent(node) {
     name: node.component.name,
     props: node.props,
   });
-  return resolveNode(node);
+
+  if (!node.options.memo) {
+    return resolveNode(node.props);
+  }
+
+  const cached = ComponentCache.get(node.component);
+
+  if (cached && shallowEqual(cached.props, node.props)) {
+    return cached.vnode;
+  }
+
+  const vnode = resolveNode(node.component(node.props));
+
+  ComponentCache.set(node.component, {
+    props: node.props,
+    vnode,
+  });
+  return vnode;
 }

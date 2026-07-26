@@ -11,7 +11,27 @@ import { RenderProfiler } from "../profiler/RenderProfiler.js";
  * @returns {object}
  */
 export function resolveNode(node) {
-  /* if (!node) {
+  if (!node) return node;
+
+  switch (node.nodeType) {
+    case COMPONENT_TYPE:
+      return resolveNode(node.component(node.props));
+
+    case FRAGMENT_TYPE:
+      return node;
+
+    case NODE_TYPES.TEXT:
+      return node;
+
+    case NODE_TYPES.ELEMENT:
+      return resolveElement(node);
+
+    default:
+      throw new Error(`Unsupported node type: ${String(node.nodeType)}`);
+  }
+}
+
+/* if (!node) {
     return node;
   }
 
@@ -40,23 +60,3 @@ export function resolveNode(node) {
     default:
       throw new Error(`Unsupported node type: ${String(node.nodeType)}`);
   } */
-
-  if (!node) return node;
-
-  switch (node.nodeType) {
-    case COMPONENT_TYPE:
-      return resolveNode(node.component(node.props));
-
-    case FRAGMENT_TYPE:
-      return node;
-
-    case NODE_TYPES.TEXT:
-      return node;
-
-    case NODE_TYPES.ELEMENT:
-      return resolveElement(node);
-
-    default:
-      throw new Error(`Unsupported node type: ${String(node.nodeType)}`);
-  }
-}
