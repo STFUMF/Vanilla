@@ -1,15 +1,31 @@
-const cache = new WeakMap();
+const cache = new Map();
 
 export const ComponentCache = {
-  get(component) {
-    return cache.get(comonent);
+  has(identity) {
+    return cache.has(identity);
   },
 
-  set(component, value) {
-    cache.set(component, value);
+  get(identity) {
+    return cache.get(identity);
+  },
+
+  set(identity, entry) {
+    cache.set(identity, entry);
+  },
+
+  delete(identity) {
+    cache.delete(identity);
   },
 
   clear() {
-    cache.clear?.();
+    cache.clear();
+  },
+
+  entries() {
+    return [...cache.entries()];
+  },
+
+  size() {
+    return cache.size;
   },
 };
