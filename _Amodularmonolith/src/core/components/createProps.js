@@ -1,18 +1,17 @@
-
 /**
  * Creates immutable component props.
- * 
+ *
  * @param {object} props
  * @returns {object}
  */
-export function createProps(props = {}) {
-    const {
-        children = [],
-        ...rest
-    } = props;
+const EMPTY_CHILDREN = Object.freeze([]);
+const EMPTY_PROPS = Object.freeze({});
 
-    return Object.freeze({
-        ...rest,
-        children: Object.freeze([...children]),
-    });
+export function createProps(props = EMPTY_PROPS) {
+  const { children = EMPTY_CHILDREN, ...rest } = props;
+
+  return Object.freeze({
+    ...rest,
+    children,
+  });
 }

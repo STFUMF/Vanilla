@@ -5,5 +5,6 @@ import { profilerStage } from "../middleware/profilerStage.js";
 import { composeRenderPipeline } from "./composeRenderPipeline.js";
 
 export function createRenderPipeline() {
+  console.log("Pipeline created");
   return composeRenderPipeline([profilerStage, memoStage])(renderComponent);
 }

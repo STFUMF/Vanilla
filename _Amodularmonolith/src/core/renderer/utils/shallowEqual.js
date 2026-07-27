@@ -7,6 +7,7 @@
  *
  */
 export function shallowEqual(a, b) {
+  const EMPTY_CHILDREN = Object.freeze([]);
   // Same reference
   if (Object.is(a, b)) {
     return true;
@@ -31,10 +32,17 @@ export function shallowEqual(a, b) {
 
   for (const key of keysA) {
     if (!Object.hasOwn(b, key)) {
+      console.log("Missing key:", key);
       return false;
     }
 
     if (!Object.is(a[key], b[key])) {
+      console.log("Different key:", key);
+      console.log("Old === EMPTY_CHILDREN", a[key] === EMPTY_CHILDREN);
+      console.log("New === EMPTY_CHILDREN", b[key] === EMPTY_CHILDREN);
+      console.log("Old:", a[key]);
+      console.log("New:", b[key]);
+
       return false;
     }
   }

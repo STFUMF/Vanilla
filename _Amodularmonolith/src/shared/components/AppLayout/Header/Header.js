@@ -1,8 +1,8 @@
-import { memo } from "@core/components";
+//import { memo } from "@core/components";
 import "./Header.css";
 import { element } from "@core/renderer";
 
-function header() {
+export function Header() {
   return element(
     "header",
     {
@@ -13,4 +13,4 @@ function header() {
   );
 }
 
-export const Header = memo(header);
+//export const Header = memo(header);

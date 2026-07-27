@@ -19,14 +19,14 @@ const render = createRenderPipeline();
 export function resolveComponent(node) {
   //RenderDebugger.log(node.component.name || "Anonymous");
 
-  const identity = createComponentIdentity(node);
+  /*  const identity = createComponentIdentity(node);
   console.log(identity);
   RenderProfiler.onRender({
     identity,
     name: node.component.name,
     props: node.props,
   });
-
+ */
   return render(node);
   /*  if (!node.options.memo){
     return renderComponent(node);

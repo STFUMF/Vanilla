@@ -9,14 +9,24 @@ mapping.delete(42)
 
 console.log(mapping.get("name")); */
 
-const person = {
-  name: "Soc",
-};
+function underStanding(initialvalue) {
+  let value = initialvalue;
 
-const greeting = (name) => `Hello: ${name}`;
+  function insideFunc() {
+    return value;
+  }
 
-Object.assign(person, {
-  greeting: greeting(person.name),
-});
+  insideFunc.meth = function (nextValue) {
+    value = nextValue;
+  };
 
-console.log(person);
+  return insideFunc;
+}
+
+const fn = underStanding(10);
+
+console.log(fn.insideFunc());
+
+fn.meth(2);
+
+console.log(fn());

@@ -3,6 +3,7 @@ import { NODE_TYPES } from "../../renderer/tree";
 
 import { resolveElement } from "./resolveElement.js";
 import { RenderProfiler } from "../profiler/RenderProfiler.js";
+import { resolveComponent } from "./resolveComponent.js";
 
 /**
  * Resolves any node into a UI tree node.
@@ -15,7 +16,7 @@ export function resolveNode(node) {
 
   switch (node.nodeType) {
     case COMPONENT_TYPE:
-      return resolveNode(node.component(node.props));
+      return resolveComponent(node);
 
     case FRAGMENT_TYPE:
       return node;

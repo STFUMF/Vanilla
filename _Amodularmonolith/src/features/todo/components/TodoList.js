@@ -25,6 +25,8 @@ export function TodoList({ todos, controller }) {
     {
       class: "todo-list",
     },
-    ...todos.map((todo) => component(TodoItem, { todo, controller })),
+    ...todos.map((todo) =>
+      component(TodoItem, { todo, controller }, { key: todo.id, memo: true }),
+    ),
   );
 }

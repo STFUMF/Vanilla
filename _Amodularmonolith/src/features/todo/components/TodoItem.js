@@ -10,6 +10,7 @@ import { DueDateBadge } from "./DueDateBadge.js";
 import { CategoryBadge } from "./CategoryBadge.js";
 
 export function TodoItem({ todo, controller }) {
+  console.log("🔄 Rendering TodoItem:", todo.id);
   const labels = {
     overdue: "OverDue",
     today: "Due Today",

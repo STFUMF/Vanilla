@@ -1,4 +1,4 @@
-import { PerformanceProfiler } from "../performance/PerformanceProfiler.js";
+/* import { PerformanceProfiler } from "../performance/PerformanceProfiler.js";
 import { shallowEqual } from "./shallowEqual.js";
 export function memo(component, compare = shallowEqual) {
   let previousProps = null;
@@ -24,3 +24,4 @@ export function memo(component, compare = shallowEqual) {
 
   return MemoizedComponent;
 }
+ */

@@ -9,12 +9,13 @@ import { createProps } from "./createProps.js";
  * @param {...any} children
  * @returns {object}
  */
+const EMPTY_CHILDREN = Object.freeze([]);
 export function component(componentFn, props = {}, options = {}, ...children) {
   return createComponent(
     componentFn,
     createProps({
       ...props,
-      children: children.length ? children : (props.children ?? []),
+      children: children.length ? children : (props.children ?? EMPTY_CHILDREN),
     }),
     options,
   );
