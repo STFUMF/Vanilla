@@ -73,6 +73,14 @@ export function bootstrap() {
     console.log("Framework started");
   });
 
+  const registry = app.resolve("renderStrategyRegistry");
+
+  console.log(registry);
+
+  const manager = app.resolve("instanceManager");
+
+  console.log(manager);
+
   app.start();
 
   //runTests();

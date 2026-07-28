@@ -1,10 +1,15 @@
+import { createObserver } from "../../reactivity/core/createObserver.js";
 import { renderComponent } from "../../renderer/component/renderComponent.js";
-import { createComponentIdentity } from "../../renderer/identity/createComponentIdentity.js";
-import { ComponentCache } from "../../renderer/memo/ComponentCache.js";
-import { renderWithMemo } from "../../renderer/memo/renderWithMemo.js";
+
+import { InstanceManager } from "../../renderer/instance/InstanceManager.js";
+
 import { createRenderPipeline } from "../../renderer/pipeline/createRenderPipeline.js";
-import { shallowEqual } from "../../renderer/utils/shallowEqual.js";
-import { RenderProfiler } from "../profiler/RenderProfiler.js";
+import {
+  getInstanceManager,
+  getRenderStrategyRegistry,
+} from "../../renderer/runtime/RenderRuntime.js";
+import { RenderStrategyRegistry } from "../../renderer/strategy/RenderStrategyRegistry.js";
+
 import { resolveNode } from "./resolveNode.js";
 
 /**
@@ -14,43 +19,11 @@ import { resolveNode } from "./resolveNode.js";
  * @returns {object}
  */
 
-const render = createRenderPipeline();
+export function resolveComponent(instance, context) {
+  const vnode = instance.component(instance.props);
 
-export function resolveComponent(node) {
-  //RenderDebugger.log(node.component.name || "Anonymous");
+  instance.previousVNode = instance.vnode;
+  instance.vnode = vnode;
 
-  /*  const identity = createComponentIdentity(node);
-  console.log(identity);
-  RenderProfiler.onRender({
-    identity,
-    name: node.component.name,
-    props: node.props,
-  });
- */
-  return render(node);
-  /*  if (!node.options.memo){
-    return renderComponent(node);
-  }
-
-  return renderWithMemo(node); */
-
-  /*   if (!node.options.memo) {
-    return resolveNode(node.component(node.props));
-  }
-
-  const cached = ComponentCache.get(identity);
-
-  if (cached && shallowEqual(cached.props, node.props)) {
-    return cached.vnode;
-  }
-
-  const vnode = resolveNode(node.component(node.props));
-
-  ComponentCache.set(identity, {
-    identity,
-    props,
-    vnode,
-  });
-  console.table(ComponentCache.entries());
-  return vnode; */
+  return resolveNode(vnode, context);
 }

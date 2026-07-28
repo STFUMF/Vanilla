@@ -38,18 +38,3 @@ export function signal(initialValue) {
 
   return read;
 }
-const count = signal(0);
-const first = signal("John");
-const last = signal("Doe");
-
-effect(() => {
-  console.log(first(), last());
-});
-
-transaction(() => {
-  count.set(1);
-
-  count.set(2);
-
-  count.set(3);
-});

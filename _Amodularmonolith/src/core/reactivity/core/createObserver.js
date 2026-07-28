@@ -18,7 +18,7 @@ export function createObserver(fn) {
     pushObserver(observer);
 
     try {
-      fn();
+      return fn();
     } finally {
       popObserver();
     }
