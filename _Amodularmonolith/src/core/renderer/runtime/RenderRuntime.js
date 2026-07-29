@@ -2,6 +2,8 @@ let instanceManager;
 
 let strategyRegistry;
 
+let activeRenderContext = null;
+
 export function initializeRendererRuntime({
   instanceManager: manager,
   renderStrategyRegistry: registry,
@@ -16,4 +18,16 @@ export function getInstanceManager() {
 
 export function getRenderStrategyRegistry() {
   return strategyRegistry;
+}
+
+export function getActiveRenderContext() {
+  return activeRenderContext;
+}
+
+export function setActiveRenderContext(context) {
+  activeRenderContext = context;
+}
+
+export function clearActiveRenderContext() {
+  activeRenderContext = null;
 }

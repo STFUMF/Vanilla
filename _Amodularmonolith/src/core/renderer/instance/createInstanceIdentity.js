@@ -3,8 +3,8 @@ export function createInstanceIdentity(node, context) {
 
   const path = [...context.path];
 
-  if (key != null) {
-    path[path.length - 1] = key;
+  if (node.options.key != null) {
+    path[path.length - 1] = node.options.key;
   }
 
   return path.join(".");

@@ -6,8 +6,8 @@ export class InstanceManager {
     this.instances = new Map();
   }
 
-  resolve(node, context) {
-    const identity = createInstanceIdentity(node, context);
+  resolve(node) {
+    const identity = createInstanceIdentity(node);
 
     let instance = this.instances.get(identity);
 

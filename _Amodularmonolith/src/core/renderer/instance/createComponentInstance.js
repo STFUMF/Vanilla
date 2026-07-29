@@ -23,6 +23,8 @@ export function createComponentInstance(node) {
 
     mounted: false,
 
+    status: "created",
+
     parent: null,
 
     children: [],
